@@ -6,7 +6,7 @@ drop schema "public" cascade;
 
 create schema "public";
 
-CREATE TABLE "public.users" (
+CREATE TABLE "public"."users" (
 	"userId" serial NOT NULL,
 	"username" TEXT NOT NULL UNIQUE,
 	"firstName" TEXT NOT NULL,
@@ -17,7 +17,7 @@ CREATE TABLE "public.users" (
   OIDS=FALSE
 );
 
-CREATE TABLE "public.meals" (
+CREATE TABLE "public"."meals" (
 	"mealId" serial NOT NULL,
 	"userId" integer NOT NULL,
 	"calories" integer NOT NULL,
@@ -38,7 +38,7 @@ CREATE TABLE "public.group" (
   OIDS=FALSE
 );
 
-CREATE TABLE "public.tourney" (
+CREATE TABLE "public"."tourney" (
 	"tourneyId" serial NOT NULL,
 	"startDate" DATE NOT NULL,
 	"endDate" DATE NOT NULL,
@@ -48,7 +48,7 @@ CREATE TABLE "public.tourney" (
   OIDS=FALSE
 );
 
-CREATE TABLE "public.workouts" (
+CREATE TABLE "public"."workouts" (
 	"workoutId" serial NOT NULL,
 	"userId" integer NOT NULL,
 	"date" timestamp with time zone NOT NULL,
@@ -61,14 +61,14 @@ CREATE TABLE "public.workouts" (
   OIDS=FALSE
 );
 
-CREATE TABLE "public.workoutMuscleGroups" (
+CREATE TABLE "public"."workoutMuscleGroups" (
 	"workoutId" integer NOT NULL,
 	"muscleId" integer NOT NULL
 ) WITH (
   OIDS=FALSE
 );
 
-CREATE TABLE "public.muscleGroup" (
+CREATE TABLE "public"."muscleGroup" (
 	"muscleId" serial NOT NULL,
 	"name" TEXT NOT NULL UNIQUE,
 	CONSTRAINT "muscleGroup_pk" PRIMARY KEY ("muscleId")
@@ -76,7 +76,7 @@ CREATE TABLE "public.muscleGroup" (
   OIDS=FALSE
 );
 
-CREATE TABLE "public.gyms" (
+CREATE TABLE "public"."gyms" (
 	"gymId" serial NOT NULL,
 	"userId" integer NOT NULL,
 	"name" TEXT NOT NULL,
@@ -88,7 +88,7 @@ CREATE TABLE "public.gyms" (
   OIDS=FALSE
 );
 
-CREATE TABLE "public.comments" (
+CREATE TABLE "public"."comments" (
 	"commentId" serial NOT NULL,
 	"gymId" integer NOT NULL,
 	"userId" integer NOT NULL,
