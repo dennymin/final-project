@@ -30,7 +30,7 @@ CREATE TABLE "public"."meals" (
   OIDS=FALSE
 );
 
-CREATE TABLE "public.group" (
+CREATE TABLE "public"."group" (
 	"userId" integer NOT NULL,
 	"tourneyId" integer NOT NULL,
 	"workoutId" integer NOT NULL
