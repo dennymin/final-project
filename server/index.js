@@ -23,7 +23,7 @@ app.listen(process.env.PORT, () => {
 });
 
 app.use(express.json());
-app.post('/api', (req, res) => {
+app.post('/api', (req, res, next) => {
   const { date, muscleGroups, details } = req.body;
   const length = parseInt(req.body.length, 10);
   const caloriesBurned = parseInt(req.body.caloriesBurned, 10);
@@ -66,7 +66,8 @@ app.post('/api', (req, res) => {
       returning *;
       `;
       db.query(sqlIntoWorkoutMuscleGroups)
-        .then(result => res.status(201).json(result.rows[0]));
+        .then(result => res.status(201).json(result.rows[0]))
+        .catch(err => next(err));
     });
 }
 );
