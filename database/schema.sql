@@ -24,6 +24,7 @@ CREATE TABLE "public"."meals" (
 	"name" TEXT NOT NULL,
 	"ingredients" TEXT NOT NULL,
 	"nutrition" TEXT NOT NULL,
+	"notes" TEXT NOT NULL,
 	"pictureUrl" TEXT NOT NULL,
 	CONSTRAINT "meals_pk" PRIMARY KEY ("mealId")
 ) WITH (

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Container, Typography, makeStyles, createTheme, ThemeProvider } from '@material-ui/core';
 import NewWorkoutForm from './new-workout';
+import AppDrawer from '../components/drawer-component';
 const useStyles = makeStyles({
   pageHeader: {
     marginTop: '30px',
@@ -25,17 +26,18 @@ export default function Home(props) {
     <>
       <ThemeProvider theme={theme}>
         <Container>
-            <Typography
-              variant='h4'
-              component='h2'
-              align='center'
-              gutterBottom
-            className={classes.pageHeader}
-            >
-              New Workout
-            </Typography>
+          <AppDrawer />
+          <Typography
+            variant='h4'
+            component='h2'
+            align='center'
+            gutterBottom
+          className={classes.pageHeader}
+          >
+            New Workout
+          </Typography>
 
-            <NewWorkoutForm />
+          <NewWorkoutForm />
         </Container>
         </ThemeProvider>
     </>
