@@ -2,9 +2,12 @@ import React from 'react';
 import { Container, Typography, makeStyles, createTheme, ThemeProvider } from '@material-ui/core';
 import NewWorkoutForm from './new-workout';
 const useStyles = makeStyles({
-  marginTop30pxBottom20px: {
+  pageHeader: {
     marginTop: '30px',
-    marginBottom: '20px'
+    marginBottom: '20px',
+    fontFamily: 'Roboto Condensed',
+    fontWeight: '600',
+    fontStyle: 'italic'
   }
 });
 
@@ -27,7 +30,7 @@ export default function Home(props) {
               component='h2'
               align='center'
               gutterBottom
-              className={classes.marginTop30pxBottom20px}
+            className={classes.pageHeader}
             >
               New Workout
             </Typography>

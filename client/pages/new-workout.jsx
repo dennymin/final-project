@@ -2,23 +2,16 @@ import { makeStyles, TextField, Button, Select, InputLabel, FormControl, MenuIte
 import React, { useState } from 'react';
 
 const useStyles = makeStyles({
-  flexWrap: {
-    display: 'flex',
-    flexWrap: 'wrap'
-  },
   justifyCenter: {
     display: 'flex',
     justifyContent: 'center'
   },
-  fullFlex: {
-    flexBasis: '100%'
-  },
-  marginBottom: {
-    marginBottom: '5px'
-  },
   buttonColor: {
     marginTop: '20px',
     backgroundColor: '#C9D6DF'
+  },
+  inputColor: {
+    backgroundColor: '#ffffff'
   }
 });
 const differentMuscles = ['Chest', 'Back', 'Arms', 'Legs'];
@@ -93,6 +86,7 @@ export default function NewWorkoutForm(props) {
       >
         <TextField
           label='Date'
+          className={classes.inputColor}
           variant='filled'
           margin='normal'
           type='date'
@@ -106,6 +100,7 @@ export default function NewWorkoutForm(props) {
 
         <TextField
           label='Length'
+          className={classes.inputColor}
           variant='filled'
           margin='normal'
           required
@@ -123,6 +118,7 @@ export default function NewWorkoutForm(props) {
 
         <TextField
           label='Calories Burned'
+          className={classes.inputColor}
           variant='filled'
           margin='normal'
           required
@@ -134,6 +130,7 @@ export default function NewWorkoutForm(props) {
 
         <FormControl
           variant='filled'
+          className={classes.inputColor}
           fullWidth
           margin='normal'
           required
@@ -161,6 +158,7 @@ export default function NewWorkoutForm(props) {
 
         <TextField
           label='Details'
+          className={classes.inputColor}
           variant='filled'
           margin='normal'
           required
