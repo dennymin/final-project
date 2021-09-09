@@ -15,8 +15,6 @@ const db = new pg.Pool({
 
 app.use(staticMiddleware);
 
-app.use(errorMiddleware);
-
 app.listen(process.env.PORT, () => {
   // eslint-disable-next-line no-console
   console.log(`express server listening on port ${process.env.PORT}`);
@@ -68,6 +66,8 @@ app.post('/api', (req, res, next) => {
       db.query(sqlIntoWorkoutMuscleGroups)
         .then(result => res.status(201).json(result.rows[0]))
         .catch(err => next(err));
-    });
+    }).catch(err => next(err));
 }
 );
+
+app.use(errorMiddleware);
