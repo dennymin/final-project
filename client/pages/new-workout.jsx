@@ -24,11 +24,6 @@ const useStyles = makeStyles({
 const differentMuscles = ['Chest', 'Back', 'Arms', 'Legs'];
 
 export default function NewWorkoutForm(props) {
-  // const today = new Date();
-  // const todayYear = today.getFullYear();
-  // const todayMonth = today.getMonth().toString();
-  // const todayDay = today.getDay().toString();
-  // const todayFormatted = `${todayYear}-${todayMonth.length === 1 ? '0' + todayMonth : todayMonth}-${todayDay.length === 1 ? '0' + todayDay : todayDay}`;
   const classes = useStyles();
 
   const [date, setDate] = useState('');
@@ -84,6 +79,7 @@ export default function NewWorkoutForm(props) {
     })
       .then(response => {
         response.json();
+        setMuscles([]);
         e.target.reset();
       });
   };
