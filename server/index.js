@@ -21,7 +21,7 @@ app.listen(process.env.PORT, () => {
 });
 
 app.use(express.json());
-app.post('/api', (req, res, next) => {
+app.post('/api/new/workout', (req, res, next) => {
   const { date, muscleGroups, details } = req.body;
   const length = parseInt(req.body.length, 10);
   const caloriesBurned = parseInt(req.body.caloriesBurned, 10);
@@ -66,6 +66,28 @@ app.post('/api', (req, res, next) => {
       db.query(sqlIntoWorkoutMuscleGroups)
         .then(result => res.status(201).json(result.rows[0]))
         .catch(err => next(err));
+    }).catch(err => next(err));
+}
+);
+
+app.get('/api/new/meal', (req, res, next) => {
+  const { name, ingredients, nutrition, notes, pictureUrl } = req.body;
+  const calories = parseInt(req.body.calories, 10);
+  if (!name || !ingredients || !nutrition || !notes || !calories || !pictureUrl) {
+    throw new ClientError(400, 'name, calories, ingredients, nutrition, and notes are required fields!');
+  }
+  if (!Number.isInteger(calories) || calories < 0) {
+    throw new ClientError(400, 'length must be a positive integer');
+  }
+  const data = [name, calories, ingredients, nutrition, notes, pictureUrl];
+  const sqlIntoMeals = `
+  insert into "meals" ("userId", "name", "calories", "ingredients", "nutrition", "notes", "pictureUrl")
+  values (1, $1, $2, $3, $4, $5, $6)
+  returning *;
+  `;
+  db.query(sqlIntoMeals, data)
+    .then(result => {
+      res.status(201).json(result.rows[0]);
     }).catch(err => next(err));
 }
 );
