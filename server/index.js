@@ -42,12 +42,31 @@ app.post('/api', (req, res) => {
   values (1, $1, $2, $3, $4, 50)
   returning *;
   `;
-  // const sqlIntoWorkoutMuscleGroups = `
-  // insert into "workoutMuscleGroups" ("workoutId", "muscleId")
-  // `;
   db.query(sqlIntoWorkouts, data)
     .then(result => {
-      res.status(201).json(result.rows[0]);
+      const workoutId = result.rows[0].workoutId;
+      const grouping = [];
+      for (let i = 0; i < muscleGroups.length; i++) {
+        let rowValue = null;
+        if (muscleGroups[i] === 'Chest') {
+          rowValue = `(${workoutId}, 1)`;
+        } else if (muscleGroups[i] === 'Back') {
+          rowValue = `(${workoutId}, 2)`;
+        } else if (muscleGroups[i] === 'Arms') {
+          rowValue = `(${workoutId}, 3)`;
+        } else if (muscleGroups[i] === 'Legs') {
+          rowValue = `(${workoutId}, 4)`;
+        }
+        grouping.push(rowValue);
+      }
+      const sendGroup = grouping.join(', ');
+      const sqlIntoWorkoutMuscleGroups = `
+      insert into "workoutMuscleGroups" ("workoutId", "muscleId")
+      values ${sendGroup}
+      returning *;
+      `;
+      db.query(sqlIntoWorkoutMuscleGroups)
+        .then(result => res.status(201).json(result.rows[0]));
     });
 }
 );
