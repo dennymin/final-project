@@ -23,7 +23,7 @@ app.listen(process.env.PORT, () => {
 });
 
 app.use(express.json());
-app.post('/app/new/workout', (req, res) => {
+app.post('/api', (req, res) => {
   const { date, muscleGroups, details } = req.body;
   const length = parseInt(req.body.length, 10);
   const caloriesBurned = parseInt(req.body.caloriesBurned, 10);
@@ -37,12 +37,15 @@ app.post('/app/new/workout', (req, res) => {
     throw new ClientError(400, 'calories burned must be a positive integer');
   }
   const data = [date, length, caloriesBurned, details];
-  const sql = `
+  const sqlIntoWorkouts = `
   insert into "workouts" ("userId", "date", "length", "caloriesBurned", "details", "points")
   values (1, $1, $2, $3, $4, 50)
   returning *;
   `;
-  db.query(sql, data)
+  // const sqlIntoWorkoutMuscleGroups = `
+  // insert into "workoutMuscleGroups" ("workoutId", "muscleId")
+  // `;
+  db.query(sqlIntoWorkouts, data)
     .then(result => {
       res.status(201).json(result.rows[0]);
     });
