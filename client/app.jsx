@@ -2,7 +2,8 @@ import React from 'react';
 import { Container } from '@material-ui/core';
 import Home from './pages/home';
 import parseRoute from './lib/parse-route';
-import NewWorkoutForm from './pages/new-workout';
+// import NewWorkoutForm from './pages/new-workout';
+import NewMealForm from './pages/new-meal';
 // import AppDrawer from './components/drawer-component';
 import Header from './components/header';
 
@@ -38,7 +39,7 @@ export default class App extends React.Component {
       <>
         <Container>
           <Header />
-          <NewWorkoutForm />
+          <NewMealForm />
         </Container>
         <Home />
       </>

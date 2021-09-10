@@ -4,6 +4,7 @@ const pg = require('pg');
 const ClientError = require('./client-error');
 const errorMiddleware = require('./error-middleware');
 const staticMiddleware = require('./static-middleware');
+const uploadsMiddleware = require('./uploads-middleware');
 
 const app = express();
 const db = new pg.Pool({
@@ -70,18 +71,37 @@ app.post('/api/new/workout', (req, res, next) => {
 }
 );
 
-app.get('/api/new/meal', (req, res, next) => {
-  const { name, ingredients, nutrition, notes, pictureUrl } = req.body;
+app.post('/api/new/meal/picture', uploadsMiddleware, (req, res, next) => {
+  const pictureUrl = '/images' + req.file.filename;
+  if (!pictureUrl) {
+    throw new ClientError(400, 'not a valid picture!');
+  }
+  const data = [pictureUrl];
+  const sqlIntoPictures = `
+  insert into "pictures" ("pictureUrl")
+  values ($1)
+  returning *;
+  `;
+  db.query(sqlIntoPictures, data)
+    .then(result => {
+      res.status(201).json(result.rows[0]);
+    }).catch(err => next(err));
+  console.log('hi');
+}
+);
+
+app.post('/api/new/meal', (req, res, next) => {
+  const { name, ingredients, nutrition, notes, pictureId } = req.body;
   const calories = parseInt(req.body.calories, 10);
-  if (!name || !ingredients || !nutrition || !notes || !calories || !pictureUrl) {
+  if (!name || !ingredients || !nutrition || !notes || !calories || !pictureId) {
     throw new ClientError(400, 'name, calories, ingredients, nutrition, and notes are required fields!');
   }
   if (!Number.isInteger(calories) || calories < 0) {
     throw new ClientError(400, 'length must be a positive integer');
   }
-  const data = [name, calories, ingredients, nutrition, notes, pictureUrl];
+  const data = [name, calories, ingredients, nutrition, notes, pictureId];
   const sqlIntoMeals = `
-  insert into "meals" ("userId", "name", "calories", "ingredients", "nutrition", "notes", "pictureUrl")
+  insert into "meals" ("userId", "name", "calories", "ingredients", "nutrition", "notes", "pictureId")
   values (1, $1, $2, $3, $4, $5, $6)
   returning *;
   `;

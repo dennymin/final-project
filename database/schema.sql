@@ -17,6 +17,8 @@ CREATE TABLE "public"."users" (
   OIDS=FALSE
 );
 
+
+
 CREATE TABLE "public"."meals" (
 	"mealId" serial NOT NULL,
 	"userId" integer NOT NULL,
@@ -25,11 +27,13 @@ CREATE TABLE "public"."meals" (
 	"ingredients" TEXT NOT NULL,
 	"nutrition" TEXT NOT NULL,
 	"notes" TEXT NOT NULL,
-	"pictureUrl" TEXT NOT NULL,
+	"pictureId" integer NOT NULL,
 	CONSTRAINT "meals_pk" PRIMARY KEY ("mealId")
 ) WITH (
   OIDS=FALSE
 );
+
+
 
 CREATE TABLE "public"."group" (
 	"userId" integer NOT NULL,
@@ -38,6 +42,8 @@ CREATE TABLE "public"."group" (
 ) WITH (
   OIDS=FALSE
 );
+
+
 
 CREATE TABLE "public"."tourney" (
 	"tourneyId" serial NOT NULL,
@@ -48,6 +54,8 @@ CREATE TABLE "public"."tourney" (
 ) WITH (
   OIDS=FALSE
 );
+
+
 
 CREATE TABLE "public"."workouts" (
 	"workoutId" serial NOT NULL,
@@ -62,12 +70,16 @@ CREATE TABLE "public"."workouts" (
   OIDS=FALSE
 );
 
+
+
 CREATE TABLE "public"."workoutMuscleGroups" (
 	"workoutId" integer NOT NULL,
 	"muscleId" integer NOT NULL
 ) WITH (
   OIDS=FALSE
 );
+
+
 
 CREATE TABLE "public"."muscleGroup" (
 	"muscleId" serial NOT NULL,
@@ -76,6 +88,8 @@ CREATE TABLE "public"."muscleGroup" (
 ) WITH (
   OIDS=FALSE
 );
+
+
 
 CREATE TABLE "public"."gyms" (
 	"gymId" serial NOT NULL,
@@ -89,6 +103,8 @@ CREATE TABLE "public"."gyms" (
   OIDS=FALSE
 );
 
+
+
 CREATE TABLE "public"."comments" (
 	"commentId" serial NOT NULL,
 	"gymId" integer NOT NULL,
@@ -100,7 +116,21 @@ CREATE TABLE "public"."comments" (
   OIDS=FALSE
 );
 
+
+
+CREATE TABLE "public"."pictures" (
+	"pictureId" serial NOT NULL,
+	"pictureUrl" TEXT NOT NULL,
+	CONSTRAINT "pictures_pk" PRIMARY KEY ("pictureId")
+) WITH (
+  OIDS=FALSE
+);
+
+
+
+
 ALTER TABLE "meals" ADD CONSTRAINT "meals_fk0" FOREIGN KEY ("userId") REFERENCES "users"("userId");
+ALTER TABLE "meals" ADD CONSTRAINT "meals_fk1" FOREIGN KEY ("pictureId") REFERENCES "pictures"("pictureId");
 
 ALTER TABLE "group" ADD CONSTRAINT "group_fk0" FOREIGN KEY ("userId") REFERENCES "users"("userId");
 ALTER TABLE "group" ADD CONSTRAINT "group_fk1" FOREIGN KEY ("tourneyId") REFERENCES "tourney"("tourneyId");
