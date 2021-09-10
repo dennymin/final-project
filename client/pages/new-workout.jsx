@@ -62,7 +62,7 @@ export default function NewWorkoutForm(props) {
       muscleGroups: muscleName,
       details: details
     };
-    const sendToAddress = '/api';
+    const sendToAddress = '/api/new/workout';
     fetch(sendToAddress, {
       method: 'POST',
       headers: {

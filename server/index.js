@@ -4,6 +4,7 @@ const pg = require('pg');
 const ClientError = require('./client-error');
 const errorMiddleware = require('./error-middleware');
 const staticMiddleware = require('./static-middleware');
+const uploadsMiddleware = require('./uploads-middleware');
 
 const app = express();
 const db = new pg.Pool({
@@ -21,7 +22,7 @@ app.listen(process.env.PORT, () => {
 });
 
 app.use(express.json());
-app.post('/api', (req, res, next) => {
+app.post('/api/new/workout', (req, res, next) => {
   const { date, muscleGroups, details } = req.body;
   const length = parseInt(req.body.length, 10);
   const caloriesBurned = parseInt(req.body.caloriesBurned, 10);
@@ -34,10 +35,11 @@ app.post('/api', (req, res, next) => {
   if (!Number.isInteger(caloriesBurned) || caloriesBurned < 0) {
     throw new ClientError(400, 'calories burned must be a positive integer');
   }
-  const data = [date, length, caloriesBurned, details];
+  const points = (length * 10) + (caloriesBurned * 2);
+  const data = [date, length, caloriesBurned, details, points];
   const sqlIntoWorkouts = `
   insert into "workouts" ("userId", "date", "length", "caloriesBurned", "details", "points")
-  values (1, $1, $2, $3, $4, 50)
+  values (1, $1, $2, $3, $4, $5 )
   returning *;
   `;
   db.query(sqlIntoWorkouts, data)
@@ -66,6 +68,29 @@ app.post('/api', (req, res, next) => {
       db.query(sqlIntoWorkoutMuscleGroups)
         .then(result => res.status(201).json(result.rows[0]))
         .catch(err => next(err));
+    }).catch(err => next(err));
+}
+);
+
+app.post('/api/new/meal', uploadsMiddleware, (req, res, next) => {
+  const { name, ingredients, nutrition, notes } = req.body;
+  const calories = parseInt(req.body.calories, 10);
+  if (!name || !ingredients || !nutrition || !notes || !calories) {
+    throw new ClientError(400, 'name, calories, ingredients, nutrition, and notes are required fields!');
+  }
+  if (!Number.isInteger(calories) || calories < 0) {
+    throw new ClientError(400, 'calories must be a positive integer');
+  }
+  const pictureUrl = `/images/${req.file.filename}`;
+  const data = [name, calories, ingredients, nutrition, notes, pictureUrl];
+  const sqlIntoMeals = `
+  insert into "meals" ("userId", "name", "calories", "ingredients", "nutrition", "notes", "pictureUrl")
+  values (1, $1, $2, $3, $4, $5, $6)
+  returning *;
+  `;
+  db.query(sqlIntoMeals, data)
+    .then(result => {
+      res.status(201).json(result.rows[0]);
     }).catch(err => next(err));
 }
 );
