@@ -71,37 +71,19 @@ app.post('/api/new/workout', (req, res, next) => {
 }
 );
 
-app.post('/api/new/meal/picture', uploadsMiddleware, (req, res, next) => {
-  const pictureUrl = '/images' + req.file.filename;
-  if (!pictureUrl) {
-    throw new ClientError(400, 'not a valid picture!');
-  }
-  const data = [pictureUrl];
-  const sqlIntoPictures = `
-  insert into "pictures" ("pictureUrl")
-  values ($1)
-  returning *;
-  `;
-  db.query(sqlIntoPictures, data)
-    .then(result => {
-      res.status(201).json(result.rows[0]);
-    }).catch(err => next(err));
-  console.log('hi');
-}
-);
-
-app.post('/api/new/meal', (req, res, next) => {
-  const { name, ingredients, nutrition, notes, pictureId } = req.body;
+app.post('/api/new/meal', uploadsMiddleware, (req, res, next) => {
+  const { name, ingredients, nutrition, notes } = req.body;
   const calories = parseInt(req.body.calories, 10);
-  if (!name || !ingredients || !nutrition || !notes || !calories || !pictureId) {
+  if (!name || !ingredients || !nutrition || !notes || !calories) {
     throw new ClientError(400, 'name, calories, ingredients, nutrition, and notes are required fields!');
   }
   if (!Number.isInteger(calories) || calories < 0) {
-    throw new ClientError(400, 'length must be a positive integer');
+    throw new ClientError(400, 'calories must be a positive integer');
   }
-  const data = [name, calories, ingredients, nutrition, notes, pictureId];
+  const pictureUrl = '/images' + req.file.filename;
+  const data = [name, calories, ingredients, nutrition, notes, pictureUrl];
   const sqlIntoMeals = `
-  insert into "meals" ("userId", "name", "calories", "ingredients", "nutrition", "notes", "pictureId")
+  insert into "meals" ("userId", "name", "calories", "ingredients", "nutrition", "notes", "pictureUrl")
   values (1, $1, $2, $3, $4, $5, $6)
   returning *;
   `;

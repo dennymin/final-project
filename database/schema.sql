@@ -27,7 +27,7 @@ CREATE TABLE "public"."meals" (
 	"ingredients" TEXT NOT NULL,
 	"nutrition" TEXT NOT NULL,
 	"notes" TEXT NOT NULL,
-	"pictureId" integer NOT NULL,
+	"pictureUrl" TEXT NOT NULL,
 	CONSTRAINT "meals_pk" PRIMARY KEY ("mealId")
 ) WITH (
   OIDS=FALSE
@@ -118,19 +118,8 @@ CREATE TABLE "public"."comments" (
 
 
 
-CREATE TABLE "public"."pictures" (
-	"pictureId" serial NOT NULL,
-	"pictureUrl" TEXT NOT NULL,
-	CONSTRAINT "pictures_pk" PRIMARY KEY ("pictureId")
-) WITH (
-  OIDS=FALSE
-);
-
-
-
 
 ALTER TABLE "meals" ADD CONSTRAINT "meals_fk0" FOREIGN KEY ("userId") REFERENCES "users"("userId");
-ALTER TABLE "meals" ADD CONSTRAINT "meals_fk1" FOREIGN KEY ("pictureId") REFERENCES "pictures"("pictureId");
 
 ALTER TABLE "group" ADD CONSTRAINT "group_fk0" FOREIGN KEY ("userId") REFERENCES "users"("userId");
 ALTER TABLE "group" ADD CONSTRAINT "group_fk1" FOREIGN KEY ("tourneyId") REFERENCES "tourney"("tourneyId");

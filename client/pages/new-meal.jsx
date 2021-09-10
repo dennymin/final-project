@@ -1,5 +1,7 @@
-import { makeStyles, TextField, Button, Avatar } from '@material-ui/core';
+import { makeStyles, TextField, Button } from '@material-ui/core';
+import { DropzoneArea } from 'material-ui-dropzone';
 import React, { useState } from 'react';
+import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
   justifyCenter: {
@@ -27,30 +29,79 @@ const useStyles = makeStyles({
 
 export default function NewMealForm(props) {
   const classes = useStyles();
-
+  const theme = createTheme({
+    overrides: {
+      MuiDropzoneArea: {
+        root: {
+          display: 'flex',
+          flexWrap: 'wrap',
+          minHeight: 160,
+          border: '1px hidden',
+          borderBottom: '1px solid',
+          borderTopRightRadius: 4,
+          borderTopLeftRadius: 4,
+          borderBottomRightRadius: 0,
+          borderBottomLeftRadius: 0,
+          backgroundColor: '#e8e8e8'
+        },
+        textContainer: {
+          display: 'flex',
+          alignItems: 'center',
+          width: '100%',
+          flexDirection: 'column'
+        },
+        text: {
+          marginTop: 15,
+          marginBottom: 5,
+          fontSize: 'small',
+          color: 'rgb(100, 100, 100)'
+        },
+        icon: {
+          width: 70,
+          height: 30,
+          marginBottom: 0,
+          color: 'rgb(100, 100, 100)'
+        }
+      },
+      MuiDropzonePreviewList: {
+        root: {
+          display: 'flex',
+          margin: 0,
+          justifyContent: 'center',
+          alignItems: 'center'
+        },
+        imageContainer: {
+          display: 'inline',
+          padding: '4px !important'
+        },
+        image: {
+          maxWidth: 80,
+          maxHeight: 80,
+          objectFit: 'cover',
+          boxShadow: 'none',
+          padding: 4,
+          borderRadius: 5
+        }
+      },
+      MuiDropzoneSnackbar: {
+        successAlert: {
+          display: 'none'
+        }
+      }
+    }
+  });
+  const rowHeight = 3;
   const [name, setName] = useState('');
   const [calories, setCalories] = useState(0);
   const [ingredients, setIngredients] = useState('');
   const [nutrition, setNutrition] = useState('');
   const [notes, setNotes] = useState('');
-  const [pictureUrl, setPictureUrl] = useState('./images/placeholder.png');
+  const [pictureUrl, setPictureUrl] = useState(null);
   const [nameError, setNameError] = useState(false);
   const [caloriesError, setCaloriesError] = useState(false);
   const [ingredientsError, setIngredientsError] = useState(false);
   const [nutritionError, setNutritionError] = useState(false);
   const [notesError, setNotesError] = useState(false);
-  const [pictureUrlError, setPictureUrlError] = useState(false);
-
-  const handlePicture = e => {
-    const newForm = new FormData(e.target);
-    fetch('/api/new/meal/picture', {
-      method: 'POST',
-      body: newForm
-    })
-      .then(response => {
-        console.log(response);
-      });
-  };
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -59,14 +110,13 @@ export default function NewMealForm(props) {
     setIngredientsError(false);
     setNutritionError(false);
     setNotesError(false);
-    setPictureUrlError(false);
     if (name === '') {
       setNameError(true);
     }
     if (calories === 0) {
       setCaloriesError(true);
     }
-    if (ingredients === 0) {
+    if (ingredients === '') {
       setIngredientsError(true);
     }
     if (nutrition.length < 1) {
@@ -75,28 +125,15 @@ export default function NewMealForm(props) {
     if (notes === '') {
       setNotesError(true);
     }
-    if (pictureUrl === '') {
-      setPictureUrlError(true);
-    }
-    const data = {
-      name: name,
-      calories: calories,
-      ingredients: ingredients,
-      nutrition: nutrition,
-      notes: notes,
-      pictureUrl: pictureUrl
-    };
+    const newForm = new FormData(e.target);
+    newForm.append('pictureUrl', pictureUrl);
     const sendToAddress = '/api/new/meal';
     fetch(sendToAddress, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
+      body: newForm
     })
       .then(response => {
         response.json();
-        e.target.reset();
       });
   };
 
@@ -109,6 +146,7 @@ export default function NewMealForm(props) {
       >
         <TextField
           label='Meal Name'
+          name='name'
           className={classes.inputColor}
           variant='filled'
           margin='normal'
@@ -123,6 +161,7 @@ export default function NewMealForm(props) {
 
         <TextField
           label='Calories'
+          name='calories'
           className={classes.inputColor}
           variant='filled'
           margin='normal'
@@ -137,6 +176,7 @@ export default function NewMealForm(props) {
 
         <TextField
           label='Ingredients'
+          name='ingredients'
           className={classes.inputColor}
           variant='filled'
           margin='normal'
@@ -144,13 +184,14 @@ export default function NewMealForm(props) {
           InputLabelProps={{ shrink: true }}
           fullWidth
           multiline
-          rows={4}
+          rows={rowHeight}
           onChange={event => setIngredients(event.target.value)}
           error={ingredientsError}
         />
 
         <TextField
           label='Nutrition'
+          name='nutrition'
           className={classes.inputColor}
           variant='filled'
           margin='normal'
@@ -158,13 +199,14 @@ export default function NewMealForm(props) {
           InputLabelProps={{ shrink: true }}
           fullWidth
           multiline
-          rows={4}
+          rows={rowHeight}
           onChange={event => setNutrition(event.target.value)}
           error={nutritionError}
         />
 
         <TextField
           label='Notes'
+          name='notes'
           className={classes.inputColor}
           variant='filled'
           margin='normal'
@@ -172,29 +214,24 @@ export default function NewMealForm(props) {
           InputLabelProps={{ shrink: true }}
           fullWidth
           multiline
-          rows={4}
+          rows={rowHeight}
           onChange={event => setNotes(event.target.value)}
           error={notesError}
         />
 
         <div className={classes.uploadImageRow}>
-          <Avatar
-            variant='square'
-            src={pictureUrl}
-          />
-          <Button
-            variant='contained'
-            component='label'
-            onClick={handlePicture}
-            className={classes.uploadButton}
-          >
-            Upload Image
-            <input
-              type='file'
-              accept='image/*'
-              hidden
+          <ThemeProvider theme={theme}>
+            <DropzoneArea
+              acceptedFiles={['image/*']}
+              dropzoneText={'Drag and drop picture of food here *'}
+              filesLimit={1}
+              onChange={
+                files => {
+                  setPictureUrl(files[0]);
+                }
+              }
             />
-          </Button>
+          </ThemeProvider>
         </div>
 
         <div className={classes.justifyCenter}>
