@@ -21,7 +21,7 @@ export default function Header(props) {
           gutterBottom
           className={classes.pageHeader}
         >
-          New Meal
+          {props.title}
         </Typography>
   );
 }

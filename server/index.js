@@ -35,10 +35,11 @@ app.post('/api/new/workout', (req, res, next) => {
   if (!Number.isInteger(caloriesBurned) || caloriesBurned < 0) {
     throw new ClientError(400, 'calories burned must be a positive integer');
   }
-  const data = [date, length, caloriesBurned, details];
+  const points = (length * 10) + (caloriesBurned * 2);
+  const data = [date, length, caloriesBurned, details, points];
   const sqlIntoWorkouts = `
   insert into "workouts" ("userId", "date", "length", "caloriesBurned", "details", "points")
-  values (1, $1, $2, $3, $4, 50)
+  values (1, $1, $2, $3, $4, $5 )
   returning *;
   `;
   db.query(sqlIntoWorkouts, data)
@@ -80,7 +81,7 @@ app.post('/api/new/meal', uploadsMiddleware, (req, res, next) => {
   if (!Number.isInteger(calories) || calories < 0) {
     throw new ClientError(400, 'calories must be a positive integer');
   }
-  const pictureUrl = '/images' + req.file.filename;
+  const pictureUrl = `/images/${req.file.filename}`;
   const data = [name, calories, ingredients, nutrition, notes, pictureUrl];
   const sqlIntoMeals = `
   insert into "meals" ("userId", "name", "calories", "ingredients", "nutrition", "notes", "pictureUrl")

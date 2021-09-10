@@ -2,9 +2,8 @@ import React from 'react';
 import { Container } from '@material-ui/core';
 import Home from './pages/home';
 import parseRoute from './lib/parse-route';
-// import NewWorkoutForm from './pages/new-workout';
+import NewWorkoutForm from './pages/new-workout';
 import NewMealForm from './pages/new-meal';
-// import AppDrawer from './components/drawer-component';
 import Header from './components/header';
 
 export default class App extends React.Component {
@@ -23,23 +22,30 @@ export default class App extends React.Component {
     });
   }
 
-  // renderPage() {
-  //   const { route } = this.state;
-  //   if (route.path === '') {
-  //     return <Home />;
-  //   }
-  //   if (route.path === 'app/new/workout') {
-  //     const productId = route.params.get('productId');
-  //     return <NewWorkoutForm productId={productId} />;
-  //   }
-  // }
+  renderPage() {
+    const { route } = this.state;
+    if (route.path === '') {
+      return <Home />;
+    }
+    if (route.path === 'app/new/workout') {
+      return (
+          <NewWorkoutForm />
+      );
+    }
+    if (route.path === 'app/new/meal') {
+      return (
+          <NewMealForm />
+      );
+    }
+  }
 
   render() {
+    const title = this.state.route.path.split('/').splice(1, 2).join(' ').toUpperCase();
     return (
       <>
         <Container>
-          <Header />
-          <NewMealForm />
+          <Header title={title} />
+          { this.renderPage() }
         </Container>
         <Home />
       </>

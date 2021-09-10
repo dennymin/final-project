@@ -19,11 +19,6 @@ const useStyles = makeStyles({
   },
   inputColor: {
     backgroundColor: '#ffffff'
-  },
-  uploadButton: {
-    backgroundColor: '#C9D6DF',
-    position: 'relative',
-    left: '50px'
   }
 });
 
@@ -225,11 +220,7 @@ export default function NewMealForm(props) {
               acceptedFiles={['image/*']}
               dropzoneText={'Drag and drop picture of food here *'}
               filesLimit={1}
-              onChange={
-                files => {
-                  setPictureUrl(files[0]);
-                }
-              }
+              onChange={files => setPictureUrl(files[0])}
             />
           </ThemeProvider>
         </div>
