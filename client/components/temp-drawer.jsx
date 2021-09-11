@@ -29,7 +29,20 @@ export default function TempDrawer() {
   const theme = createTheme({
     overrides: {
       MuiAccordion: {
-
+        root: {
+          backgroundColor: '#F0F5F9',
+          width: '100%'
+        }
+      },
+      MuiAccordionSummary: {
+        root: {
+          fontWeight: '500'
+        }
+      },
+      MuiDrawer: {
+        paper: {
+          backgroundColor: '#C9D6DF'
+        }
       }
     }
   });
@@ -41,32 +54,30 @@ export default function TempDrawer() {
 
   const list = () => {
     return (
-    <div>
+    <>
       <List>
         <ListItem className={classes.listFont}>
-          <Accordion>
+          <Accordion square={true}>
             <AccordionSummary>
               My Fitness
             </AccordionSummary>
             <AccordionDetails>
-              <Typography
-                href='/#app/new/workout'
-              >
+              <Typography>
                 <Link
                   href='/#app/new/workout'
                   underline='hover'
+                  color='textSecondary'
                 >
                   New Workout
                 </Link>
               </Typography>
             </AccordionDetails>
             <AccordionDetails>
-              <Typography
-                href='/#app/new/meal'
-              >
+              <Typography>
                 <Link
                   href='/#app/new/meal'
                   underline='hover'
+                  color='textSecondary'
                 >
                   New Meal
                 </Link>
@@ -75,26 +86,28 @@ export default function TempDrawer() {
           </Accordion>
         </ListItem>
       </List>
-    </div>
+    </>
     );
   };
 
   return (
-    <span className={classes.positioning}>
-      <IconButton
-        onClick={e => toggleDrawer(e)}
-      >
-        <MenuIcon />
-      </IconButton>
-      <Drawer
-      className={classes.drawer}
-      open={state}
-      variant='temporary'
-      classes={{ paper: classes.drawerPaper }}
-      onClose={e => toggleDrawer(e)}
-      >
-        {list()}
-      </Drawer>
-    </span>
+    <ThemeProvider theme = { theme }>
+      <span className={classes.positioning}>
+        <IconButton
+          onClick={e => toggleDrawer(e)}
+        >
+          <MenuIcon />
+        </IconButton>
+        <Drawer
+        className={classes.drawer}
+        open={state}
+        variant='temporary'
+        classes={{ paper: classes.drawerPaper }}
+        onClose={e => toggleDrawer(e)}
+        >
+          {list()}
+        </Drawer>
+        </span>
+    </ThemeProvider>
   );
 }
