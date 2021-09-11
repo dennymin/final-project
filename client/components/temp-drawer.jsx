@@ -50,11 +50,13 @@ export default function TempDrawer() {
             </AccordionSummary>
             <AccordionDetails>
                 <Typography
+                  fullWidth
                   href='#/app/new/workout'
                 >
                   New Workout
                 </Typography>
                 <Typography
+                  fullWidth
                   href='#/app/new/meal'
                 >
                   New Meal
