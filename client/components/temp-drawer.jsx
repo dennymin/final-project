@@ -1,5 +1,5 @@
 import React from 'react';
-import { Drawer, IconButton, makeStyles, List, ListItem, Accordion, AccordionSummary, AccordionDetails, Typography } from '@material-ui/core';
+import { Drawer, IconButton, makeStyles, List, ListItem, Accordion, AccordionSummary, AccordionDetails, Typography, Link } from '@material-ui/core';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 
@@ -49,18 +49,28 @@ export default function TempDrawer() {
               My Fitness
             </AccordionSummary>
             <AccordionDetails>
-                <Typography
-                  fullWidth
-                  href='#/app/new/workout'
+              <Typography
+                href='/#app/new/workout'
+              >
+                <Link
+                  href='/#app/new/workout'
+                  underline='hover'
                 >
                   New Workout
-                </Typography>
-                <Typography
-                  fullWidth
-                  href='#/app/new/meal'
+                </Link>
+              </Typography>
+            </AccordionDetails>
+            <AccordionDetails>
+              <Typography
+                href='/#app/new/meal'
+              >
+                <Link
+                  href='/#app/new/meal'
+                  underline='hover'
                 >
                   New Meal
-                </Typography>
+                </Link>
+              </Typography>
             </AccordionDetails>
           </Accordion>
         </ListItem>
