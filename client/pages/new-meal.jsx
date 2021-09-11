@@ -32,7 +32,7 @@ export default function NewMealForm(props) {
           flexWrap: 'wrap',
           minHeight: 160,
           border: '1px hidden',
-          borderBottom: '1px solid',
+          borderBottom: '1px solid #888484',
           borderTopRightRadius: 4,
           borderTopLeftRadius: 4,
           borderBottomRightRadius: 0,
