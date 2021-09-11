@@ -1,8 +1,9 @@
 import React from 'react';
-import { Drawer, IconButton, makeStyles, Button, List, ListItem } from '@material-ui/core';
+import { Drawer, IconButton, makeStyles, List, ListItem, Accordion, AccordionSummary, AccordionDetails, Typography } from '@material-ui/core';
+import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 
-const drawerWidth = 150;
+const drawerWidth = 200;
 
 const useStyles = makeStyles(theme => {
   return {
@@ -19,16 +20,21 @@ const useStyles = makeStyles(theme => {
     listFont: {
       fontFamily: 'Roboto',
       padding: 0
-    },
-    fullWidth: {
-      width: '100%'
     }
   };
 });
 
 export default function TempDrawer() {
-  const [state, setState] = React.useState(false);
   const classes = useStyles();
+  const theme = createTheme({
+    overrides: {
+      MuiAccordion: {
+
+      }
+    }
+  });
+
+  const [state, setState] = React.useState(false);
   const toggleDrawer = e => {
     state === true ? setState(false) : setState(true);
   };
@@ -38,9 +44,23 @@ export default function TempDrawer() {
     <div>
       <List>
         <ListItem className={classes.listFont}>
-          <Button className={classes.fullWidth}>
-            My Fitness
-          </Button>
+          <Accordion>
+            <AccordionSummary>
+              My Fitness
+            </AccordionSummary>
+            <AccordionDetails>
+                <Typography
+                  href='#/app/new/workout'
+                >
+                  New Workout
+                </Typography>
+                <Typography
+                  href='#/app/new/meal'
+                >
+                  New Meal
+                </Typography>
+            </AccordionDetails>
+          </Accordion>
         </ListItem>
       </List>
     </div>
