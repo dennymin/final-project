@@ -5,6 +5,7 @@ import parseRoute from './lib/parse-route';
 import NewWorkoutForm from './pages/new-workout';
 import NewMealForm from './pages/new-meal';
 import Header from './components/header';
+import TempDrawer from './components/temp-drawer';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -44,6 +45,7 @@ export default class App extends React.Component {
     return (
       <>
         <Container>
+          <TempDrawer />
           <Header title={title} />
           { this.renderPage() }
         </Container>
