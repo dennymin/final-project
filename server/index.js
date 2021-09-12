@@ -99,12 +99,12 @@ app.get('/api/your/meals', (req, res, next) => {
   const sqlIntoUserWorkouts = `
   select "userId", "date", "length", "caloriesBurned", "details"
   from "workouts"
-  where "userId" = 2;
+  where "userId" = 1;
   `;
   db.query(sqlIntoUserWorkouts)
     .then(result => {
-      console.log(result.rows);
-    });
+      res.status(201).json(result.rows);
+    }).catch(err => next(err));
 });
 
 app.use(errorMiddleware);

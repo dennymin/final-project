@@ -129,6 +129,7 @@ export default function NewMealForm(props) {
     })
       .then(response => {
         response.json();
+        e.target.reset();
       });
   };
 
