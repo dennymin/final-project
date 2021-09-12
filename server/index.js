@@ -95,7 +95,7 @@ app.post('/api/new/meal', uploadsMiddleware, (req, res, next) => {
 }
 );
 
-app.get('/api/your/meals', (req, res, next) => {
+app.get('/api/your/workouts', (req, res, next) => {
   const sqlIntoUserWorkouts = `
   select "userId", "date", "length", "caloriesBurned", "details"
   from "workouts"

@@ -6,6 +6,7 @@ import NewWorkoutForm from './pages/new-workout';
 import NewMealForm from './pages/new-meal';
 import Header from './components/header';
 import TempDrawer from './components/temp-drawer';
+import YourWorkouts from './pages/your-workouts';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -27,6 +28,11 @@ export default class App extends React.Component {
     const { route } = this.state;
     if (route.path === '') {
       return <Home />;
+    }
+    if (route.path === 'app/your/workouts') {
+      return (
+        <YourWorkouts/>
+      );
     }
     if (route.path === 'app/new/workout') {
       return (

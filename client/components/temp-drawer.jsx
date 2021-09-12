@@ -64,9 +64,20 @@ export default function TempDrawer() {
             <AccordionDetails>
               <Typography>
                 <Link
+                  href='/#app/your/workouts'
+                  underline='hover'
+                  color='textPrimary'
+                >
+                  Your Workouts
+                </Link>
+              </Typography>
+            </AccordionDetails>
+            <AccordionDetails>
+              <Typography>
+                <Link
                   href='/#app/new/workout'
                   underline='hover'
-                  color='textSecondary'
+                  color='textPrimary'
                 >
                   New Workout
                 </Link>
@@ -77,7 +88,7 @@ export default function TempDrawer() {
                 <Link
                   href='/#app/new/meal'
                   underline='hover'
-                  color='textSecondary'
+                  color='textPrimary'
                 >
                   New Meal
                 </Link>
