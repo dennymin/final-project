@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 const useStyles = makeStyles(theme => {
   return {
     cardWidth: {
-      width: '75%'
+      width: '100%'
     },
     centering: {
       display: 'flex',
