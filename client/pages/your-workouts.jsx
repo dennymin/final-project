@@ -45,17 +45,17 @@ export default function YourWorkouts(props) {
         </CardContent>
         <CardContent>
           <Typography>
-            {serverData[0].length}
+            Length: {serverData[0].length}
           </Typography>
         </CardContent>
         <CardContent>
           <Typography>
-            {serverData[0].caloriesBurned}
+            Calories Burned: {serverData[0].caloriesBurned}
           </Typography>
         </CardContent>
         <CardContent>
           <Typography>
-            {serverData[0].details}
+            Details: {serverData[0].details}
           </Typography>
         </CardContent>
       </Card>
