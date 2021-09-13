@@ -1,5 +1,5 @@
 import { Card, CardContent, Typography, makeStyles } from '@material-ui/core';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const useStyles = makeStyles(theme => {
   return {
@@ -15,19 +15,22 @@ const useStyles = makeStyles(theme => {
 
 export default function YourWorkouts(props) {
   const classes = useStyles();
+  const [serverData, pullServerData] = useState([{
+    userId: 0,
+    date: '',
+    length: 0,
+    caloriesBurned: 0,
+    details: ''
+  }]);
 
   useEffect(() => {
     const serverAddress = '/api/your/workouts';
     fetch(serverAddress, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
+      method: 'GET'
     })
-      .then(response => {
-        response.json();
-      }).then(data => {
-        console.log(data);
+      .then(response => response.json())
+      .then(data => {
+        pullServerData(data);
       });
   }
   );
@@ -37,7 +40,22 @@ export default function YourWorkouts(props) {
       <Card className={classes.cardWidth}>
         <CardContent>
           <Typography>
-            Hello
+            {serverData[0].date.slice(0, 10)}
+          </Typography>
+        </CardContent>
+        <CardContent>
+          <Typography>
+            {serverData[0].length}
+          </Typography>
+        </CardContent>
+        <CardContent>
+          <Typography>
+            {serverData[0].caloriesBurned}
+          </Typography>
+        </CardContent>
+        <CardContent>
+          <Typography>
+            {serverData[0].details}
           </Typography>
         </CardContent>
       </Card>
