@@ -95,7 +95,8 @@ export default function YourWorkouts(props) {
         <Grid
           key={workout.workoutId}
           item={true}
-          md={4}
+          md={6}
+          lg={4}
           container
         >
           <Card
@@ -114,7 +115,7 @@ export default function YourWorkouts(props) {
                 <Typography
                   className={classes.cardCategoryHeader}
                 >
-                  Length:
+                  Workout Length:
                 </Typography>
                 <Typography
                   className={classes.cardCategoryContent}
@@ -126,19 +127,19 @@ export default function YourWorkouts(props) {
                 <Typography
                   className={classes.cardCategoryHeader}
                 >
-                  Calories Burned:
+                  Calories:
                 </Typography>
                 <Typography
                   className={classes.cardCategoryContent}
                   paragraph={true}
                 >
-                  {workout.caloriesBurned}
+                  {workout.caloriesBurned} Calories Burned
                 </Typography>
 
                 <Typography
                   className={classes.cardCategoryHeader}
                 >
-                  Muscle Groups:
+                  Muscles Worked Out:
                 </Typography>
                 <Typography
                   className={classes.cardCategoryContent}
@@ -179,7 +180,7 @@ export default function YourWorkouts(props) {
     });
     return (
         <Grid
-          spacing={3}
+          spacing={2}
           container
           justifyContent='flex-start'
         >
