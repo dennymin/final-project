@@ -15,7 +15,8 @@ const useStyles = makeStyles(theme => {
     },
     positioning: {
       position: 'absolute',
-      top: 20
+      top: 20,
+      left: 10
     },
     listFont: {
       fontFamily: 'Roboto',
@@ -37,6 +38,11 @@ export default function TempDrawer() {
       MuiAccordionSummary: {
         root: {
           fontWeight: '500'
+        }
+      },
+      MuiAccordionDetails: {
+        root: {
+          backgroundColor: '#e8e8e8'
         }
       },
       MuiDrawer: {
@@ -67,6 +73,7 @@ export default function TempDrawer() {
                   href='/#app/your/workouts'
                   underline='hover'
                   color='textPrimary'
+                  onClick={e => toggleDrawer(e)}
                 >
                   Your Workouts
                 </Link>
@@ -78,6 +85,7 @@ export default function TempDrawer() {
                   href='/#app/new/workout'
                   underline='hover'
                   color='textPrimary'
+                  onClick={e => toggleDrawer(e)}
                 >
                   New Workout
                 </Link>
@@ -89,6 +97,7 @@ export default function TempDrawer() {
                   href='/#app/new/meal'
                   underline='hover'
                   color='textPrimary'
+                  onClick={e => toggleDrawer(e)}
                 >
                   New Meal
                 </Link>

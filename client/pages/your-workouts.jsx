@@ -8,16 +8,17 @@ const useStyles = makeStyles(theme => {
       margin: 15,
       border: '1px hidden',
       borderRadius: 25,
-      padding: 5
+      padding: 5,
+      backgroundColor: '#e8e8e8'
     },
     centering: {
       display: 'flex',
       justifyContent: 'center',
       flexWrap: 'wrap'
     },
-    italics: {
+    dateSection: {
       fontStyle: 'italic',
-      fontSize: '1.5rem'
+      fontSize: '1.6rem'
     },
     cardCategoryHeader: {
       fontWeight: 'bold',
@@ -39,20 +40,20 @@ export default function YourWorkouts(props) {
     date: '',
     length: 0,
     caloriesBurned: 0,
-    details: ''
+    details: '',
+    workoutId: 0
   }]);
 
   useEffect(() => {
+    let isCanceled = false;
     const serverAddress = '/api/your/workouts';
-    fetch(serverAddress, {
-      method: 'GET'
-    })
+    fetch(serverAddress)
       .then(response => response.json())
       .then(data => {
-        pullServerData(data);
+        !isCanceled && pullServerData(data);
       });
-  }
-  );
+    return () => { isCanceled = true; };
+  }, []);
 
   const WorkoutList = props => {
     const workoutList = props.entries;
@@ -63,11 +64,11 @@ export default function YourWorkouts(props) {
       workingDate.splice(11, 0, ',');
       const renderedDate = workingDate.join('');
       return (
-        <Card key={workout.date} className={classes.cardClass} raised={false}>
+        <Card key={workout.workoutId} className={classes.cardClass} raised={true}>
           <CardContent>
             <Typography
-            className={classes.italics}
-            paragraph={true}
+              className={classes.dateSection}
+              paragraph={true}
             >
               {renderedDate}
             </Typography>

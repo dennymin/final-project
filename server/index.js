@@ -107,7 +107,8 @@ app.get('/api/your/workouts', (req, res, next) => {
   join "workoutMuscleGroups" using ("workoutId")
   join "muscleGroup" using ("muscleId")
   where "userId" = 1
-  group by "workouts"."workoutId";
+  group by "workouts"."workoutId"
+  order by "workouts"."date" desc;
   `;
   db.query(sqlIntoUserWorkouts)
     .then(result => {
