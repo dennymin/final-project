@@ -102,7 +102,7 @@ app.get('/api/your/workouts', (req, res, next) => {
          "workouts"."length",
          "workouts"."caloriesBurned",
          "workouts"."details",
-         STRING_AGG(("muscleGroup"."name"), ', ')
+         STRING_AGG(("muscleGroup"."name"), ', ') as "muscles"
   from "workouts"
   join "workoutMuscleGroups" using ("workoutId")
   join "muscleGroup" using ("muscleId")

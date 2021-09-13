@@ -3,12 +3,31 @@ import React, { useEffect, useState } from 'react';
 
 const useStyles = makeStyles(theme => {
   return {
-    cardWidth: {
-      width: '100%'
+    cardClass: {
+      width: '100%',
+      margin: 15,
+      border: '1px hidden',
+      borderRadius: 25,
+      padding: 5
     },
     centering: {
       display: 'flex',
-      justifyContent: 'center'
+      justifyContent: 'center',
+      flexWrap: 'wrap'
+    },
+    italics: {
+      fontStyle: 'italic',
+      fontSize: '1.5rem'
+    },
+    cardCategoryHeader: {
+      fontWeight: 'bold',
+      fontSize: '1.4rem',
+      marginBottom: 4
+    },
+    cardCategoryContent: {
+      fontStyle: 'italic',
+      fontSize: '1.3rem',
+      color: '#52616B'
     }
   };
 });
@@ -35,30 +54,82 @@ export default function YourWorkouts(props) {
   }
   );
 
+  const WorkoutList = props => {
+    const workoutList = props.entries;
+    const renderedWorkouts = workoutList.map(workout => {
+      const workoutDate = new Date(workout.date);
+      const workingDate = workoutDate.toDateString().split('');
+      workingDate.splice(3, 0, ',');
+      workingDate.splice(11, 0, ',');
+      const renderedDate = workingDate.join('');
+      return (
+        <Card key={workout.date} className={classes.cardClass} raised={false}>
+          <CardContent>
+            <Typography
+            className={classes.italics}
+            paragraph={true}
+            >
+              {renderedDate}
+            </Typography>
+
+            <Typography
+              className={classes.cardCategoryHeader}
+            >
+              Length:
+            </Typography>
+            <Typography
+              className={classes.cardCategoryContent}
+              paragraph={true}
+            >
+              {workout.length} Minutes
+            </Typography>
+
+            <Typography
+              className={classes.cardCategoryHeader}
+            >
+              Calories Burned:
+            </Typography>
+            <Typography
+              className={classes.cardCategoryContent}
+              paragraph={true}
+            >
+              {workout.caloriesBurned}
+            </Typography>
+
+            <Typography
+              className={classes.cardCategoryHeader}
+            >
+              Muscle Groups:
+            </Typography>
+            <Typography
+              className={classes.cardCategoryContent}
+              paragraph={true}
+            >
+              {workout.muscles}
+            </Typography>
+
+            <Typography
+              className={classes.cardCategoryHeader}
+            >
+              Details:
+            </Typography>
+            <Typography
+              className={classes.cardCategoryContent}
+            >
+              {workout.details}
+            </Typography>
+
+          </CardContent>
+        </Card>);
+    });
+    return (
+      <div className={classes.centering}>
+        {renderedWorkouts}
+      </div>
+    );
+  };
+
   return (
-    <div className={classes.centering}>
-      <Card className={classes.cardWidth}>
-        <CardContent>
-          <Typography>
-            {serverData[0].date.slice(0, 10)}
-          </Typography>
-        </CardContent>
-        <CardContent>
-          <Typography>
-            Length: {serverData[0].length}
-          </Typography>
-        </CardContent>
-        <CardContent>
-          <Typography>
-            Calories Burned: {serverData[0].caloriesBurned}
-          </Typography>
-        </CardContent>
-        <CardContent>
-          <Typography>
-            Details: {serverData[0].details}
-          </Typography>
-        </CardContent>
-      </Card>
-    </div>
+    <WorkoutList entries={serverData}/>
   );
 }
