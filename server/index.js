@@ -95,4 +95,25 @@ app.post('/api/new/meal', uploadsMiddleware, (req, res, next) => {
 }
 );
 
+app.get('/api/your/workouts', (req, res, next) => {
+  const sqlIntoUserWorkouts = `
+  select "workouts"."workoutId",
+         "workouts"."date",
+         "workouts"."length",
+         "workouts"."caloriesBurned",
+         "workouts"."details",
+         STRING_AGG(("muscleGroup"."name"), ', ') as "muscles"
+  from "workouts"
+  join "workoutMuscleGroups" using ("workoutId")
+  join "muscleGroup" using ("muscleId")
+  where "userId" = 1
+  group by "workouts"."workoutId"
+  order by "workouts"."date" desc;
+  `;
+  db.query(sqlIntoUserWorkouts)
+    .then(result => {
+      res.status(201).json(result.rows);
+    }).catch(err => next(err));
+});
+
 app.use(errorMiddleware);

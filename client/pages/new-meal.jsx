@@ -1,7 +1,6 @@
 import { makeStyles, TextField, Button } from '@material-ui/core';
 import { DropzoneArea } from 'material-ui-dropzone';
 import React, { useState } from 'react';
-import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
   justifyCenter: {
@@ -24,67 +23,7 @@ const useStyles = makeStyles({
 
 export default function NewMealForm(props) {
   const classes = useStyles();
-  const theme = createTheme({
-    overrides: {
-      MuiDropzoneArea: {
-        root: {
-          display: 'flex',
-          flexWrap: 'wrap',
-          minHeight: 160,
-          border: '1px hidden',
-          borderBottom: '1px solid',
-          borderTopRightRadius: 4,
-          borderTopLeftRadius: 4,
-          borderBottomRightRadius: 0,
-          borderBottomLeftRadius: 0,
-          backgroundColor: '#e8e8e8'
-        },
-        textContainer: {
-          display: 'flex',
-          alignItems: 'center',
-          width: '100%',
-          flexDirection: 'column'
-        },
-        text: {
-          marginTop: 15,
-          marginBottom: 5,
-          fontSize: 'small',
-          color: 'rgb(100, 100, 100)'
-        },
-        icon: {
-          width: 70,
-          height: 30,
-          marginBottom: 0,
-          color: 'rgb(100, 100, 100)'
-        }
-      },
-      MuiDropzonePreviewList: {
-        root: {
-          display: 'flex',
-          margin: 0,
-          justifyContent: 'center',
-          alignItems: 'center'
-        },
-        imageContainer: {
-          display: 'inline',
-          padding: '4px !important'
-        },
-        image: {
-          maxWidth: 80,
-          maxHeight: 80,
-          objectFit: 'cover',
-          boxShadow: 'none',
-          padding: 4,
-          borderRadius: 5
-        }
-      },
-      MuiDropzoneSnackbar: {
-        successAlert: {
-          display: 'none'
-        }
-      }
-    }
-  });
+
   const rowHeight = 3;
   const [name, setName] = useState('');
   const [calories, setCalories] = useState(0);
@@ -129,6 +68,7 @@ export default function NewMealForm(props) {
     })
       .then(response => {
         response.json();
+        e.target.reset();
       });
   };
 
@@ -215,14 +155,12 @@ export default function NewMealForm(props) {
         />
 
         <div className={classes.uploadImageRow}>
-          <ThemeProvider theme={theme}>
             <DropzoneArea
               acceptedFiles={['image/*']}
               dropzoneText={'Drag and drop picture of food here *'}
               filesLimit={1}
               onChange={files => setPictureUrl(files[0])}
             />
-          </ThemeProvider>
         </div>
 
         <div className={classes.justifyCenter}>
