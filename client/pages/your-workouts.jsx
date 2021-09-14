@@ -43,9 +43,6 @@ const useStyles = makeStyles(theme => {
       '&:hover': {
         cursor: 'pointer'
       }
-    },
-    gutterTop: {
-      marginTop: 30
     }
   };
 });
@@ -95,8 +92,8 @@ export default function YourWorkouts(props) {
           xl={3}
         >
           <Card
-          className={classes.cardClass}
-          raised={true}>
+            className={classes.cardClass}
+            raised={true}>
 
             <CardContent>
               <Typography
@@ -154,7 +151,7 @@ export default function YourWorkouts(props) {
                 timeout='auto'
                 unmountOnExit
               >
-                  <Typography
+                <Typography
                   className={classes.cardCategoryHeader}
                 >
                   Details:
@@ -172,18 +169,17 @@ export default function YourWorkouts(props) {
       );
     });
     return (
-        <Grid
-          spacing={4}
-          container={true}
-          justifyContent='flex-start'
-        >
-          {renderedWorkouts}
-        </Grid>
+      <Grid
+        spacing={4}
+        container={true}
+        justifyContent='flex-start'
+      >
+        {renderedWorkouts}
+      </Grid>
     );
   };
 
   return (
-      <WorkoutList entries={serverData} />
+    <WorkoutList entries={serverData} />
   );
-
 }

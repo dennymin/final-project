@@ -112,7 +112,7 @@ app.get('/api/your/workouts', (req, res, next) => {
   `;
   db.query(sqlIntoUserWorkouts)
     .then(result => {
-      res.status(201).json(result.rows);
+      res.status(200).json(result.rows);
     }).catch(err => next(err));
 });
 
@@ -124,7 +124,7 @@ app.get('/api/your/meals', (req, res, next) => {
   `;
   db.query(sqlIntoUserMeals)
     .then(result => {
-      res.status(201).json(result.rows);
+      res.status(200).json(result.rows);
     }).catch(err => next(err));
 });
 

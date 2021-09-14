@@ -59,14 +59,7 @@ const useStyles = makeStyles(theme => {
 
 export default function YourMeals(props) {
   const classes = useStyles();
-  const [serverData, pullServerData] = useState([{
-    mealId: 0,
-    calories: 0,
-    name: '',
-    ingredients: '',
-    notes: '',
-    pictureUrl: ''
-  }]);
+  const [serverData, pullServerData] = useState([]);
 
   useEffect(() => {
     let isCanceled = false;
