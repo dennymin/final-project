@@ -128,4 +128,32 @@ app.get('/api/your/meals', (req, res, next) => {
     }).catch(err => next(err));
 });
 
+app.get('/api/your/fitness', (req, res, next) => {
+  const dateToday = new Date();
+  const dateInIso = dateToday.toISOString().slice(0, 10);
+  const todayInMilSeconds = dateToday.getTime();
+  const lastWeekInSeconds = todayInMilSeconds - (604800 * 1000);
+  const lastWeekDate = new Date(lastWeekInSeconds);
+  const lastWeekDateIso = lastWeekDate.toISOString().slice(0, 10);
+  const sqlIntoUserWorkouts = `
+  select "workouts"."workoutId",
+         "workouts"."length",
+         "workouts"."caloriesBurned",
+         DATE("workouts"."date"),
+         STRING_AGG(("muscleGroup"."name"), ', ') as "muscles"
+  from   "workouts"
+  join   "workoutMuscleGroups" using ("workoutId")
+  join   "muscleGroup" using ("muscleId")
+  where  "userId" = 1
+  and    DATE("workouts"."date") >= '${lastWeekDateIso}'
+  and    DATE("workouts"."date") <= '${dateInIso}'
+  group  by "workouts"."workoutId"
+  order  by "workouts"."date" desc;
+  `;
+  db.query(sqlIntoUserWorkouts)
+    .then(result => {
+      res.status(200).json(result.rows);
+    }).catch(err => next(err));
+});
+
 app.use(errorMiddleware);
