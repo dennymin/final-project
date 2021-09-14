@@ -47,7 +47,7 @@ export default function NewMealForm(props) {
     if (name === '') {
       setNameError(true);
     }
-    if (calories === 0) {
+    if (calories < 0) {
       setCaloriesError(true);
     }
     if (ingredients === '') {

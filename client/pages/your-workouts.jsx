@@ -183,7 +183,7 @@ export default function YourWorkouts(props) {
   };
 
   return (
-    <WorkoutList entries={serverData} />
+      <WorkoutList entries={serverData} />
   );
 
 }

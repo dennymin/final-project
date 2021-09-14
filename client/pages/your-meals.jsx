@@ -15,9 +15,13 @@ const useStyles = makeStyles(theme => {
       justifyContent: 'center',
       flexWrap: 'wrap'
     },
-    dateSection: {
+    foodTitle: {
+      textAlign: 'center',
+      fontSize: '1.5rem',
+      marginBottom: 15,
       fontStyle: 'italic',
-      fontSize: '1.6rem'
+      textDecoration: 'underline',
+      fontWeight: 'bold'
     },
     cardCategoryHeader: {
       fontWeight: 'bold',
@@ -105,12 +109,7 @@ export default function YourMeals(props) {
                 title={`Picture of your ${meal.name}`}
               />
               <Typography
-                className={classes.cardCategoryHeader}
-              >
-                Name:
-              </Typography>
-              <Typography
-                className={classes.cardCategoryContent}
+                className={classes.foodTitle}
                 paragraph={true}
               >
                 {meal.name}
