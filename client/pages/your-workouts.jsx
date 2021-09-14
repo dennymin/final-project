@@ -5,7 +5,6 @@ const useStyles = makeStyles(theme => {
   return {
     cardClass: {
       width: '100%',
-      margin: 15,
       border: '1px hidden',
       borderRadius: 10,
       paddingTop: 5,
@@ -33,7 +32,8 @@ const useStyles = makeStyles(theme => {
     detailsExpanded: {
       display: 'flex',
       justifyContent: 'center',
-      flexWrap: 'wrap'
+      flexWrap: 'wrap',
+      flexGrow: 2
     },
     smallDetails: {
       fontSize: '0.8rem',
@@ -85,9 +85,11 @@ export default function YourWorkouts(props) {
         <Grid
           key={workout.workoutId}
           item={true}
+          xs={12}
+          sm={6}
           md={6}
           lg={4}
-          container
+          xl={3}
         >
           <Card
           className={classes.cardClass}
@@ -168,9 +170,10 @@ export default function YourWorkouts(props) {
     });
     return (
         <Grid
-          spacing={2}
-          container
+          spacing={4}
+          container={true}
           justifyContent='flex-start'
+          zeroMinWidth={true}
         >
           {renderedWorkouts}
         </Grid>
