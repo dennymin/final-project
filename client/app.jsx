@@ -144,8 +144,7 @@ export default class App extends React.Component {
     });
     return (
       <ThemeProvider theme={theme}>
-        <Container
-          className='container-gutter'>
+        <Container>
           <TempDrawer />
           <Header title={title} />
           { this.renderPage() }
