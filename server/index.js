@@ -116,4 +116,16 @@ app.get('/api/your/workouts', (req, res, next) => {
     }).catch(err => next(err));
 });
 
+app.get('/api/your/meals', (req, res, next) => {
+  const sqlIntoUserMeals = `
+  select "mealId", "calories", "name", "ingredients", "nutrition", "notes", "pictureUrl"
+  from "meals"
+  where "userId" = 1
+  `;
+  db.query(sqlIntoUserMeals)
+    .then(result => {
+      res.status(201).json(result.rows);
+    }).catch(err => next(err));
+});
+
 app.use(errorMiddleware);

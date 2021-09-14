@@ -7,6 +7,7 @@ import NewMealForm from './pages/new-meal';
 import Header from './components/header';
 import TempDrawer from './components/temp-drawer';
 import YourWorkouts from './pages/your-workouts';
+import YourMeals from './pages/your-meals';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 
 export default class App extends React.Component {
@@ -33,6 +34,11 @@ export default class App extends React.Component {
     if (route.path === 'app/your/workouts') {
       return (
         <YourWorkouts/>
+      );
+    }
+    if (route.path === 'app/your/meals') {
+      return (
+        <YourMeals />
       );
     }
     if (route.path === 'app/new/workout') {
@@ -138,7 +144,8 @@ export default class App extends React.Component {
     });
     return (
       <ThemeProvider theme={theme}>
-        <Container>
+        <Container
+          className='container-gutter'>
           <TempDrawer />
           <Header title={title} />
           { this.renderPage() }
