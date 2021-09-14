@@ -1,6 +1,5 @@
 import React from 'react';
 import { Drawer, IconButton, makeStyles, List, ListItem, Accordion, AccordionSummary, AccordionDetails, Typography, Link } from '@material-ui/core';
-import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 
 const drawerWidth = 200;
@@ -27,43 +26,15 @@ const useStyles = makeStyles(theme => {
 
 export default function TempDrawer() {
   const classes = useStyles();
-  const theme = createTheme({
-    overrides: {
-      MuiAccordion: {
-        root: {
-          backgroundColor: '#F0F5F9',
-          width: '100%'
-        }
-      },
-      MuiAccordionSummary: {
-        root: {
-          fontWeight: '500'
-        }
-      },
-      MuiAccordionDetails: {
-        root: {
-          backgroundColor: '#e8e8e8'
-        }
-      },
-      MuiDrawer: {
-        paper: {
-          backgroundColor: '#C9D6DF'
-        }
-      }
-    }
-  });
 
-  const [state, setState] = React.useState(false);
-  const toggleDrawer = e => {
-    state === true ? setState(false) : setState(true);
-  };
+  const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
 
   const list = () => {
     return (
     <>
       <List>
         <ListItem className={classes.listFont}>
-          <Accordion square={true}>
+          <Accordion square={true} expanded={true}>
             <AccordionSummary>
               My Fitness
             </AccordionSummary>
@@ -71,9 +42,9 @@ export default function TempDrawer() {
               <Typography>
                 <Link
                   href='/#app/your/workouts'
-                  underline='hover'
+                  underline='none'
                   color='textPrimary'
-                  onClick={e => toggleDrawer(e)}
+                  onClick={e => setIsDrawerOpen(!isDrawerOpen)}
                 >
                   Your Workouts
                 </Link>
@@ -83,9 +54,9 @@ export default function TempDrawer() {
               <Typography>
                 <Link
                   href='/#app/new/workout'
-                  underline='hover'
+                  underline='none'
                   color='textPrimary'
-                  onClick={e => toggleDrawer(e)}
+                  onClick={e => setIsDrawerOpen(!isDrawerOpen)}
                 >
                   New Workout
                 </Link>
@@ -95,9 +66,9 @@ export default function TempDrawer() {
               <Typography>
                 <Link
                   href='/#app/new/meal'
-                  underline='hover'
+                  underline='none'
                   color='textPrimary'
-                  onClick={e => toggleDrawer(e)}
+                  onClick={e => setIsDrawerOpen(!isDrawerOpen)}
                 >
                   New Meal
                 </Link>
@@ -111,23 +82,23 @@ export default function TempDrawer() {
   };
 
   return (
-    <ThemeProvider theme = { theme }>
+  // <ThemeProvider theme = { theme }>
       <span className={classes.positioning}>
         <IconButton
-          onClick={e => toggleDrawer(e)}
+          onClick={e => setIsDrawerOpen(!isDrawerOpen)}
         >
           <MenuIcon />
         </IconButton>
         <Drawer
         className={classes.drawer}
-        open={state}
+        open={isDrawerOpen}
         variant='temporary'
         classes={{ paper: classes.drawerPaper }}
-        onClose={e => toggleDrawer(e)}
+          onClose={e => setIsDrawerOpen(!isDrawerOpen)}
         >
           {list()}
         </Drawer>
         </span>
-    </ThemeProvider>
+  // </ThemeProvider>
   );
 }

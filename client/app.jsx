@@ -7,6 +7,7 @@ import NewMealForm from './pages/new-meal';
 import Header from './components/header';
 import TempDrawer from './components/temp-drawer';
 import YourWorkouts from './pages/your-workouts';
+import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -48,15 +49,102 @@ export default class App extends React.Component {
 
   render() {
     const title = this.state.route.path.split('/').splice(1, 2).join(' ').toUpperCase();
+    const theme = createTheme({
+      overrides: {
+        MuiAccordion: {
+          root: {
+            backgroundColor: '#F0F5F9',
+            width: '100%'
+          }
+        },
+        MuiAccordionSummary: {
+          root: {
+            fontWeight: '500'
+          }
+        },
+        MuiAccordionDetails: {
+          root: {
+            backgroundColor: '#e8e8e8',
+            transition: '0.3s',
+            '&:hover': {
+              backgroundColor: '#C9D6DF',
+              textDecoration: 'none'
+            }
+          }
+        },
+        MuiDrawer: {
+          paper: {
+            backgroundColor: '#C9D6DF'
+          }
+        },
+        MuiDropzoneArea: {
+          root: {
+            display: 'flex',
+            flexWrap: 'wrap',
+            minHeight: 160,
+            border: '1px hidden',
+            borderBottom: '1px solid #888484',
+            borderTopRightRadius: 4,
+            borderTopLeftRadius: 4,
+            borderBottomRightRadius: 0,
+            borderBottomLeftRadius: 0,
+            backgroundColor: '#e8e8e8'
+          },
+          textContainer: {
+            display: 'flex',
+            alignItems: 'center',
+            width: '100%',
+            flexDirection: 'column'
+          },
+          text: {
+            marginTop: 15,
+            marginBottom: 5,
+            fontSize: 'small',
+            color: 'rgb(100, 100, 100)'
+          },
+          icon: {
+            width: 70,
+            height: 30,
+            marginBottom: 0,
+            color: 'rgb(100, 100, 100)'
+          }
+        },
+        MuiDropzonePreviewList: {
+          root: {
+            display: 'flex',
+            margin: 0,
+            justifyContent: 'center',
+            alignItems: 'center'
+          },
+          imageContainer: {
+            display: 'inline',
+            padding: '4px !important'
+          },
+          image: {
+            maxWidth: 80,
+            maxHeight: 80,
+            objectFit: 'cover',
+            boxShadow: 'none',
+            padding: 4,
+            borderRadius: 5
+          }
+        },
+        MuiDropzoneSnackbar: {
+          successAlert: {
+            display: 'none'
+          }
+        }
+      }
+    });
     return (
-      <>
+      <ThemeProvider theme={theme}>
         <Container>
           <TempDrawer />
           <Header title={title} />
           { this.renderPage() }
         </Container>
         <Home />
-      </>
+      </ThemeProvider>
     );
   }
 }

@@ -1,6 +1,5 @@
 import { Grid, Card, CardContent, CardActions, Collapse, Typography, makeStyles } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
-import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => {
   return {
@@ -50,15 +49,6 @@ const useStyles = makeStyles(theme => {
 
 export default function YourWorkouts(props) {
   const classes = useStyles();
-  const theme = createTheme({
-    overrides: {
-      MuiCardActions: {
-        root: {
-          padding: 0
-        }
-      }
-    }
-  });
   const [serverData, pullServerData] = useState([{
     userId: 0,
     date: '',
@@ -103,77 +93,75 @@ export default function YourWorkouts(props) {
           className={classes.cardClass}
           raised={true}>
 
-            <ThemeProvider theme ={theme}>
-              <CardContent>
-                <Typography
-                  className={classes.dateSection}
-                  paragraph={true}
-                >
-                  {renderedDate}
-                </Typography>
+            <CardContent>
+              <Typography
+                className={classes.dateSection}
+                paragraph={true}
+              >
+                {renderedDate}
+              </Typography>
 
-                <Typography
-                  className={classes.cardCategoryHeader}
-                >
-                  Workout Length:
-                </Typography>
-                <Typography
-                  className={classes.cardCategoryContent}
-                  paragraph={true}
-                >
-                  {workout.length} Minutes
-                </Typography>
+              <Typography
+                className={classes.cardCategoryHeader}
+              >
+                Workout Length:
+              </Typography>
+              <Typography
+                className={classes.cardCategoryContent}
+                paragraph={true}
+              >
+                {workout.length} Minutes
+              </Typography>
 
-                <Typography
-                  className={classes.cardCategoryHeader}
-                >
-                  Calories:
-                </Typography>
-                <Typography
-                  className={classes.cardCategoryContent}
-                  paragraph={true}
-                >
-                  {workout.caloriesBurned} Calories Burned
-                </Typography>
+              <Typography
+                className={classes.cardCategoryHeader}
+              >
+                Calories:
+              </Typography>
+              <Typography
+                className={classes.cardCategoryContent}
+                paragraph={true}
+              >
+                {workout.caloriesBurned} Calories Burned
+              </Typography>
 
-                <Typography
-                  className={classes.cardCategoryHeader}
-                >
-                  Muscles Worked Out:
-                </Typography>
-                <Typography
-                  className={classes.cardCategoryContent}
-                  paragraph={false}
-                >
-                  {workout.muscles}
-                </Typography>
+              <Typography
+                className={classes.cardCategoryHeader}
+              >
+                Muscles Worked Out:
+              </Typography>
+              <Typography
+                className={classes.cardCategoryContent}
+                paragraph={false}
+              >
+                {workout.muscles}
+              </Typography>
 
-                <CardActions className={classes.detailsExpanded}>
+              <CardActions className={classes.detailsExpanded}>
+                <Typography
+                  onClick={handleExpandClick}
+                  className={classes.smallDetails}
+                >
+                  Expand for Details</Typography>
+              </CardActions>
+              <Collapse
+                in={expanded}
+                timeout='auto'
+                unmountOnExit
+              >
                   <Typography
-                    onClick={handleExpandClick}
-                    className={classes.smallDetails}
-                  >
-                    Expand for Details</Typography>
-                </CardActions>
-                <Collapse
-                  in={expanded}
-                  timeout='auto'
-                  unmountOnExit
+                  className={classes.cardCategoryHeader}
                 >
-                    <Typography
-                    className={classes.cardCategoryHeader}
-                  >
-                    Details:
-                  </Typography>
-                  <Typography
-                    className={classes.cardCategoryContent}
-                  >
-                    {workout.details}
-                  </Typography>
-                </Collapse>
+                  Details:
+                </Typography>
+                <Typography
+                  className={classes.cardCategoryContent}
+                >
+                  {workout.details}
+                </Typography>
+              </Collapse>
 
-              </CardContent>
-            </ThemeProvider>
+            </CardContent>
           </Card>
         </Grid>
       );
