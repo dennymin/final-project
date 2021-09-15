@@ -76,11 +76,9 @@ export default function YourWorkouts(props) {
       const handleExpandClick = () => {
         setExpanded(!expanded);
       };
-      const workoutDate = new Date(workout.date);
-      const workingDate = workoutDate.toDateString().split('');
-      workingDate.splice(3, 0, ',');
-      workingDate.splice(11, 0, ',');
-      const renderedDate = workingDate.join('');
+      const placeholder = workout.date.slice(0, 10);
+      const workoutDate = new Date(placeholder);
+      const workingDate = workoutDate.toGMTString().slice(0, 16);
       return (
         <Grid
           key={workout.workoutId}
@@ -100,7 +98,7 @@ export default function YourWorkouts(props) {
                 className={classes.dateSection}
                 paragraph={true}
               >
-                {renderedDate}
+                {workingDate}
               </Typography>
 
               <Typography

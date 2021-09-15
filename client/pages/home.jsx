@@ -1,4 +1,4 @@
-import { Card, CardContent, Typography, makeStyles, TextField, Button } from '@material-ui/core';
+import { Card, CardContent, Typography, makeStyles, TextField } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 
 const useStyles = makeStyles(theme => {
@@ -26,31 +26,72 @@ const useStyles = makeStyles(theme => {
 export default function Home(props) {
   const classes = useStyles();
   const [serverData, pullServerData] = useState([]);
+
   const dateToday = new Date();
-  const dateForPicker = `${dateToday.getFullYear()}-${dateToday.getMonth() + 1}-${dateToday.getDate()}`;
-  const workingDate = dateToday.toDateString().split('');
-  workingDate.splice(3, 0, ',');
-  workingDate.splice(11, 0, ',');
-  const renderedDate = workingDate.join('');
+  const defaultYear = dateToday.getFullYear();
+  let defaultMonth = `${dateToday.getMonth() + 1}`;
+  if (defaultMonth.length === 1) {
+    defaultMonth = '0' + defaultMonth;
+  }
+  let defaultDay = `${dateToday.getDate()}`;
+  if (defaultDay.length === 1) {
+    defaultDay = '0' + defaultDay;
+  }
+  const defaultEndPicker = `${defaultYear}-${defaultMonth}-${defaultDay}`;
   const todayInMilSeconds = dateToday.getTime();
   const lastWeekInSeconds = todayInMilSeconds - (604800 * 1000);
+
   const lastWeekDate = new Date(lastWeekInSeconds);
-  const lastWeekDatePicker = `${lastWeekDate.getFullYear()}-${lastWeekDate.getMonth() + 1}-${lastWeekDate.getDate()}`;
-  const lastWeekWorkingDate = lastWeekDate.toDateString().split('');
-  lastWeekWorkingDate.splice(3, 0, ',');
-  lastWeekWorkingDate.splice(11, 0, ',');
-  const renderedStartDate = lastWeekWorkingDate.join('');
+  const defaultStartYear = lastWeekDate.getFullYear();
+  let defaultStartMonth = `${lastWeekDate.getMonth() + 1}`;
+  if (defaultStartMonth.length === 1) {
+    defaultStartMonth = '0' + defaultStartMonth;
+  }
+  let defaultStartDay = `${lastWeekDate.getDate()}`;
+  if (defaultStartDay.length === 1) {
+    defaultStartDay = '0' + defaultStartDay;
+  }
+  const defaultStartPicker = `${defaultStartYear}-${defaultStartMonth}-${defaultStartDay}`;
+
+  const [endDate, setEndDate] = useState(defaultEndPicker);
+  const [startDate, setStartDate] = useState(defaultStartPicker);
+
+  const dates = {
+    startDate: startDate,
+    endDate: endDate
+  };
 
   useEffect(() => {
     let isCanceled = false;
     const serverAddress = '/api/your/fitness';
-    fetch(serverAddress)
+    fetch(serverAddress, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(dates)
+    })
       .then(response => response.json())
       .then(data => {
         !isCanceled && pullServerData(data);
       });
     return () => { isCanceled = true; };
   }, []);
+
+  const handleDateChange = () => {
+    const serverAddress = '/api/your/fitness';
+    fetch(serverAddress, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(dates)
+    })
+      .then(response => response.json())
+      .then(data => {
+        pullServerData(data);
+      });
+  };
 
   const returningNumbers = {
     workouts: serverData.length,
@@ -83,51 +124,40 @@ export default function Home(props) {
 
   return (
     <>
-    <Button
-        onClick={() => console.log(dateForPicker, lastWeekDatePicker)}
-    >
-      Info
-    </Button>
       <Card
         className={classes.cardClass}
         raised={true}>
         <CardContent>
-          {/* <Typography
-            className={classes.cardCategoryHeader}
-          >
-            Today:
-          </Typography>
-          <Typography
-            className={classes.cardCategoryContent}
-            paragraph={true}
-          >
-            {renderedDate}
-          </Typography>
-
-          <Typography
-            className={classes.cardCategoryHeader}
-          >
-            Starting from:
-          </Typography>
-          <Typography
-            className={classes.cardCategoryContent}
-            paragraph={true}
-          >
-            {renderedStartDate}
-          </Typography> */}
 
           <form>
             <TextField
-              label='Today'
-              name='today'
-              variant='filled'
+              label='End Date'
+              name='endDate'
+              variant='outlined'
               margin='normal'
               type='date'
               InputLabelProps={{ shrink: true }}
+              defaultValue={defaultEndPicker}
               fullWidth
-              // onChange={event => {
+              onChange={event => {
+                setEndDate(event.target.value);
+                handleDateChange();
+              }}
+            />
 
-              // }}
+            <TextField
+              label='Start Date'
+              name='startDate'
+              variant='outlined'
+              margin='normal'
+              type='date'
+              InputLabelProps={{ shrink: true }}
+              defaultValue={defaultStartPicker}
+              fullWidth
+              onChange={event => {
+                setStartDate(event.target.value);
+                handleDateChange();
+              }}
             />
           </form>
 

@@ -128,13 +128,17 @@ app.get('/api/your/meals', (req, res, next) => {
     }).catch(err => next(err));
 });
 
-app.get('/api/your/fitness', (req, res, next) => {
-  const dateToday = new Date();
-  const dateInIso = dateToday.toISOString().slice(0, 10);
-  const todayInMilSeconds = dateToday.getTime();
-  const lastWeekInSeconds = todayInMilSeconds - (604800 * 1000);
-  const lastWeekDate = new Date(lastWeekInSeconds);
-  const lastWeekDateIso = lastWeekDate.toISOString().slice(0, 10);
+app.put('/api/your/fitness', (req, res, next) => {
+  const { startDate, endDate } = req.body;
+  // const dateToday = new Date();
+  // const dateInIso = dateToday.toISOString().slice(0, 10);
+  // const todayInMilSeconds = dateToday.getTime();
+  // const lastWeekInSeconds = todayInMilSeconds - (604800 * 1000);
+  // const lastWeekDate = new Date(lastWeekInSeconds);
+  // const lastWeekDateIso = lastWeekDate.toISOString().slice(0, 10);
+  if (!Date(startDate) || !Date(endDate)) {
+    throw new ClientError(400, 'dates are invalid!');
+  }
   const sqlIntoUserWorkouts = `
   select "workouts"."workoutId",
          "workouts"."length",
@@ -145,13 +149,14 @@ app.get('/api/your/fitness', (req, res, next) => {
   join   "workoutMuscleGroups" using ("workoutId")
   join   "muscleGroup" using ("muscleId")
   where  "userId" = 1
-  and    DATE("workouts"."date") >= '${lastWeekDateIso}'
-  and    DATE("workouts"."date") <= '${dateInIso}'
+  and    DATE("workouts"."date") >= '${startDate}'
+  and    DATE("workouts"."date") <= '${endDate}'
   group  by "workouts"."workoutId"
   order  by "workouts"."date" desc;
   `;
   db.query(sqlIntoUserWorkouts)
     .then(result => {
+      console.log(startDate, endDate);
       res.status(200).json(result.rows);
     }).catch(err => next(err));
 });
