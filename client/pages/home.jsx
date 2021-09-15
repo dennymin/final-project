@@ -1,4 +1,4 @@
-import { Card, CardContent, Typography, makeStyles } from '@material-ui/core';
+import { Card, CardContent, Typography, makeStyles, TextField, Button } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 
 const useStyles = makeStyles(theme => {
@@ -27,6 +27,7 @@ export default function Home(props) {
   const classes = useStyles();
   const [serverData, pullServerData] = useState([]);
   const dateToday = new Date();
+  const dateForPicker = `${dateToday.getFullYear()}-${dateToday.getMonth() + 1}-${dateToday.getDate()}`;
   const workingDate = dateToday.toDateString().split('');
   workingDate.splice(3, 0, ',');
   workingDate.splice(11, 0, ',');
@@ -34,6 +35,7 @@ export default function Home(props) {
   const todayInMilSeconds = dateToday.getTime();
   const lastWeekInSeconds = todayInMilSeconds - (604800 * 1000);
   const lastWeekDate = new Date(lastWeekInSeconds);
+  const lastWeekDatePicker = `${lastWeekDate.getFullYear()}-${lastWeekDate.getMonth() + 1}-${lastWeekDate.getDate()}`;
   const lastWeekWorkingDate = lastWeekDate.toDateString().split('');
   lastWeekWorkingDate.splice(3, 0, ',');
   lastWeekWorkingDate.splice(11, 0, ',');
@@ -81,11 +83,16 @@ export default function Home(props) {
 
   return (
     <>
+    <Button
+        onClick={() => console.log(dateForPicker, lastWeekDatePicker)}
+    >
+      Info
+    </Button>
       <Card
         className={classes.cardClass}
         raised={true}>
         <CardContent>
-          <Typography
+          {/* <Typography
             className={classes.cardCategoryHeader}
           >
             Today:
@@ -107,7 +114,22 @@ export default function Home(props) {
             paragraph={true}
           >
             {renderedStartDate}
-          </Typography>
+          </Typography> */}
+
+          <form>
+            <TextField
+              label='Today'
+              name='today'
+              variant='filled'
+              margin='normal'
+              type='date'
+              InputLabelProps={{ shrink: true }}
+              fullWidth
+              // onChange={event => {
+
+              // }}
+            />
+          </form>
 
           <Typography
             className={classes.cardCategoryHeader}
