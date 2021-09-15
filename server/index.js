@@ -133,6 +133,7 @@ app.get('/api/your/fitness', (req, res, next) => {
   if (!Date(startDate) || !Date(endDate)) {
     throw new ClientError(400, 'dates are invalid!');
   }
+  const paramaterized = [startDate, endDate];
   const sqlIntoUserWorkouts = `
   select "workouts"."workoutId",
          "workouts"."length",
@@ -143,12 +144,12 @@ app.get('/api/your/fitness', (req, res, next) => {
   join   "workoutMuscleGroups" using ("workoutId")
   join   "muscleGroup" using ("muscleId")
   where  "userId" = 1
-  and    DATE("workouts"."date") >= '${startDate}'
-  and    DATE("workouts"."date") <= '${endDate}'
+  and    DATE("workouts"."date") >= $1
+  and    DATE("workouts"."date") <= $2
   group  by "workouts"."workoutId"
   order  by "workouts"."date" desc;
   `;
-  db.query(sqlIntoUserWorkouts)
+  db.query(sqlIntoUserWorkouts, paramaterized)
     .then(result => {
       res.status(200).json(result.rows);
     }).catch(err => next(err));
