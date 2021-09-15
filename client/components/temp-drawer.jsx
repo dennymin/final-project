@@ -52,6 +52,18 @@ export default function TempDrawer() {
               <AccordionDetails>
                 <Typography>
                   <Link
+                    href=''
+                    underline='none'
+                    color='textPrimary'
+                    onClick={e => setIsDrawerOpen(!isDrawerOpen)}
+                  >
+                    Weekly Report
+                  </Link>
+                </Typography>
+              </AccordionDetails>
+              <AccordionDetails>
+                <Typography>
+                  <Link
                     href='/#app/your/workouts'
                     underline='none'
                     color='textPrimary'

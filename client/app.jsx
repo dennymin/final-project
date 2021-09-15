@@ -54,7 +54,10 @@ export default class App extends React.Component {
   }
 
   render() {
-    const title = this.state.route.path.split('/').splice(1, 2).join(' ').toUpperCase();
+    let title = this.state.route.path.split('/').splice(1, 2).join(' ').toUpperCase();
+    if (title === '') {
+      title = 'WEEKLY REPORT';
+    }
     const theme = createTheme({
       overrides: {
         MuiAccordion: {
@@ -144,12 +147,11 @@ export default class App extends React.Component {
     });
     return (
       <ThemeProvider theme={theme}>
-        <Container>
+        <Container className='container-gutter'>
           <TempDrawer />
           <Header title={title} />
           { this.renderPage() }
         </Container>
-        <Home />
       </ThemeProvider>
     );
   }

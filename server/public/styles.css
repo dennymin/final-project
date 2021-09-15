@@ -1,3 +1,7 @@
 body {
   background-color: #f0f5f9;
 }
+
+.container-gutter {
+  margin-bottom: 50px;
+}
