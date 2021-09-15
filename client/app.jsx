@@ -56,7 +56,7 @@ export default class App extends React.Component {
   render() {
     let title = this.state.route.path.split('/').splice(1, 2).join(' ').toUpperCase();
     if (title === '') {
-      title = 'WEEKLY REPORT';
+      title = 'FITNESS REPORT';
     }
     const theme = createTheme({
       overrides: {

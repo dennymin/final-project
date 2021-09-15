@@ -57,7 +57,7 @@ export default function TempDrawer() {
                     color='textPrimary'
                     onClick={e => setIsDrawerOpen(!isDrawerOpen)}
                   >
-                    Weekly Report
+                    Fitness Report
                   </Link>
                 </Typography>
               </AccordionDetails>

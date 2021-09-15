@@ -19,6 +19,9 @@ const useStyles = makeStyles(theme => {
       fontStyle: 'italic',
       fontSize: '1.3rem',
       color: '#52616B'
+    },
+    gutter: {
+      marginBottom: 20
     }
   };
 });
@@ -76,22 +79,7 @@ export default function Home(props) {
         !isCanceled && pullServerData(data);
       });
     return () => { isCanceled = true; };
-  }, []);
-
-  const handleDateChange = () => {
-    const serverAddress = '/api/your/fitness';
-    fetch(serverAddress, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(dates)
-    })
-      .then(response => response.json())
-      .then(data => {
-        pullServerData(data);
-      });
-  };
+  });
 
   const returningNumbers = {
     workouts: serverData.length,
@@ -141,8 +129,8 @@ export default function Home(props) {
               fullWidth
               onChange={event => {
                 setEndDate(event.target.value);
-                handleDateChange();
               }}
+              className={classes.gutter}
             />
 
             <TextField
@@ -156,8 +144,8 @@ export default function Home(props) {
               fullWidth
               onChange={event => {
                 setStartDate(event.target.value);
-                handleDateChange();
               }}
+              className={classes.gutter}
             />
           </form>
 
