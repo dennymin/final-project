@@ -4,7 +4,6 @@ import Home from './pages/home';
 import parseRoute from './lib/parse-route';
 import NewWorkoutForm from './pages/new-workout';
 import NewMealForm from './pages/new-meal';
-import Header from './components/header';
 import TempDrawer from './components/temp-drawer';
 import YourWorkouts from './pages/your-workouts';
 import YourMeals from './pages/your-meals';
@@ -54,10 +53,6 @@ export default class App extends React.Component {
   }
 
   render() {
-    let title = this.state.route.path.split('/').splice(1, 2).join(' ').toUpperCase();
-    if (title === '') {
-      title = 'FITNESS REPORT';
-    }
     const theme = createTheme({
       overrides: {
         MuiAccordion: {
@@ -149,7 +144,6 @@ export default class App extends React.Component {
       <ThemeProvider theme={theme}>
         <Container className='container-gutter'>
           <TempDrawer />
-          <Header title={title} />
           { this.renderPage() }
         </Container>
       </ThemeProvider>

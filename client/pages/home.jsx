@@ -1,5 +1,6 @@
 import { Card, CardContent, Typography, makeStyles, TextField, Grid } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
+import Header from '../components/header';
 
 const useStyles = makeStyles(theme => {
   return {
@@ -68,9 +69,9 @@ export default function Home(props) {
       .then(response => response.json())
       .then(data => {
         !isCanceled && pullServerData(data);
-      }, [null, startDate, endDate]);
+      });
     return () => { isCanceled = true; };
-  });
+  }, [startDate, endDate]);
 
   const returningNumbers = {
     workouts: serverData.length,
@@ -102,131 +103,134 @@ export default function Home(props) {
   }
 
   return (
-    <Grid
-      container
-      justifyContent='center'
-    >
+    <>
+      <Header title='FITNESS REPORT'/>
       <Grid
-        item
-        xs={12}
-        sm={10}
-        md={10}
-        lg={10}
-        xl={10}
+        container
+        justifyContent='center'
       >
-        <Card
-        className={classes.cardClass}
-        raised={true}>
-        <CardContent>
+        <Grid
+          item
+          xs={12}
+          sm={10}
+          md={10}
+          lg={10}
+          xl={10}
+        >
+          <Card
+          className={classes.cardClass}
+          raised={true}>
+          <CardContent>
 
-          <form>
-            <TextField
-              label='End Date'
-              name='endDate'
-              variant='outlined'
-              margin='normal'
-              type='date'
-              InputLabelProps={{ shrink: true }}
-              defaultValue={defaultEndPicker}
-              fullWidth
-              onChange={event => {
-                setEndDate(event.target.value);
-              }}
-              className={classes.gutter}
-            />
+            <form>
+              <TextField
+                label='End Date'
+                name='endDate'
+                variant='outlined'
+                margin='normal'
+                type='date'
+                InputLabelProps={{ shrink: true }}
+                defaultValue={defaultEndPicker}
+                fullWidth
+                onChange={event => {
+                  setEndDate(event.target.value);
+                }}
+                className={classes.gutter}
+              />
 
-            <TextField
-              label='Start Date'
-              name='startDate'
-              variant='outlined'
-              margin='normal'
-              type='date'
-              InputLabelProps={{ shrink: true }}
-              defaultValue={defaultStartPicker}
-              fullWidth
-              onChange={event => {
-                setStartDate(event.target.value);
-              }}
-              className={classes.gutter}
-            />
-          </form>
+              <TextField
+                label='Start Date'
+                name='startDate'
+                variant='outlined'
+                margin='normal'
+                type='date'
+                InputLabelProps={{ shrink: true }}
+                defaultValue={defaultStartPicker}
+                fullWidth
+                onChange={event => {
+                  setStartDate(event.target.value);
+                }}
+                className={classes.gutter}
+              />
+            </form>
 
-          <Typography
-            className={classes.cardCategoryHeader}
-          >
-            Workouts:
-          </Typography>
-          <Typography
-            className={classes.cardCategoryContent}
-            paragraph={true}
-          >
-            {returningNumbers.workouts}
-          </Typography>
+            <Typography
+              className={classes.cardCategoryHeader}
+            >
+              Workouts:
+            </Typography>
+            <Typography
+              className={classes.cardCategoryContent}
+              paragraph={true}
+            >
+              {returningNumbers.workouts}
+            </Typography>
 
-          <Typography
-            className={classes.cardCategoryHeader}
-          >
-            Average Workout Time:
-          </Typography>
-          <Typography
-            className={classes.cardCategoryContent}
-            paragraph={true}
-          >
-            {(returningNumbers.workoutTime / returningNumbers.workouts).toFixed(2)} Minutes
-          </Typography>
+            <Typography
+              className={classes.cardCategoryHeader}
+            >
+              Average Workout Time:
+            </Typography>
+            <Typography
+              className={classes.cardCategoryContent}
+              paragraph={true}
+            >
+              {(returningNumbers.workoutTime / returningNumbers.workouts).toFixed(2)} Minutes
+            </Typography>
 
-          <Typography
-            className={classes.cardCategoryHeader}
-          >
-            Average Calories Burned:
-          </Typography>
-          <Typography
-            className={classes.cardCategoryContent}
-            paragraph={true}
-          >
-            {(returningNumbers.caloriesBurned / returningNumbers.workouts).toFixed(2)} Calories/Workout
-          </Typography>
+            <Typography
+              className={classes.cardCategoryHeader}
+            >
+              Average Calories Burned:
+            </Typography>
+            <Typography
+              className={classes.cardCategoryContent}
+              paragraph={true}
+            >
+              {(returningNumbers.caloriesBurned / returningNumbers.workouts).toFixed(2)} Calories/Workout
+            </Typography>
 
-          <Typography
-            className={classes.cardCategoryHeader}
-          >
-            Total Calories Burned:
-          </Typography>
-          <Typography
-            className={classes.cardCategoryContent}
-            paragraph={true}
-          >
-            {returningNumbers.caloriesBurned} Calories Burned
-          </Typography>
+            <Typography
+              className={classes.cardCategoryHeader}
+            >
+              Total Calories Burned:
+            </Typography>
+            <Typography
+              className={classes.cardCategoryContent}
+              paragraph={true}
+            >
+              {returningNumbers.caloriesBurned} Calories Burned
+            </Typography>
 
-          <Typography
-            className={classes.cardCategoryHeader}
-          >
-            Muscles Worked Out:
-          </Typography>
-          <Typography
-            className={classes.cardCategoryContent}
-          >
-            Chest: {returningNumbers.musclesWorked.Chest}
-          </Typography>
-          <Typography
-            className={classes.cardCategoryContent}
-          >
-            Back: {returningNumbers.musclesWorked.Back}
-          </Typography>
-          <Typography
-            className={classes.cardCategoryContent}
-          >
-            Arms: {returningNumbers.musclesWorked.Arms}
-          </Typography>
-          <Typography
-            className={classes.cardCategoryContent}
-          >
-            Legs: {returningNumbers.musclesWorked.Legs}
-          </Typography>
-        </CardContent>
-      </Card>
+            <Typography
+              className={classes.cardCategoryHeader}
+            >
+              Muscles Worked Out:
+            </Typography>
+            <Typography
+              className={classes.cardCategoryContent}
+            >
+              Chest: {returningNumbers.musclesWorked.Chest}
+            </Typography>
+            <Typography
+              className={classes.cardCategoryContent}
+            >
+              Back: {returningNumbers.musclesWorked.Back}
+            </Typography>
+            <Typography
+              className={classes.cardCategoryContent}
+            >
+              Arms: {returningNumbers.musclesWorked.Arms}
+            </Typography>
+            <Typography
+              className={classes.cardCategoryContent}
+            >
+              Legs: {returningNumbers.musclesWorked.Legs}
+            </Typography>
+          </CardContent>
+        </Card>
+        </Grid>
       </Grid>
-    </Grid>
+    </>
   );
 }

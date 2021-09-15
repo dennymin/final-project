@@ -1,6 +1,7 @@
 import { makeStyles, TextField, Button } from '@material-ui/core';
 import { DropzoneArea } from 'material-ui-dropzone';
 import React, { useState } from 'react';
+import Header from '../components/header';
 
 const useStyles = makeStyles({
   justifyCenter: {
@@ -74,6 +75,7 @@ export default function NewMealForm(props) {
 
   return (
     <div>
+      <Header title='NEW MEAL' />
       <form
         noValidate
         autoComplete='off'
