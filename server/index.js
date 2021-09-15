@@ -128,8 +128,8 @@ app.get('/api/your/meals', (req, res, next) => {
     }).catch(err => next(err));
 });
 
-app.put('/api/your/fitness', (req, res, next) => {
-  const { startDate, endDate } = req.body;
+app.get('/api/your/fitness', (req, res, next) => {
+  const { startDate, endDate } = req.query;
   if (!Date(startDate) || !Date(endDate)) {
     throw new ClientError(400, 'dates are invalid!');
   }

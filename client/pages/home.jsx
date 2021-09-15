@@ -1,4 +1,4 @@
-import { Card, CardContent, Typography, makeStyles, TextField } from '@material-ui/core';
+import { Card, CardContent, Typography, makeStyles, TextField, Grid } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 
 const useStyles = makeStyles(theme => {
@@ -58,26 +58,17 @@ export default function Home(props) {
 
   const [endDate, setEndDate] = useState(defaultEndPicker);
   const [startDate, setStartDate] = useState(defaultStartPicker);
-
-  const dates = {
-    startDate: startDate,
-    endDate: endDate
-  };
+  const params = new URLSearchParams({ startDate, endDate });
+  const queryString = '?' + params.toString();
 
   useEffect(() => {
     let isCanceled = false;
-    const serverAddress = '/api/your/fitness';
-    fetch(serverAddress, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(dates)
-    })
+    const serverAddress = '/api/your/fitness' + queryString;
+    fetch(serverAddress)
       .then(response => response.json())
       .then(data => {
         !isCanceled && pullServerData(data);
-      });
+      }, [null, startDate, endDate]);
     return () => { isCanceled = true; };
   });
 
@@ -111,8 +102,19 @@ export default function Home(props) {
   }
 
   return (
-    <>
-      <Card
+    <Grid
+      container
+      justifyContent='center'
+    >
+      <Grid
+        item
+        xs={12}
+        sm={10}
+        md={10}
+        lg={10}
+        xl={10}
+      >
+        <Card
         className={classes.cardClass}
         raised={true}>
         <CardContent>
@@ -224,6 +226,7 @@ export default function Home(props) {
           </Typography>
         </CardContent>
       </Card>
-    </>
+      </Grid>
+    </Grid>
   );
 }
