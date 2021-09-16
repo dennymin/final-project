@@ -1,6 +1,7 @@
 import { Card, CardContent, Typography, makeStyles, TextField, Grid } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import Header from '../components/header';
+import { sub, format } from 'date-fns';
 
 const useStyles = makeStyles(theme => {
   return {
@@ -32,30 +33,9 @@ export default function Home(props) {
   const [serverData, pullServerData] = useState([]);
 
   const dateToday = new Date();
-  const defaultYear = dateToday.getFullYear();
-  let defaultMonth = `${dateToday.getMonth() + 1}`;
-  if (defaultMonth.length === 1) {
-    defaultMonth = '0' + defaultMonth;
-  }
-  let defaultDay = `${dateToday.getDate()}`;
-  if (defaultDay.length === 1) {
-    defaultDay = '0' + defaultDay;
-  }
-  const defaultEndPicker = `${defaultYear}-${defaultMonth}-${defaultDay}`;
-  const todayInMilSeconds = dateToday.getTime();
-  const lastWeekInSeconds = todayInMilSeconds - (604800 * 1000);
-
-  const lastWeekDate = new Date(lastWeekInSeconds);
-  const defaultStartYear = lastWeekDate.getFullYear();
-  let defaultStartMonth = `${lastWeekDate.getMonth() + 1}`;
-  if (defaultStartMonth.length === 1) {
-    defaultStartMonth = '0' + defaultStartMonth;
-  }
-  let defaultStartDay = `${lastWeekDate.getDate()}`;
-  if (defaultStartDay.length === 1) {
-    defaultStartDay = '0' + defaultStartDay;
-  }
-  const defaultStartPicker = `${defaultStartYear}-${defaultStartMonth}-${defaultStartDay}`;
+  const defaultEndPicker = format(dateToday, 'yyyy-MM-dd');
+  const weekAgo = sub(new Date(), { days: 7 });
+  const defaultStartPicker = format(weekAgo, 'yyyy-MM-dd');
 
   const [endDate, setEndDate] = useState(defaultEndPicker);
   const [startDate, setStartDate] = useState(defaultStartPicker);
