@@ -1,5 +1,7 @@
 import { Grid, Card, CardContent, CardActions, Collapse, Typography, makeStyles } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
+import { format } from 'date-fns';
+import Header from '../components/header';
 
 const useStyles = makeStyles(theme => {
   return {
@@ -51,7 +53,7 @@ export default function YourWorkouts(props) {
   const classes = useStyles();
   const [serverData, pullServerData] = useState([{
     userId: 0,
-    date: '',
+    date: new Date(),
     length: 0,
     caloriesBurned: 0,
     details: '',
@@ -76,11 +78,8 @@ export default function YourWorkouts(props) {
       const handleExpandClick = () => {
         setExpanded(!expanded);
       };
-      const workoutDate = new Date(workout.date);
-      const workingDate = workoutDate.toDateString().split('');
-      workingDate.splice(3, 0, ',');
-      workingDate.splice(11, 0, ',');
-      const renderedDate = workingDate.join('');
+      workout.date = new Date(workout.date);
+      const workingDate = format(workout.date, 'iii, LLL do, yyyy');
       return (
         <Grid
           key={workout.workoutId}
@@ -100,7 +99,7 @@ export default function YourWorkouts(props) {
                 className={classes.dateSection}
                 paragraph={true}
               >
-                {renderedDate}
+                {workingDate}
               </Typography>
 
               <Typography
@@ -180,6 +179,9 @@ export default function YourWorkouts(props) {
   };
 
   return (
-    <WorkoutList entries={serverData} />
+    <>
+      <Header title='YOUR WORKOUTS' />
+      <WorkoutList entries={serverData} />
+    </>
   );
 }

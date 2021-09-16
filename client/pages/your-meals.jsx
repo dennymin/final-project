@@ -1,5 +1,6 @@
 import { Grid, Card, CardContent, CardActions, Collapse, Typography, makeStyles, CardMedia } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
+import Header from '../components/header';
 
 const useStyles = makeStyles(theme => {
   return {
@@ -183,6 +184,9 @@ export default function YourMeals(props) {
   };
 
   return (
-    <MealList entries={serverData} />
+    <>
+      <Header title='YOUR MEALS' />
+      <MealList entries={serverData} />
+    </>
   );
 }

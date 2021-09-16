@@ -1,5 +1,6 @@
 import { makeStyles, TextField, Button, Select, InputLabel, FormControl, MenuItem, ListItemText, Checkbox, InputAdornment } from '@material-ui/core';
 import React, { useState } from 'react';
+import Header from '../components/header';
 
 const useStyles = makeStyles({
   justifyCenter: {
@@ -79,6 +80,7 @@ export default function NewWorkoutForm(props) {
 
   return (
     <div>
+      <Header title='NEW WORKOUT'/>
       <form
         noValidate
         autoComplete='off'

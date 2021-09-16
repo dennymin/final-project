@@ -128,4 +128,56 @@ app.get('/api/your/meals', (req, res, next) => {
     }).catch(err => next(err));
 });
 
+app.get('/api/your/fitness', (req, res, next) => {
+  const { startDate, endDate } = req.query;
+  if (!Date(startDate) || !Date(endDate)) {
+    throw new ClientError(400, 'dates are invalid!');
+  }
+  const paramaterized = [startDate, endDate];
+  const sqlIntoUserWorkouts = `
+  select "workouts"."workoutId",
+         "workouts"."length",
+         "workouts"."caloriesBurned",
+         DATE("workouts"."date"),
+         STRING_AGG(("muscleGroup"."name"), ', ') as "muscles"
+  from   "workouts"
+  join   "workoutMuscleGroups" using ("workoutId")
+  join   "muscleGroup" using ("muscleId")
+  where  "userId" = 1
+  and    DATE("workouts"."date") >= $1
+  and    DATE("workouts"."date") <= $2
+  group  by "workouts"."workoutId"
+  order  by "workouts"."date" desc;
+  `;
+  db.query(sqlIntoUserWorkouts, paramaterized)
+    .then(result => {
+      const stats = {
+        workouts: result.rows.length,
+        workoutTime: 0,
+        caloriesBurned: 0,
+        Chest: 0,
+        Back: 0,
+        Arms: 0,
+        Legs: 0
+      };
+      for (let i = 0; i < result.rows.length; i++) {
+        stats.workoutTime = result.rows[i].length + result.rows[i].length;
+        stats.caloriesBurned = result.rows[i].caloriesBurned + result.rows[i].caloriesBurned;
+        if (result.rows[i].muscles.includes('Chest')) {
+          stats.Chest++;
+        }
+        if (result.rows[i].muscles.includes('Back')) {
+          stats.Back++;
+        }
+        if (result.rows[i].muscles.includes('Arms')) {
+          stats.Arms++;
+        }
+        if (result.rows[i].muscles.includes('Legs')) {
+          stats.Legs++;
+        }
+      }
+      res.status(200).json(stats);
+    }).catch(err => next(err));
+});
+
 app.use(errorMiddleware);
