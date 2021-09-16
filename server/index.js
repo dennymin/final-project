@@ -151,7 +151,32 @@ app.get('/api/your/fitness', (req, res, next) => {
   `;
   db.query(sqlIntoUserWorkouts, paramaterized)
     .then(result => {
-      res.status(200).json(result.rows);
+      const stats = {
+        workouts: result.rows.length,
+        workoutTime: 0,
+        caloriesBurned: 0,
+        Chest: 0,
+        Back: 0,
+        Arms: 0,
+        Legs: 0
+      };
+      for (let i = 0; i < result.rows.length; i++) {
+        stats.workoutTime = result.rows[i].length + result.rows[i].length;
+        stats.caloriesBurned = result.rows[i].caloriesBurned + result.rows[i].caloriesBurned;
+        if (result.rows[i].muscles.includes('Chest')) {
+          stats.Chest++;
+        }
+        if (result.rows[i].muscles.includes('Back')) {
+          stats.Back++;
+        }
+        if (result.rows[i].muscles.includes('Arms')) {
+          stats.Arms++;
+        }
+        if (result.rows[i].muscles.includes('Legs')) {
+          stats.Legs++;
+        }
+      }
+      res.status(200).json(stats);
     }).catch(err => next(err));
 });
 

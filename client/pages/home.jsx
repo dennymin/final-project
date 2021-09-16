@@ -53,35 +53,6 @@ export default function Home(props) {
     return () => { isCanceled = true; };
   }, [startDate, endDate]);
 
-  const returningNumbers = {
-    workouts: serverData.length,
-    workoutTime: 0,
-    caloriesBurned: 0,
-    musclesWorked: {
-      Chest: 0,
-      Back: 0,
-      Arms: 0,
-      Legs: 0
-    }
-  };
-
-  for (let i = 0; i < serverData.length; i++) {
-    returningNumbers.workoutTime = serverData[i].length + returningNumbers.workoutTime;
-    returningNumbers.caloriesBurned = serverData[i].caloriesBurned + returningNumbers.caloriesBurned;
-    if (serverData[i].muscles.includes('Chest')) {
-      returningNumbers.musclesWorked.Chest = returningNumbers.musclesWorked.Chest + 1;
-    }
-    if (serverData[i].muscles.includes('Back')) {
-      returningNumbers.musclesWorked.Back = returningNumbers.musclesWorked.Chest + 1;
-    }
-    if (serverData[i].muscles.includes('Arms')) {
-      returningNumbers.musclesWorked.Arms = returningNumbers.musclesWorked.Chest + 1;
-    }
-    if (serverData[i].muscles.includes('Legs')) {
-      returningNumbers.musclesWorked.Legs = returningNumbers.musclesWorked.Chest + 1;
-    }
-  }
-
   return (
     <>
       <Header title='FITNESS REPORT'/>
@@ -137,13 +108,13 @@ export default function Home(props) {
             <Typography
               className={classes.cardCategoryHeader}
             >
-              Workouts:
+              Number of Workouts:
             </Typography>
             <Typography
               className={classes.cardCategoryContent}
               paragraph={true}
             >
-              {returningNumbers.workouts}
+              {serverData.workouts}
             </Typography>
 
             <Typography
@@ -155,7 +126,7 @@ export default function Home(props) {
               className={classes.cardCategoryContent}
               paragraph={true}
             >
-              {(returningNumbers.workoutTime / returningNumbers.workouts).toFixed(2)} Minutes
+              {serverData.workoutTime / serverData.workouts} Minutes
             </Typography>
 
             <Typography
@@ -167,7 +138,7 @@ export default function Home(props) {
               className={classes.cardCategoryContent}
               paragraph={true}
             >
-              {(returningNumbers.caloriesBurned / returningNumbers.workouts).toFixed(2)} Calories/Workout
+              {(serverData.caloriesBurned / serverData.workouts).toFixed(2)} Calories/Workout
             </Typography>
 
             <Typography
@@ -179,7 +150,7 @@ export default function Home(props) {
               className={classes.cardCategoryContent}
               paragraph={true}
             >
-              {returningNumbers.caloriesBurned} Calories Burned
+              {serverData.caloriesBurned} Calories Burned
             </Typography>
 
             <Typography
@@ -190,22 +161,22 @@ export default function Home(props) {
             <Typography
               className={classes.cardCategoryContent}
             >
-              Chest: {returningNumbers.musclesWorked.Chest}
+              Chest: {serverData.Chest}
             </Typography>
             <Typography
               className={classes.cardCategoryContent}
             >
-              Back: {returningNumbers.musclesWorked.Back}
+              Back: {serverData.Back}
             </Typography>
             <Typography
               className={classes.cardCategoryContent}
             >
-              Arms: {returningNumbers.musclesWorked.Arms}
+              Arms: {serverData.Arms}
             </Typography>
             <Typography
               className={classes.cardCategoryContent}
             >
-              Legs: {returningNumbers.musclesWorked.Legs}
+              Legs: {serverData.Legs}
             </Typography>
           </CardContent>
         </Card>
