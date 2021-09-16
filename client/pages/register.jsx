@@ -3,23 +3,6 @@ import Header from '../components/header';
 import { Card, CardContent, Grid, TextField, makeStyles, Button } from '@material-ui/core';
 
 const useStyles = makeStyles({
-  cardClass: {
-    width: '100%',
-    border: '1px hidden',
-    borderRadius: 10,
-    paddingTop: 5,
-    backgroundColor: '#e8e8e8'
-  },
-  cardCategoryHeader: {
-    fontWeight: 'bold',
-    fontSize: '1.4rem',
-    marginBottom: 3
-  },
-  cardCategoryContent: {
-    fontStyle: 'italic',
-    fontSize: '1.3rem',
-    color: '#52616B'
-  },
   gutter: {
     marginBottom: 20
   },

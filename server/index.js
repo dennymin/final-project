@@ -184,7 +184,7 @@ app.get('/api/your/fitness', (req, res, next) => {
 app.post('/api/auth/register', (req, res, next) => {
   const { username, firstName, lastName, password } = req.body;
   if (!username || !password || !firstName || !lastName) {
-    throw new ClientError(400, 'You missed something!');
+    throw new ClientError(400, 'Username, password, first name, and last name are all required fields!');
   }
   argon2
     .hash(password)

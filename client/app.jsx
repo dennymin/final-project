@@ -141,6 +141,15 @@ export default class App extends React.Component {
           successAlert: {
             display: 'none'
           }
+        },
+        MuiCard: {
+          root: {
+            width: '100%',
+            border: '1px hidden',
+            borderRadius: 10,
+            paddingTop: 5,
+            backgroundColor: '#e8e8e8'
+          }
         }
       }
     });

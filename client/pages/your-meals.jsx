@@ -4,13 +4,6 @@ import Header from '../components/header';
 
 const useStyles = makeStyles(theme => {
   return {
-    cardClass: {
-      width: '100%',
-      border: '1px hidden',
-      borderRadius: 10,
-      paddingTop: 5,
-      backgroundColor: '#e8e8e8'
-    },
     centering: {
       display: 'flex',
       justifyContent: 'center',
