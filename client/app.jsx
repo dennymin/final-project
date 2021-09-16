@@ -7,6 +7,7 @@ import NewMealForm from './pages/new-meal';
 import TempDrawer from './components/temp-drawer';
 import YourWorkouts from './pages/your-workouts';
 import YourMeals from './pages/your-meals';
+import Register from './pages/register';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 
 export default class App extends React.Component {
@@ -27,6 +28,9 @@ export default class App extends React.Component {
 
   renderPage() {
     const { route } = this.state;
+    if (route.path === 'app/register') {
+      return < Register/>;
+    }
     if (route.path === 'app/home') {
       return <Home />;
     }
