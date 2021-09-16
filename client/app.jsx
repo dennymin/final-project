@@ -7,6 +7,7 @@ import NewMealForm from './pages/new-meal';
 import TempDrawer from './components/temp-drawer';
 import YourWorkouts from './pages/your-workouts';
 import YourMeals from './pages/your-meals';
+import Register from './pages/register';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 
 export default class App extends React.Component {
@@ -27,7 +28,10 @@ export default class App extends React.Component {
 
   renderPage() {
     const { route } = this.state;
-    if (route.path === '') {
+    if (route.path === 'app/register') {
+      return < Register/>;
+    }
+    if (route.path === 'app/home') {
       return <Home />;
     }
     if (route.path === 'app/your/workouts') {
@@ -136,6 +140,15 @@ export default class App extends React.Component {
         MuiDropzoneSnackbar: {
           successAlert: {
             display: 'none'
+          }
+        },
+        MuiCard: {
+          root: {
+            width: '100%',
+            border: '1px hidden',
+            borderRadius: 10,
+            paddingTop: 5,
+            backgroundColor: '#e8e8e8'
           }
         }
       }

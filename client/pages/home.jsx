@@ -5,13 +5,6 @@ import { sub, format } from 'date-fns';
 
 const useStyles = makeStyles(theme => {
   return {
-    cardClass: {
-      width: '100%',
-      border: '1px hidden',
-      borderRadius: 10,
-      paddingTop: 5,
-      backgroundColor: '#e8e8e8'
-    },
     cardCategoryHeader: {
       fontWeight: 'bold',
       fontSize: '1.4rem',

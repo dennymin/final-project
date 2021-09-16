@@ -52,7 +52,7 @@ export default function TempDrawer() {
               <AccordionDetails>
                 <Typography>
                   <Link
-                    href=''
+                    href='/#app/home'
                     underline='none'
                     color='textPrimary'
                     onClick={e => setIsDrawerOpen(!isDrawerOpen)}
