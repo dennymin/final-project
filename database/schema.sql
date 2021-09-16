@@ -60,7 +60,7 @@ CREATE TABLE "public"."tourney" (
 CREATE TABLE "public"."workouts" (
 	"workoutId" serial NOT NULL,
 	"userId" integer NOT NULL,
-	"date" timestamp with time zone NOT NULL,
+	"date" DATE NOT NULL,
 	"length" integer NOT NULL,
 	"caloriesBurned" integer NOT NULL,
 	"details" TEXT NOT NULL,
