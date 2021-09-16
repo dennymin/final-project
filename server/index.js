@@ -1,6 +1,7 @@
 require('dotenv/config');
 const express = require('express');
 const pg = require('pg');
+const argon2 = require('argon2');
 const ClientError = require('./client-error');
 const errorMiddleware = require('./error-middleware');
 const staticMiddleware = require('./static-middleware');
@@ -177,6 +178,26 @@ app.get('/api/your/fitness', (req, res, next) => {
         }
       }
       res.status(200).json(stats);
+    }).catch(err => next(err));
+});
+
+app.post('/api/auth/sign-up', (req, res, next) => {
+  const { username, firstName, lastName, password } = req.body;
+  if (!username || !password || !firstName || !lastName) {
+    throw new ClientError(400, 'You missed something!');
+  }
+  argon2
+    .hash(password)
+    .then(hashedPassword => {
+      const userDetails = [username, hashedPassword, firstName, lastName];
+      const sqlNewUser = `
+        insert into "users" ("username", "hashedPassword", "firstName", "lastName")
+        values ($1, $2, $3, $4)
+        returning *
+      `;
+      db.query(sqlNewUser, userDetails)
+        .then(result => res.status(201).json(result.rows[0]))
+        .catch(err => next(err));
     }).catch(err => next(err));
 });
 

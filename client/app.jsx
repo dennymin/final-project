@@ -27,7 +27,7 @@ export default class App extends React.Component {
 
   renderPage() {
     const { route } = this.state;
-    if (route.path === '') {
+    if (route.path === 'app/home') {
       return <Home />;
     }
     if (route.path === 'app/your/workouts') {
