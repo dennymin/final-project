@@ -2,10 +2,12 @@ require('dotenv/config');
 const express = require('express');
 const pg = require('pg');
 const argon2 = require('argon2');
+const jwt = require('jsonwebtoken');
 const ClientError = require('./client-error');
 const errorMiddleware = require('./error-middleware');
 const staticMiddleware = require('./static-middleware');
 const uploadsMiddleware = require('./uploads-middleware');
+const authorizationMiddleware = require('./authorization-middleware');
 
 const app = express();
 const db = new pg.Pool({
@@ -23,6 +25,64 @@ app.listen(process.env.PORT, () => {
 });
 
 app.use(express.json());
+
+app.post('/api/auth/register', (req, res, next) => {
+  const { username, firstName, lastName, password } = req.body;
+  if (!username || !password || !firstName || !lastName) {
+    throw new ClientError(400, 'Username, password, first name, and last name are all required fields!');
+  }
+  argon2
+    .hash(password)
+    .then(hashedPassword => {
+      const userDetails = [username, hashedPassword, firstName, lastName];
+      const sqlNewUser = `
+        insert into "users" ("username", "hashedPassword", "firstName", "lastName")
+        values ($1, $2, $3, $4)
+        returning *
+      `;
+      db.query(sqlNewUser, userDetails)
+        .then(result => res.status(201).json(result.rows[0]))
+        .catch(err => next(err));
+    }).catch(err => next(err));
+});
+
+app.post('/api/auth/signin', (req, res, next) => {
+  const { username, password } = req.body;
+  if (!username || !password) {
+    throw new ClientError(401, 'invalid login');
+  }
+  const userDetails = [username];
+  const sqlFindUser = `
+    select "userId", "hashedPassword", "firstName", "lastName"
+    from   "users"
+    where  "username" = $1;
+  `;
+  db.query(sqlFindUser, userDetails)
+    .then(result => {
+      if (!result.rows[0]) {
+        throw new ClientError(400, 'invalid login');
+      } else {
+        argon2
+          .verify(result.rows[0].hashedPassword, password)
+          .then(isMatching => {
+            if (!isMatching) {
+              throw new ClientError(401, 'invalid login');
+            } else if (isMatching) {
+              const payload = { userId: result.rows[0].userId, username: username };
+              const token = jwt.sign(payload, process.env.TOKEN_SECRET);
+              const user = {
+                token: token,
+                user: payload
+              };
+              res.status(200).json(user);
+            }
+          }).catch(err => next(err));
+      }
+    }).catch(err => next(err));
+});
+
+app.use(authorizationMiddleware);
+
 app.post('/api/new/workout', (req, res, next) => {
   const { date, muscleGroups, details } = req.body;
   const length = parseInt(req.body.length, 10);
@@ -178,26 +238,6 @@ app.get('/api/your/fitness', (req, res, next) => {
         }
       }
       res.status(200).json(stats);
-    }).catch(err => next(err));
-});
-
-app.post('/api/auth/register', (req, res, next) => {
-  const { username, firstName, lastName, password } = req.body;
-  if (!username || !password || !firstName || !lastName) {
-    throw new ClientError(400, 'Username, password, first name, and last name are all required fields!');
-  }
-  argon2
-    .hash(password)
-    .then(hashedPassword => {
-      const userDetails = [username, hashedPassword, firstName, lastName];
-      const sqlNewUser = `
-        insert into "users" ("username", "hashedPassword", "firstName", "lastName")
-        values ($1, $2, $3, $4)
-        returning *
-      `;
-      db.query(sqlNewUser, userDetails)
-        .then(result => res.status(201).json(result.rows[0]))
-        .catch(err => next(err));
     }).catch(err => next(err));
 });
 
