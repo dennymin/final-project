@@ -8,6 +8,7 @@ import TempDrawer from './components/temp-drawer';
 import YourWorkouts from './pages/your-workouts';
 import YourMeals from './pages/your-meals';
 import Register from './pages/register';
+import SignIn from './pages/sign-in';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 
 export default class App extends React.Component {
@@ -28,30 +29,50 @@ export default class App extends React.Component {
 
   renderPage() {
     const { route } = this.state;
+    if (route.path === '') {
+      return <SignIn />;
+    }
     if (route.path === 'app/register') {
       return < Register/>;
     }
     if (route.path === 'app/home') {
-      return <Home />;
+      return (
+        <>
+          <TempDrawer />
+          <Home />
+        </>
+      );
     }
     if (route.path === 'app/your/workouts') {
       return (
-        <YourWorkouts/>
+        <>
+          <TempDrawer />
+          < YourWorkouts />
+        </>
       );
     }
     if (route.path === 'app/your/meals') {
       return (
-        <YourMeals />
+        <>
+          <TempDrawer />
+          <YourMeals />
+        </>
       );
     }
     if (route.path === 'app/new/workout') {
       return (
+        <>
+          <TempDrawer />
           <NewWorkoutForm />
+        </>
       );
     }
     if (route.path === 'app/new/meal') {
       return (
+        <>
+          <TempDrawer />
           <NewMealForm />
+        </>
       );
     }
   }
@@ -156,7 +177,6 @@ export default class App extends React.Component {
     return (
       <ThemeProvider theme={theme}>
         <Container className='container-gutter'>
-          <TempDrawer />
           { this.renderPage() }
         </Container>
       </ThemeProvider>

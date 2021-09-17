@@ -67,7 +67,8 @@ export default function NewWorkoutForm(props) {
     fetch(sendToAddress, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'signin-token': window.localStorage.getItem('signin-token')
       },
       body: JSON.stringify(data)
     })

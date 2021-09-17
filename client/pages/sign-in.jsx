@@ -1,6 +1,6 @@
+import { Card, CardContent, Grid, TextField, Typography, Button, makeStyles } from '@material-ui/core';
 import React, { useState } from 'react';
 import Header from '../components/header';
-import { Card, CardContent, Grid, TextField, makeStyles, Button, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles({
   gutter: {
@@ -12,46 +12,39 @@ const useStyles = makeStyles({
   }
 });
 
-export default function Register(props) {
+export default function SignIn(props) {
   const classes = useStyles();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
   const [usernameError, setUsernameError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
-  const [firstNameError, setFirstNameError] = useState(false);
-  const [lastNameError, setLastNameError] = useState(false);
 
   const handleSubmit = event => {
     event.preventDefault();
+
     if (username === '') {
       setUsernameError(true);
     }
     if (password === '') {
       setPasswordError(true);
     }
-    if (firstName === '') {
-      setFirstNameError(true);
-    }
-    if (lastName === '') {
-      setLastNameError(true);
-    }
-    const newUserData = { username, password, firstName, lastName };
-    const sendToAddress = '/api/auth/register';
+    const userData = { username, password };
+    const sendToAddress = '/api/auth/signin';
     fetch(sendToAddress, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(newUserData)
+      body: JSON.stringify(userData)
     })
-      .then(response => {
-        response.json();
-        event.target.reset();
-      })
+      .then(response => response.json())
       .then(result => {
-        window.location.hash = '';
+        window.localStorage.setItem('signin-token', result.token);
+        if (!result.error) {
+          window.location.hash = 'app/home';
+        } else {
+          window.location.hash = '';
+        }
       })
     ;
   };
@@ -74,17 +67,16 @@ export default function Register(props) {
           <Card
             raised={true}
           >
-            <CardContent
-            className={classes.gutter}
-            >
+            <CardContent>
               <form
-              onSubmit={handleSubmit}>
+                onSubmit={handleSubmit}
+              >
                 <Typography
                   variant='h5'
                   align='center'
                   gutterBottom={true}
                 >
-                  Register Account
+                  Sign In
                 </Typography>
                 <TextField
                   label='Username'
@@ -107,39 +99,19 @@ export default function Register(props) {
                   onChange={event => setPassword(event.target.value)}
                   error={passwordError}
                 />
-                <TextField
-                  label='First Name'
-                  margin='normal'
-                  variant='outlined'
-                  required
-                  fullWidth
-                  InputLabelProps={{ shrink: true }}
-                  onChange={event => setFirstName(event.target.value)}
-                  error={firstNameError}
-                />
-                <TextField
-                  label='Last Name'
-                  margin='normal'
-                  variant='outlined'
-                  required
-                  fullWidth
-                  InputLabelProps={{ shrink: true }}
-                  onChange={event => setLastName(event.target.value)}
-                  error={lastNameError}
-                />
                 <Grid
-                container
-                justifyContent='center'
-                spacing={6}
+                  container
+                  justifyContent='center'
+                  spacing={6}
                 >
                   <Grid item>
                     <Button
                       variant='contained'
                       className={classes.buttonColor}
                       component='a'
-                      href=''
+                      href='#app/register'
                     >
-                      Sign-In
+                      Register
                     </Button>
                   </Grid>
 
@@ -149,7 +121,7 @@ export default function Register(props) {
                       className={classes.buttonColor}
                       type='submit'
                     >
-                      Submit
+                      Sign In
                     </Button>
                   </Grid>
                 </Grid>
