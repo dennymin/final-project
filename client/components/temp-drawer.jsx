@@ -22,6 +22,7 @@ const useStyles = makeStyles(theme => {
       padding: 0
     },
     logout: {
+      fontStyle: 'italic'
     }
   };
 });
@@ -122,6 +123,7 @@ export default function TempDrawer() {
           </ListItem>
           <Button
             color='secondary'
+            className={classes.logout}
             variant='contained'
             fullWidth
             onClick={e => {
