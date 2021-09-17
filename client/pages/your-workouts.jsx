@@ -47,7 +47,7 @@ export default function YourWorkouts(props) {
   const [serverData, pullServerData] = useState([{
     userId: 0,
     date: new Date(),
-    length: 0,
+    duration: 0,
     caloriesBurned: 0,
     details: '',
     workoutId: 0
@@ -108,7 +108,7 @@ export default function YourWorkouts(props) {
                 className={classes.cardCategoryContent}
                 paragraph={true}
               >
-                {workout.length} Minutes
+                {workout.duration} Minutes
               </Typography>
 
               <Typography

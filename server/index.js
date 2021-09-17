@@ -86,21 +86,21 @@ app.use(authorizationMiddleware);
 app.post('/api/new/workout', (req, res, next) => {
   const { date, muscleGroups, details } = req.body;
   const { userId } = req.user;
-  const length = parseInt(req.body.length, 10);
+  const duration = parseInt(req.body.duration, 10);
   const caloriesBurned = parseInt(req.body.caloriesBurned, 10);
-  if (!date || !length || !caloriesBurned || !muscleGroups || !details) {
-    throw new ClientError(400, 'date, length, calories burned, muscle groups, and details are all require fields!');
+  if (!date || !duration || !caloriesBurned || !muscleGroups || !details) {
+    throw new ClientError(400, 'date, duration, calories burned, muscle groups, and details are all require fields!');
   }
-  if (!Number.isInteger(length) || length < 0) {
-    throw new ClientError(400, 'length must be a positive integer');
+  if (!Number.isInteger(duration) || duration < 0) {
+    throw new ClientError(400, 'duration must be a positive integer');
   }
   if (!Number.isInteger(caloriesBurned) || caloriesBurned < 0) {
     throw new ClientError(400, 'calories burned must be a positive integer');
   }
-  const points = (length * 10) + (caloriesBurned * 2);
-  const data = [date, length, caloriesBurned, details, points, userId];
+  const points = (duration * 10) + (caloriesBurned * 2);
+  const data = [date, duration, caloriesBurned, details, points, userId];
   const sqlIntoWorkouts = `
-  insert into "workouts" ("userId", "date", "length", "caloriesBurned", "details", "points")
+  insert into "workouts" ("userId", "date", "duration", "caloriesBurned", "details", "points")
   values ($6, $1, $2, $3, $4, $5 )
   returning *;
   `;
@@ -164,7 +164,7 @@ app.get('/api/your/workouts', (req, res, next) => {
   const sqlIntoUserWorkouts = `
   select "workouts"."workoutId",
          "workouts"."date",
-         "workouts"."length",
+         "workouts"."duration",
          "workouts"."caloriesBurned",
          "workouts"."details",
          STRING_AGG(("muscleGroup"."name"), ', ') as "muscles"
@@ -202,7 +202,7 @@ app.get('/api/your/fitness', (req, res, next) => {
   const paramaterized = [startDate, endDate, userId];
   const sqlIntoUserWorkouts = `
   select "workouts"."workoutId",
-         "workouts"."length",
+         "workouts"."duration",
          "workouts"."caloriesBurned",
          DATE("workouts"."date"),
          STRING_AGG(("muscleGroup"."name"), ', ') as "muscles"
@@ -227,7 +227,7 @@ app.get('/api/your/fitness', (req, res, next) => {
         Legs: 0
       };
       for (let i = 0; i < result.rows.length; i++) {
-        stats.workoutTime = result.rows[i].length + result.rows[i].length;
+        stats.workoutTime = 0 + result.rows[i].duration;
         stats.caloriesBurned = result.rows[i].caloriesBurned + result.rows[i].caloriesBurned;
         if (result.rows[i].muscles.includes('Chest')) {
           stats.Chest++;
