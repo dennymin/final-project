@@ -1,6 +1,6 @@
 import { Grid, Card, CardContent, CardActions, Collapse, Typography, makeStyles } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
-import { format } from 'date-fns';
+import { add, format } from 'date-fns';
 import Header from '../components/header';
 
 const useStyles = makeStyles(theme => {
@@ -76,7 +76,8 @@ export default function YourWorkouts(props) {
         setExpanded(!expanded);
       };
       workout.date = new Date(workout.date);
-      const workingDate = format(workout.date, 'iii, LLL do, yyyy');
+      const correctedDate = add(workout.date, { hours: 7 });
+      const workingDate = format(correctedDate, 'iii, LLL do, yyyy');
       return (
         <Grid
           key={workout.workoutId}
