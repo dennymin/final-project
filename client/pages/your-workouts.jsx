@@ -56,7 +56,11 @@ export default function YourWorkouts(props) {
   useEffect(() => {
     let isCanceled = false;
     const serverAddress = '/api/your/workouts';
-    fetch(serverAddress)
+    fetch(serverAddress, {
+      headers: {
+        'signin-token': window.localStorage.getItem('signin-token')
+      }
+    })
       .then(response => response.json())
       .then(data => {
         !isCanceled && pullServerData(data);

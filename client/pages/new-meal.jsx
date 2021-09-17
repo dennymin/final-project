@@ -65,6 +65,9 @@ export default function NewMealForm(props) {
     const sendToAddress = '/api/new/meal';
     fetch(sendToAddress, {
       method: 'POST',
+      headers: {
+        'signin-token': window.localStorage.getItem('signin-token')
+      },
       body: newForm
     })
       .then(response => {

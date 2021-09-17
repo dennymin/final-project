@@ -21,6 +21,7 @@ export default function SignIn(props) {
 
   const handleSubmit = event => {
     event.preventDefault();
+
     if (username === '') {
       setUsernameError(true);
     }
@@ -36,9 +37,10 @@ export default function SignIn(props) {
       },
       body: JSON.stringify(userData)
     })
-      .then(response => {
-        response.json();
-        event.target.reset();
+      .then(response => response.json())
+      .then(result => {
+        window.localStorage.setItem('signin-token', result.token);
+        window.location.hash = 'app/home';
       })
     ;
   };
@@ -53,10 +55,10 @@ export default function SignIn(props) {
         <Grid
           item
           xs={12}
-          sm={10}
-          md={10}
-          lg={10}
-          xl={10}
+          sm={8}
+          md={5}
+          lg={4}
+          xl={4}
         >
           <Card
             raised={true}
@@ -103,6 +105,7 @@ export default function SignIn(props) {
                       variant='contained'
                       className={classes.buttonColor}
                       component='a'
+                      href='#app/register'
                     >
                       Register
                     </Button>

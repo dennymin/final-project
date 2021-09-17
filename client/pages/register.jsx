@@ -50,6 +50,9 @@ export default function Register(props) {
         response.json();
         event.target.reset();
       })
+      .then(result => {
+        window.location.hash = '';
+      })
     ;
   };
 
@@ -63,10 +66,10 @@ export default function Register(props) {
         <Grid
           item
           xs={12}
-          sm={10}
-          md={10}
-          lg={10}
-          xl={10}
+          sm={8}
+          md={5}
+          lg={4}
+          xl={4}
         >
           <Card
             raised={true}
@@ -134,6 +137,7 @@ export default function Register(props) {
                       variant='contained'
                       className={classes.buttonColor}
                       component='a'
+                      href=''
                     >
                       Sign-In
                     </Button>
