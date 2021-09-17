@@ -1,5 +1,5 @@
-import React from 'react';
-import { Drawer, IconButton, makeStyles, List, ListItem, Accordion, AccordionSummary, AccordionDetails, Typography, Link } from '@material-ui/core';
+import React, { useEffect } from 'react';
+import { Drawer, IconButton, makeStyles, List, ListItem, Accordion, AccordionSummary, AccordionDetails, Typography, Link, Button } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 
 const drawerWidth = 200;
@@ -20,6 +20,9 @@ const useStyles = makeStyles(theme => {
     listFont: {
       fontFamily: 'Roboto',
       padding: 0
+    },
+    logout: {
+      fontStyle: 'italic'
     }
   };
 });
@@ -28,6 +31,13 @@ export default function TempDrawer() {
   const classes = useStyles();
 
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
+  const [isFitnessOpen, setIsFitnessOpen] = React.useState(false);
+
+  useEffect(() => {
+    if (window.location.hash === '#app/home' || window.location.hash === '#app/your/workouts' || window.location.hash === '#app/your/meals' || window.location.hash === '#app/new/workout' || window.location.hash === '#app/new/meal') {
+      setIsFitnessOpen(true);
+    }
+  }, [isDrawerOpen]);
 
   return (
       <span className={classes.positioning}>
@@ -45,7 +55,7 @@ export default function TempDrawer() {
         >
         <List>
           <ListItem className={classes.listFont}>
-            <Accordion square={true} expanded={true}>
+            <Accordion square={true} expanded={isFitnessOpen}>
               <AccordionSummary>
                 My Fitness
               </AccordionSummary>
@@ -111,6 +121,19 @@ export default function TempDrawer() {
               </AccordionDetails>
             </Accordion>
           </ListItem>
+          <Button
+            color='secondary'
+            className={classes.logout}
+            variant='contained'
+            fullWidth
+            onClick={e => {
+              setIsDrawerOpen(!isDrawerOpen);
+              window.localStorage.setItem('signin-token', '');
+              window.location.hash = '';
+            }}
+          >
+            Sign Out
+          </Button>
         </List>
         </Drawer>
       </span>
