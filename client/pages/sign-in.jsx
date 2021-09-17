@@ -40,7 +40,11 @@ export default function SignIn(props) {
       .then(response => response.json())
       .then(result => {
         window.localStorage.setItem('signin-token', result.token);
-        window.location.hash = 'app/home';
+        if (!result.error) {
+          window.location.hash = 'app/home';
+        } else {
+          window.location.hash = '';
+        }
       })
     ;
   };

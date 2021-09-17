@@ -38,7 +38,7 @@ app.post('/api/auth/register', (req, res, next) => {
       const sqlNewUser = `
         insert into "users" ("username", "hashedPassword", "firstName", "lastName")
         values ($1, $2, $3, $4)
-        returning *
+        returning "username", "userId", "firstName", "lastName";
       `;
       db.query(sqlNewUser, userDetails)
         .then(result => res.status(201).json(result.rows[0]))
