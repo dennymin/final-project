@@ -246,4 +246,18 @@ app.get('/api/your/fitness', (req, res, next) => {
     }).catch(err => next(err));
 });
 
+app.get('/api/others', (req, res, next) => {
+  const { userId } = req.user;
+  const activeUser = [userId];
+  const sqlIntoUsers = `
+  select "firstName", "lastName"
+  from   "users"
+  where "userId" != $1
+  `;
+  db.query(sqlIntoUsers, activeUser)
+    .then(result => {
+      res.status(200).json(result.rows);
+    }).catch(err => next(err));
+});
+
 app.use(errorMiddleware);
