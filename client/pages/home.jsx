@@ -67,7 +67,6 @@ export default function Home(props) {
           xl={10}
         >
           <Card
-          className={classes.cardClass}
           raised={true}>
           <CardContent>
 

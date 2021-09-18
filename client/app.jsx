@@ -9,6 +9,7 @@ import YourWorkouts from './pages/your-workouts';
 import YourMeals from './pages/your-meals';
 import Register from './pages/register';
 import SignIn from './pages/sign-in';
+import Contacts from './pages/contacts';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 
 export default class App extends React.Component {
@@ -41,6 +42,14 @@ export default class App extends React.Component {
           <TempDrawer />
           <Home />
         </>
+      );
+    }
+    if (route.path === 'app/social') {
+      return (
+        <>
+          <TempDrawer />
+          <Contacts />
+          </>
       );
     }
     if (route.path === 'app/your/workouts') {
