@@ -37,9 +37,11 @@ export default function TempDrawer() {
   useEffect(() => {
     if (window.location.hash === '#app/home' || window.location.hash === '#app/your/workouts' || window.location.hash === '#app/your/meals' || window.location.hash === '#app/new/workout' || window.location.hash === '#app/new/meal') {
       setIsFitnessOpen(true);
+      setIsSocialOpen(false);
     }
     if (window.location.hash.includes('#app/social')) {
       setIsSocialOpen(true);
+      setIsFitnessOpen(false);
     }
   }, [isDrawerOpen]);
 
