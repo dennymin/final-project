@@ -8,6 +8,7 @@ const errorMiddleware = require('./error-middleware');
 const staticMiddleware = require('./static-middleware');
 const uploadsMiddleware = require('./uploads-middleware');
 const authorizationMiddleware = require('./authorization-middleware');
+const _ = require('lodash');
 
 const app = express();
 const db = new pg.Pool({
@@ -81,6 +82,21 @@ app.post('/api/auth/signin', (req, res, next) => {
     }).catch(err => next(err));
 });
 
+app.get('/api/others', (req, res, next) => {
+  // const { userId } = req.user;
+  const activeUser = [1];
+  const sqlIntoUsers = `
+  select "userId", "firstName", "lastName"
+  from   "users"
+  where "userId" != $1
+  `;
+  db.query(sqlIntoUsers, activeUser)
+    .then(result => {
+      const contacts = result.rows;
+      const contactsList = _.groupBy(contacts, 'firstName[0]');
+      res.status(200).json(contactsList);
+    }).catch(err => next(err));
+});
 app.use(authorizationMiddleware);
 
 app.post('/api/new/workout', (req, res, next) => {
@@ -243,20 +259,6 @@ app.get('/api/your/fitness', (req, res, next) => {
         }
       }
       res.status(200).json(stats);
-    }).catch(err => next(err));
-});
-
-app.get('/api/others', (req, res, next) => {
-  const { userId } = req.user;
-  const activeUser = [userId];
-  const sqlIntoUsers = `
-  select "firstName", "lastName"
-  from   "users"
-  where "userId" != $1
-  `;
-  db.query(sqlIntoUsers, activeUser)
-    .then(result => {
-      res.status(200).json(result.rows);
     }).catch(err => next(err));
 });
 
