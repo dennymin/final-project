@@ -56,8 +56,10 @@ export default function NewWorkoutForm(props) {
     if (details === '') {
       setDetailsError(true);
     }
+    const correctedDate = new Date(date);
+    const timezoneCorrectedDate = correctedDate.toISOString();
     const data = {
-      date: date,
+      date: timezoneCorrectedDate,
       duration: duration,
       caloriesBurned: caloriesBurned,
       muscleGroups: muscleName,

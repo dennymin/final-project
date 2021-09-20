@@ -76,7 +76,8 @@ export default function YourWorkouts(props) {
         setExpanded(!expanded);
       };
       workout.date = new Date(workout.date);
-      const correctedDate = add(workout.date, { hours: 7 });
+      const timezoneOffset = workout.date.getTimezoneOffset();
+      const correctedDate = add(workout.date, { minutes: timezoneOffset });
       const workingDate = format(correctedDate, 'iii, LLL do, yyyy');
       return (
         <Grid
