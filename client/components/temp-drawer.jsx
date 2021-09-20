@@ -38,7 +38,7 @@ export default function TempDrawer() {
     if (window.location.hash === '#app/home' || window.location.hash === '#app/your/workouts' || window.location.hash === '#app/your/meals' || window.location.hash === '#app/new/workout' || window.location.hash === '#app/new/meal') {
       setIsFitnessOpen(true);
     }
-    if (window.location.hash === '#app/social') {
+    if (window.location.hash.includes('#app/social')) {
       setIsSocialOpen(true);
     }
   }, [isDrawerOpen]);

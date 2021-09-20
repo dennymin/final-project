@@ -1,12 +1,24 @@
-import { Card, CardContent, Grid, Typography, List, ListItem, Avatar, makeStyles } from '@material-ui/core';
+import { Card, CardContent, Grid, Typography, List, ListItem, Avatar, makeStyles, Link } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import Header from '../components/header';
 import _ from 'lodash';
 
 const useStyles = makeStyles(theme => {
   return {
-    columns: {
-      display: 'flex'
+    sectional: {
+      marginBottom: '20px'
+    },
+    linkStyling: {
+      '&:hover': {
+        cursor: 'pointer'
+      }
+    },
+    avatarStyling: {
+      backgroundColor: 'rgb(0,0,0,0)',
+      color: '#52616B',
+      fontWeight: 'bold',
+      fontStyle: 'italic',
+      fontSize: '2rem'
     }
   };
 });
@@ -28,7 +40,7 @@ export default function Contacts(props) {
         !isCanceled && pullUserList(data);
       });
     return () => { isCanceled = true; };
-  }, [userList]);
+  }, []);
 
   const ContactsList = props => {
     const contacts = props.contacts;
@@ -40,21 +52,38 @@ export default function Contacts(props) {
             divider={user !== contacts[firstLetter][contacts[firstLetter].length - 1]}
             key={user.firstName}
           >
-            <Typography>
-              {_.capitalize(user.firstName)}
-            </Typography>
+            <Link
+              href={`#app/social/${user.userId}`}
+              underline='none'
+              color='textPrimary'
+              className={classes.linkStyling}
+            >
+              <Typography>
+                {_.capitalize(user.firstName)}
+              </Typography>
+              <Typography>
+                {user.userId}
+              </Typography>
+            </Link>
           </ListItem>
         );
       });
       return (
-        <ListItem className={classes.columns} key={firstLetter}>
-          <Avatar variant='rounded' key={firstLetter}>
+        <div
+          className={classes.sectional}
+          key={firstLetter}
+        >
+          <Avatar
+            variant='rounded'
+            className={classes.avatarStyling}
+            key={firstLetter}
+          >
             {firstLetter.toUpperCase()}
           </Avatar>
           <List>
             {letterNames}
           </List>
-        </ListItem>
+        </div>
       );
     });
     return (
@@ -81,11 +110,7 @@ export default function Contacts(props) {
         >
           <Card raised={true}>
             <CardContent>
-              <List>
-                <ListItem>
-                  <ContactsList contacts={userList}></ContactsList>
-                </ListItem>
-              </List>
+              <ContactsList contacts={userList}></ContactsList>
             </CardContent>
           </Card>
         </Grid>

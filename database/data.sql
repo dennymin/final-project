@@ -13,5 +13,6 @@ values (5, 'aaa', 'aaa', 'AAA', 'password1'),
        (16, 'dddddd', 'dddddd', 'qwee', 'password2'),
        (17, 'cdcdcdccdc', 'cdcdcdccdc', 'lkhjklh', 'password3'),
        (18, 'abababababa', 'abababababa', 'dudette', 'password4');
+
 insert into "muscleGroup" ("muscleId", "name")
 values (1, 'Chest'), (2, 'Back'), (3, 'Arms'), (4, 'Legs');

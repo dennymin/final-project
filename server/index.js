@@ -264,4 +264,47 @@ app.get('/api/others', (req, res, next) => {
     }).catch(err => next(err));
 });
 
+app.get('/api/social/:userId', (req, res, next) => {
+  const userId = parseInt(req.params.userId, 10);
+  const userInfo = [userId];
+  if (!userId) {
+    throw new ClientError(400, 'userId must be a positive integer');
+  }
+  const sqlIntoSpecificUser = `
+    select "workouts"."workoutId",
+         "workouts"."date",
+         "workouts"."duration",
+         "workouts"."caloriesBurned",
+         "workouts"."details",
+         STRING_AGG(("muscleGroup"."name"), ', ') as "muscles"
+  from "workouts"
+  join "workoutMuscleGroups" using ("workoutId")
+  join "muscleGroup" using ("muscleId")
+  where "userId" = $1
+  group by "workouts"."workoutId"
+  order by "workouts"."date" desc;
+  `;
+  db.query(sqlIntoSpecificUser, userInfo)
+    .then(result => {
+      res.status(200).json(result.rows);
+    }).catch(err => next(err));
+});
+
+app.get('/api/:userId', (req, res, next) => {
+  const userId = parseInt(req.params.userId, 10);
+  const userInfo = [userId];
+  if (!userId) {
+    throw new ClientError(400, 'userId must be a positive integer');
+  }
+  const sqlIntoSpecificUser = `
+    select "firstName", "lastName"
+    from   "users"
+    where  "userId" = $1
+  `;
+  db.query(sqlIntoSpecificUser, userInfo)
+    .then(result => {
+      res.status(200).json(result.rows[0]);
+    }).catch(err => next(err));
+});
+
 app.use(errorMiddleware);
