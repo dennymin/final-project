@@ -9,7 +9,9 @@ import YourWorkouts from './pages/your-workouts';
 import YourMeals from './pages/your-meals';
 import Register from './pages/register';
 import SignIn from './pages/sign-in';
+import Contacts from './pages/contacts';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
+import UserWorkouts from './pages/other-user-workouts';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -43,6 +45,14 @@ export default class App extends React.Component {
         </>
       );
     }
+    if (route.path === 'app/social') {
+      return (
+        <>
+          <TempDrawer />
+          <Contacts />
+          </>
+      );
+    }
     if (route.path === 'app/your/workouts') {
       return (
         <>
@@ -72,6 +82,15 @@ export default class App extends React.Component {
         <>
           <TempDrawer />
           <NewMealForm />
+        </>
+      );
+    }
+    if (route.path.includes('app/social/')) {
+      const userId = route.path.split('/')[2];
+      return (
+        <>
+          <TempDrawer />
+          <UserWorkouts userId={userId}/>
         </>
       );
     }

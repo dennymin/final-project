@@ -32,10 +32,16 @@ export default function TempDrawer() {
 
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
   const [isFitnessOpen, setIsFitnessOpen] = React.useState(false);
+  const [isSocialOpen, setIsSocialOpen] = React.useState(false);
 
   useEffect(() => {
     if (window.location.hash === '#app/home' || window.location.hash === '#app/your/workouts' || window.location.hash === '#app/your/meals' || window.location.hash === '#app/new/workout' || window.location.hash === '#app/new/meal') {
       setIsFitnessOpen(true);
+      setIsSocialOpen(false);
+    }
+    if (window.location.hash.includes('#app/social')) {
+      setIsSocialOpen(true);
+      setIsFitnessOpen(false);
     }
   }, [isDrawerOpen]);
 
@@ -51,12 +57,19 @@ export default function TempDrawer() {
         open={isDrawerOpen}
         variant='temporary'
         classes={{ paper: classes.drawerPaper }}
-          onClose={e => setIsDrawerOpen(!isDrawerOpen)}
+        onClose={e => setIsDrawerOpen(!isDrawerOpen)}
         >
         <List>
           <ListItem className={classes.listFont}>
             <Accordion square={true} expanded={isFitnessOpen}>
-              <AccordionSummary>
+              <AccordionSummary
+                onClick={event => {
+                  setIsFitnessOpen(!isFitnessOpen);
+                  if (isSocialOpen === true) {
+                    setIsSocialOpen(false);
+                  }
+                }}
+              >
                 My Fitness
               </AccordionSummary>
               <AccordionDetails>
@@ -116,6 +129,32 @@ export default function TempDrawer() {
                     onClick={e => setIsDrawerOpen(!isDrawerOpen)}
                   >
                     New Meal
+                  </Link>
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+          </ListItem>
+          <ListItem className={classes.listFont}>
+            <Accordion square={true} expanded={isSocialOpen}>
+              <AccordionSummary
+                onClick={event => {
+                  setIsSocialOpen(!isSocialOpen);
+                  if (isFitnessOpen === true) {
+                    setIsFitnessOpen(false);
+                  }
+                }}
+              >
+                Social
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography>
+                  <Link
+                    href='/#app/social'
+                    underline='none'
+                    color='textPrimary'
+                    onClick={e => setIsDrawerOpen(!isDrawerOpen)}
+                  >
+                    Others
                   </Link>
                 </Typography>
               </AccordionDetails>

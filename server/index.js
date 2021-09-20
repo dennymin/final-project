@@ -8,6 +8,7 @@ const errorMiddleware = require('./error-middleware');
 const staticMiddleware = require('./static-middleware');
 const uploadsMiddleware = require('./uploads-middleware');
 const authorizationMiddleware = require('./authorization-middleware');
+const _ = require('lodash');
 
 const app = express();
 const db = new pg.Pool({
@@ -86,21 +87,21 @@ app.use(authorizationMiddleware);
 app.post('/api/new/workout', (req, res, next) => {
   const { date, muscleGroups, details } = req.body;
   const { userId } = req.user;
-  const length = parseInt(req.body.length, 10);
+  const duration = parseInt(req.body.duration, 10);
   const caloriesBurned = parseInt(req.body.caloriesBurned, 10);
-  if (!date || !length || !caloriesBurned || !muscleGroups || !details) {
-    throw new ClientError(400, 'date, length, calories burned, muscle groups, and details are all require fields!');
+  if (!date || !duration || !caloriesBurned || !muscleGroups || !details) {
+    throw new ClientError(400, 'date, duration, calories burned, muscle groups, and details are all require fields!');
   }
-  if (!Number.isInteger(length) || length < 0) {
-    throw new ClientError(400, 'length must be a positive integer');
+  if (!Number.isInteger(duration) || duration < 0) {
+    throw new ClientError(400, 'duration must be a positive integer');
   }
   if (!Number.isInteger(caloriesBurned) || caloriesBurned < 0) {
     throw new ClientError(400, 'calories burned must be a positive integer');
   }
-  const points = (length * 10) + (caloriesBurned * 2);
-  const data = [date, length, caloriesBurned, details, points, userId];
+  const points = (duration * 10) + (caloriesBurned * 2);
+  const data = [date, duration, caloriesBurned, details, points, userId];
   const sqlIntoWorkouts = `
-  insert into "workouts" ("userId", "date", "length", "caloriesBurned", "details", "points")
+  insert into "workouts" ("userId", "date", "duration", "caloriesBurned", "details", "points")
   values ($6, $1, $2, $3, $4, $5 )
   returning *;
   `;
@@ -164,7 +165,7 @@ app.get('/api/your/workouts', (req, res, next) => {
   const sqlIntoUserWorkouts = `
   select "workouts"."workoutId",
          "workouts"."date",
-         "workouts"."length",
+         "workouts"."duration",
          "workouts"."caloriesBurned",
          "workouts"."details",
          STRING_AGG(("muscleGroup"."name"), ', ') as "muscles"
@@ -202,7 +203,7 @@ app.get('/api/your/fitness', (req, res, next) => {
   const paramaterized = [startDate, endDate, userId];
   const sqlIntoUserWorkouts = `
   select "workouts"."workoutId",
-         "workouts"."length",
+         "workouts"."duration",
          "workouts"."caloriesBurned",
          DATE("workouts"."date"),
          STRING_AGG(("muscleGroup"."name"), ', ') as "muscles"
@@ -227,7 +228,7 @@ app.get('/api/your/fitness', (req, res, next) => {
         Legs: 0
       };
       for (let i = 0; i < result.rows.length; i++) {
-        stats.workoutTime = result.rows[i].length + result.rows[i].length;
+        stats.workoutTime = 0 + result.rows[i].duration;
         stats.caloriesBurned = result.rows[i].caloriesBurned + result.rows[i].caloriesBurned;
         if (result.rows[i].muscles.includes('Chest')) {
           stats.Chest++;
@@ -243,6 +244,66 @@ app.get('/api/your/fitness', (req, res, next) => {
         }
       }
       res.status(200).json(stats);
+    }).catch(err => next(err));
+});
+
+app.get('/api/others', (req, res, next) => {
+  const { userId } = req.user;
+  const activeUser = [userId];
+  const sqlIntoUsers = `
+  select "userId", "firstName", "lastName"
+  from   "users"
+  where "userId" != $1
+  order by "firstName" asc
+  `;
+  db.query(sqlIntoUsers, activeUser)
+    .then(result => {
+      const contacts = result.rows;
+      const contactsList = _.groupBy(contacts, 'firstName[0]');
+      res.status(200).json(contactsList);
+    }).catch(err => next(err));
+});
+
+app.get('/api/social/:userId', (req, res, next) => {
+  const userId = parseInt(req.params.userId, 10);
+  const userInfo = [userId];
+  if (!userId) {
+    throw new ClientError(400, 'userId must be a positive integer');
+  }
+  const sqlIntoSpecificUser = `
+    select "workouts"."workoutId",
+         "workouts"."date",
+         "workouts"."duration",
+         "workouts"."caloriesBurned",
+         "workouts"."details",
+         STRING_AGG(("muscleGroup"."name"), ', ') as "muscles"
+  from "workouts"
+  join "workoutMuscleGroups" using ("workoutId")
+  join "muscleGroup" using ("muscleId")
+  where "userId" = $1
+  group by "workouts"."workoutId"
+  order by "workouts"."date" desc;
+  `;
+  db.query(sqlIntoSpecificUser, userInfo)
+    .then(result => {
+      res.status(200).json(result.rows);
+    }).catch(err => next(err));
+});
+
+app.get('/api/:userId', (req, res, next) => {
+  const userId = parseInt(req.params.userId, 10);
+  const userInfo = [userId];
+  if (!userId) {
+    throw new ClientError(400, 'userId must be a positive integer');
+  }
+  const sqlIntoSpecificUser = `
+    select "firstName", "lastName"
+    from   "users"
+    where  "userId" = $1
+  `;
+  db.query(sqlIntoSpecificUser, userInfo)
+    .then(result => {
+      res.status(200).json(result.rows[0]);
     }).catch(err => next(err));
 });
 

@@ -21,12 +21,12 @@ export default function NewWorkoutForm(props) {
   const classes = useStyles();
 
   const [date, setDate] = useState('');
-  const [length, setLength] = useState(0);
+  const [duration, setDuration] = useState(0);
   const [caloriesBurned, setCaloriesBurned] = useState(0);
   const [muscleName, setMuscles] = useState([]);
   const [details, setDetails] = useState('');
   const [dateError, setDateError] = useState(false);
-  const [lengthError, setLengthError] = useState(false);
+  const [durationError, setDurationError] = useState(false);
   const [caloriesBurnedError, setCaloriesBurnedError] = useState(false);
   const [muscleNameError, setMusclesError] = useState(false);
   const [detailsError, setDetailsError] = useState(false);
@@ -37,15 +37,15 @@ export default function NewWorkoutForm(props) {
   const handleSubmit = e => {
     e.preventDefault();
     setDateError(false);
-    setLengthError(false);
+    setDurationError(false);
     setCaloriesBurnedError(false);
     setMusclesError(false);
     setDetailsError(false);
     if (date === '') {
       setDateError(true);
     }
-    if (length === 0) {
-      setLengthError(true);
+    if (duration === 0) {
+      setDurationError(true);
     }
     if (caloriesBurned === 0) {
       setCaloriesBurnedError(true);
@@ -56,9 +56,11 @@ export default function NewWorkoutForm(props) {
     if (details === '') {
       setDetailsError(true);
     }
+    const correctedDate = new Date(date);
+    const timezoneCorrectedDate = correctedDate.toISOString();
     const data = {
-      date: date,
-      length: length,
+      date: timezoneCorrectedDate,
+      duration: duration,
       caloriesBurned: caloriesBurned,
       muscleGroups: muscleName,
       details: details
@@ -113,9 +115,9 @@ export default function NewWorkoutForm(props) {
           }}
           fullWidth
           onChange={event => {
-            setLength(event.target.value);
+            setDuration(event.target.value);
           }}
-          error={lengthError}
+          error={durationError}
           color='primary'
         />
 

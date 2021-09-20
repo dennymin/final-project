@@ -42,7 +42,7 @@ const useStyles = makeStyles(theme => {
   };
 });
 
-export default function YourWorkouts(props) {
+export default function UserWorkouts(props) {
   const classes = useStyles();
   const [serverData, pullServerData] = useState([{
     userId: 0,
@@ -52,10 +52,15 @@ export default function YourWorkouts(props) {
     details: '',
     workoutId: 0
   }]);
+  const [userInfo, setUserInfo] = useState({
+    firstName: '',
+    lastName: ''
+  });
 
   useEffect(() => {
     let isCanceled = false;
-    const serverAddress = '/api/your/workouts';
+    const serverAddress = `/api/social/${props.userId}`;
+    const serverAddress2 = `api/${props.userId}`;
     fetch(serverAddress, {
       headers: {
         'signin-token': window.localStorage.getItem('signin-token')
@@ -64,6 +69,16 @@ export default function YourWorkouts(props) {
       .then(response => response.json())
       .then(data => {
         !isCanceled && pullServerData(data);
+      });
+
+    fetch(serverAddress2, {
+      headers: {
+        'signin-token': window.localStorage.getItem('signin-token')
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        !isCanceled && setUserInfo(data);
       });
     return () => { isCanceled = true; };
   }, []);
@@ -179,7 +194,7 @@ export default function YourWorkouts(props) {
 
   return (
     <>
-      <Header title='YOUR WORKOUTS' />
+      <Header title={(`${userInfo.firstName}'s Workouts`).toUpperCase()} />
       <WorkoutList entries={serverData} />
     </>
   );
