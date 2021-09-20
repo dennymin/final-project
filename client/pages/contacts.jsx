@@ -61,9 +61,6 @@ export default function Contacts(props) {
               <Typography>
                 {_.capitalize(user.firstName)}
               </Typography>
-              <Typography>
-                {user.userId}
-              </Typography>
             </Link>
           </ListItem>
         );
