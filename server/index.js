@@ -89,6 +89,7 @@ app.get('/api/others', (req, res, next) => {
   select "userId", "firstName", "lastName"
   from   "users"
   where "userId" != $1
+  order by "firstName" asc
   `;
   db.query(sqlIntoUsers, activeUser)
     .then(result => {

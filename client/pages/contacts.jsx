@@ -1,12 +1,9 @@
-import { Card, CardContent, Grid, Typography, List, ListItem } from '@material-ui/core';
+import { Card, CardContent, Grid, Typography, List, ListItem, Avatar } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import Header from '../components/header';
 
 export default function Contacts(props) {
-  const [userList, pullUsersList] = useState([{
-    firstName: '',
-    lastName: ''
-  }]);
+  const [userList, pullUserList] = useState({});
 
   useEffect(() => {
     let isCanceled = false;
@@ -18,39 +15,39 @@ export default function Contacts(props) {
     })
       .then(response => response.json())
       .then(data => {
-        !isCanceled && pullUsersList(data);
-        const firstLetters = [];
-        for (let i = 0; i < userList.length; i++) {
-          const firstLetter = userList[i].firstName[0];
-          if (!firstLetters.includes(firstLetter)) {
-            firstLetters.push(firstLetter);
-          }
-        }
+        !isCanceled && pullUserList(data);
       });
     return () => { isCanceled = true; };
   }, [userList]);
 
-  const contact = props => {
-    // const contactList = props.people;
-    // const renderedPeople = contactList.map(person => {
-
-    // });
-    const firstLetters = [];
-    for (let i = 0; i < userList.length; i++) {
-      const firstLetter = userList[i].firstName[0];
-      if (!firstLetters.includes(firstLetter)) {
-        firstLetters.push(firstLetter);
-      }
-    }
-    const capitalInitial = firstLetters.map(letter => {
+  const ContactsList = props => {
+    const contacts = props.contacts;
+    const firstLetters = Object.keys(contacts);
+    const LetterSymbols = firstLetters.map(firstLetter => {
+      const letterNames = contacts[firstLetter].map(user => {
+        return (
+          <ListItem key={user.firstName}>
+            <Typography>
+              {user.firstName}
+            </Typography>
+          </ListItem>
+        );
+      });
       return (
-        <Typography key={letter}>
-          {letter}
-        </Typography>
+        <ListItem key={firstLetter}>
+          <Avatar key={firstLetter}>
+            {firstLetter.toUpperCase()}
+          </Avatar>
+          <List>
+            {letterNames}
+          </List>
+        </ListItem>
       );
     });
     return (
-      <capitalInitial />
+      <List>
+        {LetterSymbols}
+      </List>
     );
   };
 
@@ -73,7 +70,7 @@ export default function Contacts(props) {
             <CardContent>
               <List>
                 <ListItem>
-                  <contact></contact>
+                  <ContactsList contacts={userList}></ContactsList>
                 </ListItem>
               </List>
             </CardContent>
