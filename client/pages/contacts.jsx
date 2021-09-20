@@ -42,6 +42,16 @@ export default function Contacts(props) {
         firstLetters.push(firstLetter);
       }
     }
+    const capitalInitial = firstLetters.map(letter => {
+      return (
+        <Typography key={letter}>
+          {letter}
+        </Typography>
+      );
+    });
+    return (
+      <capitalInitial />
+    );
   };
 
   return (
@@ -63,14 +73,7 @@ export default function Contacts(props) {
             <CardContent>
               <List>
                 <ListItem>
-                  <Typography>
-                    Denny
-                  </Typography>
-                </ListItem>
-                <ListItem divider={true} alignItems='flex-start'>
-                  <Typography>
-                    Denny
-                  </Typography>
+                  <contact></contact>
                 </ListItem>
               </List>
             </CardContent>
