@@ -1,8 +1,18 @@
-import { Card, CardContent, Grid, Typography, List, ListItem, Avatar } from '@material-ui/core';
+import { Card, CardContent, Grid, Typography, List, ListItem, Avatar, makeStyles } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import Header from '../components/header';
+import _ from 'lodash';
+
+const useStyles = makeStyles(theme => {
+  return {
+    columns: {
+      display: 'flex'
+    }
+  };
+});
 
 export default function Contacts(props) {
+  const classes = useStyles();
   const [userList, pullUserList] = useState({});
 
   useEffect(() => {
@@ -26,16 +36,19 @@ export default function Contacts(props) {
     const LetterSymbols = firstLetters.map(firstLetter => {
       const letterNames = contacts[firstLetter].map(user => {
         return (
-          <ListItem key={user.firstName}>
+          <ListItem
+            divider={user !== contacts[firstLetter][contacts[firstLetter].length - 1]}
+            key={user.firstName}
+          >
             <Typography>
-              {user.firstName}
+              {_.capitalize(user.firstName)}
             </Typography>
           </ListItem>
         );
       });
       return (
-        <ListItem key={firstLetter}>
-          <Avatar key={firstLetter}>
+        <ListItem className={classes.columns} key={firstLetter}>
+          <Avatar variant='rounded' key={firstLetter}>
             {firstLetter.toUpperCase()}
           </Avatar>
           <List>

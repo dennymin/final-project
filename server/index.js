@@ -82,6 +82,8 @@ app.post('/api/auth/signin', (req, res, next) => {
     }).catch(err => next(err));
 });
 
+app.use(authorizationMiddleware);
+
 app.post('/api/new/workout', (req, res, next) => {
   const { date, muscleGroups, details } = req.body;
   const { userId } = req.user;
@@ -261,7 +263,5 @@ app.get('/api/others', (req, res, next) => {
       res.status(200).json(contactsList);
     }).catch(err => next(err));
 });
-
-app.use(authorizationMiddleware);
 
 app.use(errorMiddleware);
