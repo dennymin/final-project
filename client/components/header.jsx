@@ -13,9 +13,13 @@ const useStyles = makeStyles({
 
 export default function Header(props) {
   const classes = useStyles();
+  let variantStyle = 'h4';
+  if (props.title.length > 15) {
+    variantStyle = 'h5';
+  }
   return (
         <Typography
-          variant='h4'
+          variant={variantStyle}
           component='h2'
           align='center'
           gutterBottom

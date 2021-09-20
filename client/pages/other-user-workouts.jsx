@@ -193,7 +193,7 @@ export default function UserWorkouts(props) {
 
   return (
     <>
-      <Header title={(`${userInfo.firstName} ${userInfo.lastName}`).toUpperCase()} />
+      <Header title={(`${userInfo.firstName} Fitness`).toUpperCase()} />
       <WorkoutList entries={serverData} />
     </>
   );
