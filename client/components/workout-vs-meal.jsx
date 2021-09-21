@@ -39,18 +39,18 @@ export default function WorkoutsOrMeals(props) {
     }
   };
 
-  // const currentWindowClass = () => {
-  //   const currentURL = window.location.hash;
-  //   if (currentURL.includes('meals')) {
-  //     return (
-  //       `#app/social/workouts/${props.userId}`
-  //     );
-  //   } else if (currentURL.includes('workouts')) {
-  //     return (
-  //       `#app/social/meals/${props.userId}`
-  //     );
-  //   }
-  // };
+  const currentWindowClass = () => {
+    const currentURL = window.location.hash;
+    if (currentURL.includes('meals')) {
+      return (
+        `#app/social/workouts/${props.userId}`
+      );
+    } else if (currentURL.includes('workouts')) {
+      return (
+        `#app/social/meals/${props.userId}`
+      );
+    }
+  };
 
   return (
     <Grid
