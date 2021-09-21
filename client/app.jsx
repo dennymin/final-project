@@ -12,6 +12,7 @@ import SignIn from './pages/sign-in';
 import Contacts from './pages/contacts';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 import UserWorkouts from './pages/other-user-workouts';
+import UserMeals from './pages/other-user-meals';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -86,13 +87,22 @@ export default class App extends React.Component {
       );
     }
     if (route.path.includes('app/social/')) {
-      const userId = route.path.split('/')[2];
-      return (
-        <>
-          <TempDrawer />
-          <UserWorkouts userId={userId}/>
-        </>
-      );
+      const userId = route.path.split('/')[3];
+      if (route.path.includes('workouts')) {
+        return (
+          <>
+            <TempDrawer />
+            <UserWorkouts userId={userId} />
+          </>
+        );
+      } else if (route.path.includes('meals')) {
+        return (
+          <>
+            <TempDrawer />
+            <UserMeals userId={userId} />
+          </>
+        );
+      }
     }
   }
 

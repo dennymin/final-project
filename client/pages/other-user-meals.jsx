@@ -1,6 +1,5 @@
-import { Grid, Card, CardContent, CardActions, Collapse, Typography, makeStyles } from '@material-ui/core';
+import { Grid, Card, CardContent, CardActions, Collapse, Typography, makeStyles, CardMedia } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
-import { add, format } from 'date-fns';
 import Header from '../components/header';
 import WorkoutsOrMeals from '../components/workout-vs-meal';
 
@@ -11,9 +10,13 @@ const useStyles = makeStyles(theme => {
       justifyContent: 'center',
       flexWrap: 'wrap'
     },
-    dateSection: {
+    foodTitle: {
+      textAlign: 'center',
+      fontSize: '1.5rem',
+      marginBottom: 15,
       fontStyle: 'italic',
-      fontSize: '1.6rem'
+      textDecoration: 'underline',
+      fontWeight: 'bold'
     },
     cardCategoryHeader: {
       fontWeight: 'bold',
@@ -40,31 +43,15 @@ const useStyles = makeStyles(theme => {
         cursor: 'pointer'
       }
     },
-    buttonColor: {
-      backgroundColor: '#C9D6DF'
-    },
-    categories: {
-      '&:hover': {
-        cursor: 'pointer',
-        fontStyle: 'italic'
-      }
-    },
     gutterBottom: {
-      marginBottom: '30px'
+      marginBottom: 30
     }
   };
 });
 
-export default function UserWorkouts(props) {
+export default function UserMeals(props) {
   const classes = useStyles();
-  const [serverData, pullServerData] = useState([{
-    userId: 0,
-    date: new Date(),
-    duration: 0,
-    caloriesBurned: 0,
-    details: '',
-    workoutId: 0
-  }]);
+  const [serverData, pullServerData] = useState([]);
   const [userInfo, setUserInfo] = useState({
     firstName: '',
     lastName: '',
@@ -73,7 +60,7 @@ export default function UserWorkouts(props) {
 
   useEffect(() => {
     let isCanceled = false;
-    const serverAddress = `/api/social/workouts/${props.userId}`;
+    const serverAddress = `/api/social/meals/${props.userId}`;
     const serverAddress2 = `api/${props.userId}`;
     fetch(serverAddress, {
       headers: {
@@ -97,20 +84,17 @@ export default function UserWorkouts(props) {
     return () => { isCanceled = true; };
   }, []);
 
-  const WorkoutList = props => {
-    const workoutList = props.entries;
-    const renderedWorkouts = workoutList.map(workout => {
+  const MealList = props => {
+    const mealList = props.entries;
+    const renderedMeals = mealList.map(meal => {
       const [expanded, setExpanded] = useState(false);
       const handleExpandClick = () => {
         setExpanded(!expanded);
       };
-      workout.date = new Date(workout.date);
-      const timezoneOffset = workout.date.getTimezoneOffset();
-      const correctedDate = add(workout.date, { minutes: timezoneOffset });
-      const workingDate = format(correctedDate, 'iii, LLL do, yyyy');
+
       return (
         <Grid
-          key={workout.workoutId}
+          key={meal.mealId}
           item={true}
           xs={12}
           sm={6}
@@ -123,23 +107,17 @@ export default function UserWorkouts(props) {
             raised={true}>
 
             <CardContent>
+              <CardMedia
+                className={classes.gutterBottom}
+                component='img'
+                image={meal.pictureUrl}
+                title={`Picture of your ${meal.name}`}
+              />
               <Typography
-                className={classes.dateSection}
+                className={classes.foodTitle}
                 paragraph={true}
               >
-                {workingDate}
-              </Typography>
-
-              <Typography
-                className={classes.cardCategoryHeader}
-              >
-                Workout Length:
-              </Typography>
-              <Typography
-                className={classes.cardCategoryContent}
-                paragraph={true}
-              >
-                {workout.duration} Minutes
+                {meal.name}
               </Typography>
 
               <Typography
@@ -151,19 +129,7 @@ export default function UserWorkouts(props) {
                 className={classes.cardCategoryContent}
                 paragraph={true}
               >
-                {workout.caloriesBurned} Calories Burned
-              </Typography>
-
-              <Typography
-                className={classes.cardCategoryHeader}
-              >
-                Muscles Worked Out:
-              </Typography>
-              <Typography
-                className={classes.cardCategoryContent}
-                paragraph={false}
-              >
-                {workout.muscles}
+                {meal.calories} Calories
               </Typography>
 
               <CardActions className={classes.detailsExpanded}>
@@ -171,7 +137,7 @@ export default function UserWorkouts(props) {
                   onClick={handleExpandClick}
                   className={classes.smallDetails}
                 >
-                  Expand for Details</Typography>
+                  Expand for Ingredients, Nutrition, and Notes</Typography>
               </CardActions>
               <Collapse
                 in={expanded}
@@ -181,12 +147,34 @@ export default function UserWorkouts(props) {
                 <Typography
                   className={classes.cardCategoryHeader}
                 >
-                  Details:
+                  Ingredients:
+                </Typography>
+                <Typography
+                  className={classes.cardCategoryContent}
+                  paragraph={true}
+                >
+                  {meal.ingredients}
+                </Typography>
+                <Typography
+                  className={classes.cardCategoryHeader}
+                >
+                  Nutrition:
+                </Typography>
+                <Typography
+                  className={classes.cardCategoryContent}
+                  paragraph={true}
+                >
+                  {meal.nutrition}
+                </Typography>
+                <Typography
+                  className={classes.cardCategoryHeader}
+                >
+                  Notes:
                 </Typography>
                 <Typography
                   className={classes.cardCategoryContent}
                 >
-                  {workout.details}
+                  {meal.notes}
                 </Typography>
               </Collapse>
 
@@ -201,7 +189,7 @@ export default function UserWorkouts(props) {
         container={true}
         justifyContent='flex-start'
       >
-        {renderedWorkouts}
+        {renderedMeals}
       </Grid>
     );
   };
@@ -210,7 +198,7 @@ export default function UserWorkouts(props) {
     <>
       <Header title={(`${userInfo.firstName}'s Workouts`).toUpperCase()} />
       <WorkoutsOrMeals userId={userInfo.userId}/>
-      <WorkoutList entries={serverData} />
+      <MealList entries={serverData} />
     </>
   );
 }
