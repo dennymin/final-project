@@ -6,19 +6,17 @@ const useStyles = makeStyles(theme => {
     gutterBottom: {
       marginBottom: '30px'
     },
-    categories: {
-      '&:hover': {
-        cursor: 'pointer',
-        fontStyle: 'italic'
-      }
-    },
     disabled: {
       color: 'grey',
-      cursor: 'not-allowed',
-      textDecoration: 'none'
+      textDecoration: 'none',
+      '&:hover': {
+        cursor: 'pointer'
+      }
     },
     active: {
-      textDecoration: 'underline'
+      textDecoration: 'underline',
+      fontStyle: 'italic',
+      cursor: 'default'
     }
   };
 });
@@ -39,15 +37,15 @@ export default function WorkoutsOrMeals(props) {
     }
   };
 
-  const currentWindowClass = () => {
+  const currentWindowClass = url => {
     const currentURL = window.location.hash;
-    if (currentURL.includes('meals')) {
+    if (currentURL.includes(url)) {
       return (
-        `#app/social/workouts/${props.userId}`
+        classes.active
       );
-    } else if (currentURL.includes('workouts')) {
+    } else {
       return (
-        `#app/social/meals/${props.userId}`
+        classes.disabled
       );
     }
   };
@@ -59,26 +57,24 @@ export default function WorkoutsOrMeals(props) {
       justifyContent='space-evenly'
     >
       <Grid item>
-        <Typography
-          className={classes.categories}
-        >
+        <Typography>
           <Link
             underline='none'
             color='textPrimary'
             href={currentWindow()}
+            className={currentWindowClass('workouts')}
           >
             Workouts
           </Link>
         </Typography>
       </Grid>
       <Grid item>
-        <Typography
-          className={classes.categories}
-        >
+        <Typography>
           <Link
             underline='none'
             color='textPrimary'
             href={currentWindow()}
+            className={currentWindowClass('meals')}
           >
             Meals
           </Link>

@@ -196,7 +196,7 @@ export default function UserMeals(props) {
 
   return (
     <>
-      <Header title={(`${userInfo.firstName}'s Workouts`).toUpperCase()} />
+      <Header title={(`${userInfo.firstName}'s Meals`).toUpperCase()} />
       <WorkoutsOrMeals userId={userInfo.userId}/>
       <MealList entries={serverData} />
     </>
