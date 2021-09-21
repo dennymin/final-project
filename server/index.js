@@ -230,8 +230,8 @@ app.get('/api/your/fitness', (req, res, next) => {
         Legs: 0
       };
       for (let i = 0; i < result.rows.length; i++) {
-        stats.workoutTime = 0 + result.rows[i].duration;
-        stats.caloriesBurned = result.rows[i].caloriesBurned + result.rows[i].caloriesBurned;
+        stats.workoutTime = stats.workoutTime + result.rows[i].duration;
+        stats.caloriesBurned = stats.caloriesBurned + result.rows[i].caloriesBurned;
         if (result.rows[i].muscles.includes('Chest')) {
           stats.Chest++;
         }
