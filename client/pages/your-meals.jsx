@@ -1,6 +1,7 @@
 import { Grid, Card, CardContent, CardActions, Collapse, Typography, makeStyles, CardMedia } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import Header from '../components/header';
+import _ from 'lodash';
 
 const useStyles = makeStyles(theme => {
   return {
@@ -103,7 +104,7 @@ export default function YourMeals(props) {
                 className={classes.foodTitle}
                 paragraph={true}
               >
-                {meal.name}
+                {_.startCase(meal.name)}
               </Typography>
 
               <Typography

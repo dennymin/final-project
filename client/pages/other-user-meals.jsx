@@ -2,6 +2,7 @@ import { Grid, Card, CardContent, CardActions, Collapse, Typography, makeStyles,
 import React, { useEffect, useState } from 'react';
 import Header from '../components/header';
 import WorkoutsOrMeals from '../components/workout-vs-meal';
+import _ from 'lodash';
 
 const useStyles = makeStyles(theme => {
   return {
@@ -117,7 +118,7 @@ export default function UserMeals(props) {
                 className={classes.foodTitle}
                 paragraph={true}
               >
-                {meal.name}
+                {_.startCase(meal.name)}
               </Typography>
 
               <Typography
