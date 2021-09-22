@@ -145,7 +145,7 @@ app.post('/api/new/meal', uploadsMiddleware, (req, res, next) => {
   if (!Number.isInteger(calories) || calories < 0) {
     throw new ClientError(400, 'calories must be a positive integer');
   }
-  const pictureUrl = `/images/${req.file.filename}`;
+  const pictureUrl = req.file.location;
   const data = [name, calories, ingredients, nutrition, notes, pictureUrl, userId];
   const sqlIntoMeals = `
   insert into "meals" ("userId", "name", "calories", "ingredients", "nutrition", "notes", "pictureUrl")
