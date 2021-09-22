@@ -1,6 +1,7 @@
 import { Grid, Card, CardContent, CardActions, Collapse, Typography, makeStyles, CardMedia } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import Header from '../components/header';
+import WorkoutsOrMeals from '../components/workout-vs-meal';
 import _ from 'lodash';
 
 const useStyles = makeStyles(theme => {
@@ -45,20 +46,23 @@ const useStyles = makeStyles(theme => {
     },
     gutterBottom: {
       marginBottom: 30
-    },
-    gutterTop: {
-      marginTop: 30
     }
   };
 });
 
-export default function YourMeals(props) {
+export default function UserMeals(props) {
   const classes = useStyles();
   const [serverData, pullServerData] = useState([]);
+  const [userInfo, setUserInfo] = useState({
+    firstName: '',
+    lastName: '',
+    userId: 0
+  });
 
   useEffect(() => {
     let isCanceled = false;
-    const serverAddress = '/api/your/meals';
+    const serverAddress = `/api/social/meals/${props.userId}`;
+    const serverAddress2 = `api/${props.userId}`;
     fetch(serverAddress, {
       headers: {
         'signin-token': window.localStorage.getItem('signin-token')
@@ -67,6 +71,16 @@ export default function YourMeals(props) {
       .then(response => response.json())
       .then(data => {
         !isCanceled && pullServerData(data);
+      });
+
+    fetch(serverAddress2, {
+      headers: {
+        'signin-token': window.localStorage.getItem('signin-token')
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        !isCanceled && setUserInfo(data);
       });
     return () => { isCanceled = true; };
   }, []);
@@ -183,7 +197,8 @@ export default function YourMeals(props) {
 
   return (
     <>
-      <Header title='YOUR MEALS' />
+      <Header title={(`${userInfo.firstName}'s Meals`).toUpperCase()} />
+      <WorkoutsOrMeals userId={userInfo.userId}/>
       <MealList entries={serverData} />
     </>
   );

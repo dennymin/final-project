@@ -183,12 +183,14 @@ app.get('/api/your/workouts', (req, res, next) => {
 });
 
 app.get('/api/your/meals', (req, res, next) => {
+  const { userId } = req.user;
+  const userInfo = [userId];
   const sqlIntoUserMeals = `
   select "mealId", "calories", "name", "ingredients", "nutrition", "notes", "pictureUrl"
   from "meals"
-  where "userId" = 1
+  where "userId" = $1
   `;
-  db.query(sqlIntoUserMeals)
+  db.query(sqlIntoUserMeals, userInfo)
     .then(result => {
       res.status(200).json(result.rows);
     }).catch(err => next(err));
@@ -228,8 +230,8 @@ app.get('/api/your/fitness', (req, res, next) => {
         Legs: 0
       };
       for (let i = 0; i < result.rows.length; i++) {
-        stats.workoutTime = 0 + result.rows[i].duration;
-        stats.caloriesBurned = result.rows[i].caloriesBurned + result.rows[i].caloriesBurned;
+        stats.workoutTime = stats.workoutTime + result.rows[i].duration;
+        stats.caloriesBurned = stats.caloriesBurned + result.rows[i].caloriesBurned;
         if (result.rows[i].muscles.includes('Chest')) {
           stats.Chest++;
         }
@@ -264,7 +266,24 @@ app.get('/api/others', (req, res, next) => {
     }).catch(err => next(err));
 });
 
-app.get('/api/social/:userId', (req, res, next) => {
+app.get('/api/:userId', (req, res, next) => {
+  const userId = parseInt(req.params.userId, 10);
+  const userInfo = [userId];
+  if (!userId) {
+    throw new ClientError(400, 'userId must be a positive integer');
+  }
+  const sqlIntoSpecificUser = `
+    select "firstName", "lastName", "userId"
+    from   "users"
+    where  "userId" = $1
+  `;
+  db.query(sqlIntoSpecificUser, userInfo)
+    .then(result => {
+      res.status(200).json(result.rows[0]);
+    }).catch(err => next(err));
+});
+
+app.get('/api/social/workouts/:userId', (req, res, next) => {
   const userId = parseInt(req.params.userId, 10);
   const userInfo = [userId];
   if (!userId) {
@@ -290,20 +309,20 @@ app.get('/api/social/:userId', (req, res, next) => {
     }).catch(err => next(err));
 });
 
-app.get('/api/:userId', (req, res, next) => {
+app.get('/api/social/meals/:userId/', (req, res, next) => {
   const userId = parseInt(req.params.userId, 10);
   const userInfo = [userId];
   if (!userId) {
     throw new ClientError(400, 'userId must be a positive integer');
   }
-  const sqlIntoSpecificUser = `
-    select "firstName", "lastName"
-    from   "users"
-    where  "userId" = $1
+  const sqlIntoUserMeals = `
+  select "mealId", "calories", "name", "ingredients", "nutrition", "notes", "pictureUrl"
+  from "meals"
+  where "userId" = $1
   `;
-  db.query(sqlIntoSpecificUser, userInfo)
+  db.query(sqlIntoUserMeals, userInfo)
     .then(result => {
-      res.status(200).json(result.rows[0]);
+      res.status(200).json(result.rows);
     }).catch(err => next(err));
 });
 

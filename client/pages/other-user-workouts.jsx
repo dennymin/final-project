@@ -2,6 +2,7 @@ import { Grid, Card, CardContent, CardActions, Collapse, Typography, makeStyles 
 import React, { useEffect, useState } from 'react';
 import { add, format } from 'date-fns';
 import Header from '../components/header';
+import WorkoutsOrMeals from '../components/workout-vs-meal';
 
 const useStyles = makeStyles(theme => {
   return {
@@ -38,6 +39,18 @@ const useStyles = makeStyles(theme => {
       '&:hover': {
         cursor: 'pointer'
       }
+    },
+    buttonColor: {
+      backgroundColor: '#C9D6DF'
+    },
+    categories: {
+      '&:hover': {
+        cursor: 'pointer',
+        fontStyle: 'italic'
+      }
+    },
+    gutterBottom: {
+      marginBottom: '30px'
     }
   };
 });
@@ -54,12 +67,13 @@ export default function UserWorkouts(props) {
   }]);
   const [userInfo, setUserInfo] = useState({
     firstName: '',
-    lastName: ''
+    lastName: '',
+    userId: 0
   });
 
   useEffect(() => {
     let isCanceled = false;
-    const serverAddress = `/api/social/${props.userId}`;
+    const serverAddress = `/api/social/workouts/${props.userId}`;
     const serverAddress2 = `api/${props.userId}`;
     fetch(serverAddress, {
       headers: {
@@ -195,6 +209,7 @@ export default function UserWorkouts(props) {
   return (
     <>
       <Header title={(`${userInfo.firstName}'s Workouts`).toUpperCase()} />
+      <WorkoutsOrMeals userId={userInfo.userId}/>
       <WorkoutList entries={serverData} />
     </>
   );

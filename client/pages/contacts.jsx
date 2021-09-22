@@ -52,16 +52,16 @@ export default function Contacts(props) {
             divider={user !== contacts[firstLetter][contacts[firstLetter].length - 1]}
             key={user.firstName}
           >
-            <Link
-              href={`#app/social/${user.userId}`}
-              underline='none'
-              color='textPrimary'
-              className={classes.linkStyling}
-            >
-              <Typography>
+            <Typography>
+              <Link
+                href={`#app/social/workouts/${user.userId}`}
+                underline='none'
+                color='textPrimary'
+                className={classes.linkStyling}
+              >
                 {_.capitalize(user.firstName)}
-              </Typography>
-            </Link>
+              </Link>
+            </Typography>
           </ListItem>
         );
       });
