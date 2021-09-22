@@ -26,19 +26,4 @@ const storage = multerS3({
 
 const uploadsMiddleware = multer({ storage: storage }).single('pictureUrl');
 
-// const imagesDirectory = path.join(__dirname, 'public/images');
-
-// const storage = multer.diskStorage({
-//   destination(req, file, callback) {
-//     callback(null, imagesDirectory);
-//   },
-//   filename(req, file, callback) {
-//     const fileExtension = path.extname(file.originalname);
-//     const name = `${file.fieldname}-${Date.now()}${fileExtension}`;
-//     callback(null, name);
-//   }
-// });
-
-// const uploadsMiddleware = multer({ storage }).single('pictureUrl');
-
 module.exports = uploadsMiddleware;
