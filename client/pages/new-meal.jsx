@@ -1,4 +1,4 @@
-import { makeStyles, TextField, Button } from '@material-ui/core';
+import { makeStyles, TextField, Button, Grid, CardContent, Card } from '@material-ui/core';
 import { DropzoneArea } from 'material-ui-dropzone';
 import React, { useState } from 'react';
 import Header from '../components/header';
@@ -16,9 +16,6 @@ const useStyles = makeStyles({
   },
   buttonColor: {
     backgroundColor: '#C9D6DF'
-  },
-  inputColor: {
-    backgroundColor: '#ffffff'
   }
 });
 
@@ -77,107 +74,125 @@ export default function NewMealForm(props) {
   };
 
   return (
-    <div>
+    <>
       <Header title='NEW MEAL' />
-      <form
-        noValidate
-        autoComplete='off'
-        onSubmit={handleSubmit}
+      <Grid
+        container={true}
+        justifyContent='center'
       >
-        <TextField
-          label='Meal Name'
-          name='name'
-          className={classes.inputColor}
-          variant='filled'
-          margin='normal'
-          required
-          InputLabelProps={{ shrink: true }}
-          fullWidth
-          onChange={event => {
-            setName(event.target.value);
-          }}
-          error={nameError}
-        />
+        <Grid
+          item
+          xs={12}
+          sm={10}
+          md={10}
+          lg={10}
+          xl={10}
+        >
+          <Card raised={true}>
+            <CardContent>
+              <form
+                noValidate
+                autoComplete='off'
+                onSubmit={handleSubmit}
+              >
+                <TextField
+                  label='Meal Name'
+                  name='name'
+                  className={classes.inputColor}
+                  variant='standard'
+                  margin='normal'
+                  required
+                  InputLabelProps={{ shrink: true }}
+                  fullWidth
+                  onChange={event => {
+                    setName(event.target.value);
+                  }}
+                  error={nameError}
+                />
 
-        <TextField
-          label='Calories'
-          name='calories'
-          className={classes.inputColor}
-          variant='filled'
-          margin='normal'
-          required
-          InputLabelProps={{ shrink: true }}
-          fullWidth
-          onChange={event => {
-            setCalories(event.target.value);
-          }}
-          error={caloriesError}
-        />
+                <TextField
+                  label='Calories'
+                  name='calories'
+                  className={classes.inputColor}
+                  variant='standard'
+                  margin='normal'
+                  required
+                  InputLabelProps={{ shrink: true }}
+                  fullWidth
+                  onChange={event => {
+                    setCalories(event.target.value);
+                  }}
+                  error={caloriesError}
+                />
 
-        <TextField
-          label='Ingredients'
-          name='ingredients'
-          className={classes.inputColor}
-          variant='filled'
-          margin='normal'
-          required
-          InputLabelProps={{ shrink: true }}
-          fullWidth
-          multiline
-          rows={rowHeight}
-          onChange={event => setIngredients(event.target.value)}
-          error={ingredientsError}
-        />
+                <TextField
+                  label='Ingredients'
+                  name='ingredients'
+                  className={classes.inputColor}
+                  variant='standard'
+                  margin='normal'
+                  required
+                  InputLabelProps={{ shrink: true }}
+                  fullWidth
+                  multiline
+                  rows={rowHeight}
+                  onChange={event => setIngredients(event.target.value)}
+                  error={ingredientsError}
+                />
 
-        <TextField
-          label='Nutrition'
-          name='nutrition'
-          className={classes.inputColor}
-          variant='filled'
-          margin='normal'
-          required
-          InputLabelProps={{ shrink: true }}
-          fullWidth
-          multiline
-          rows={rowHeight}
-          onChange={event => setNutrition(event.target.value)}
-          error={nutritionError}
-        />
+                <TextField
+                  label='Nutrition'
+                  name='nutrition'
+                  className={classes.inputColor}
+                  variant='standard'
+                  margin='normal'
+                  required
+                  InputLabelProps={{ shrink: true }}
+                  fullWidth
+                  multiline
+                  rows={rowHeight}
+                  onChange={event => setNutrition(event.target.value)}
+                  error={nutritionError}
+                />
 
-        <TextField
-          label='Notes'
-          name='notes'
-          className={classes.inputColor}
-          variant='filled'
-          margin='normal'
-          required
-          InputLabelProps={{ shrink: true }}
-          fullWidth
-          multiline
-          rows={rowHeight}
-          onChange={event => setNotes(event.target.value)}
-          error={notesError}
-        />
+                <TextField
+                  label='Notes'
+                  name='notes'
+                  className={classes.inputColor}
+                  variant='standard'
+                  margin='normal'
+                  required
+                  InputLabelProps={{ shrink: true }}
+                  fullWidth
+                  multiline
+                  rows={rowHeight}
+                  onChange={event => setNotes(event.target.value)}
+                  error={notesError}
+                />
 
-        <div className={classes.uploadImageRow}>
-            <DropzoneArea
-              acceptedFiles={['image/*']}
-              dropzoneText={'Drag and drop picture of food here *'}
-              filesLimit={1}
-              onChange={files => setPictureUrl(files[0])}
-            />
-        </div>
+                <div className={classes.uploadImageRow}>
+                  <DropzoneArea
+                    acceptedFiles={['image/*']}
+                    dropzoneText={'Drag and drop picture of food here *'}
+                    filesLimit={1}
+                    onChange={files => setPictureUrl(files[0])}
+                  />
+                </div>
 
-        <div className={classes.justifyCenter}>
-          <Button
-            variant='contained'
-            type='submit'
-            className={classes.buttonColor}
-          >
-            Submit
-          </Button>
-        </div>
-      </form>
-    </div>
+                <div className={classes.justifyCenter}>
+                  <Button
+                    variant='contained'
+                    type='submit'
+                    className={classes.buttonColor}
+                  >
+                    Submit
+                  </Button>
+                </div>
+              </form>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+    </>
   );
 }

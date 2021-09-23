@@ -1,6 +1,7 @@
 import { Card, CardContent, Grid, Typography, List, ListItem, Avatar, makeStyles, Link } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import Header from '../components/header';
+import Spinner from '../components/spinner';
 import _ from 'lodash';
 
 const useStyles = makeStyles(theme => {
@@ -26,6 +27,7 @@ const useStyles = makeStyles(theme => {
 export default function Contacts(props) {
   const classes = useStyles();
   const [userList, pullUserList] = useState({});
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     let isCanceled = false;
@@ -37,6 +39,7 @@ export default function Contacts(props) {
     })
       .then(response => response.json())
       .then(data => {
+        setLoaded(true);
         !isCanceled && pullUserList(data);
       });
     return () => { isCanceled = true; };
@@ -89,6 +92,14 @@ export default function Contacts(props) {
       </List>
     );
   };
+
+  if (!loaded) {
+    return (
+      <>
+        <Spinner/>
+      </>
+    );
+  }
 
   return (
     <>

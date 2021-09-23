@@ -1,6 +1,7 @@
 import { Grid, Card, CardContent, CardActions, Collapse, Typography, makeStyles, CardMedia } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import Header from '../components/header';
+import Spinner from '../components/spinner';
 import _ from 'lodash';
 
 const useStyles = makeStyles(theme => {
@@ -55,6 +56,7 @@ const useStyles = makeStyles(theme => {
 export default function YourMeals(props) {
   const classes = useStyles();
   const [serverData, pullServerData] = useState([]);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     let isCanceled = false;
@@ -66,6 +68,7 @@ export default function YourMeals(props) {
     })
       .then(response => response.json())
       .then(data => {
+        setLoaded(true);
         !isCanceled && pullServerData(data);
       });
     return () => { isCanceled = true; };
@@ -181,10 +184,52 @@ export default function YourMeals(props) {
     );
   };
 
+  if (!loaded) {
+    return (
+      <>
+        <Spinner />
+      </>
+    );
+  }
+
+  const Content = props => {
+    if (serverData.length === 0) {
+      return (
+        <div className='center'>
+          <Grid
+            container
+            justifyContent='center'
+          >
+            <Grid
+              item
+              xs={12}
+              sm={10}
+              md={10}
+              lg={10}
+              xl={10}
+            >
+              <Card raised={true}>
+                <CardContent>
+                  <Typography variant='h5' align='center' gutterBottom>
+                    Nothing recorded yet!
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          </Grid>
+        </div>
+      );
+    } else {
+      return (
+        <MealList entries={serverData} />
+      );
+    }
+  };
+
   return (
     <>
       <Header title='YOUR MEALS' />
-      <MealList entries={serverData} />
+      <Content />
     </>
   );
 }
