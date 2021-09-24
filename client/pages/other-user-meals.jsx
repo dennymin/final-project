@@ -7,11 +7,6 @@ import _ from 'lodash';
 
 const useStyles = makeStyles(theme => {
   return {
-    centering: {
-      display: 'flex',
-      justifyContent: 'center',
-      flexWrap: 'wrap'
-    },
     foodTitle: {
       textAlign: 'center',
       fontSize: '1.5rem',
