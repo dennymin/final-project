@@ -10,7 +10,7 @@ I wanted to make this application for my friends who are just getting into fitne
 Try the application at: [https://mygitfit.herokuapp.com](https://mygitfit.herokuapp.com)
 
 ## Stack
-HTML, CSS, JavaScript, React.js, Material UI, Node.js, Express.js, postgresql, lodash, date.fns, AWS, mime, multer, multer-s3, Argon2, jsonwebtoken, Babel, Webpack
+HTML, CSS, JavaScript, React.js, Material UI, Node.js, Express.js, Postgresql, lodash, date.fns, AWS, mime, multer, multer-s3, Argon2, jsonwebtoken, Babel, Webpack
 
 ## Features
 1. User can record a workout that they did
@@ -37,6 +37,7 @@ HTML, CSS, JavaScript, React.js, Material UI, Node.js, Express.js, postgresql, l
 ## Requirements
  - Node.js 10 or higher
  - NPM 6 or higher
+ - Postresql
 
 ### Getting Started
 
