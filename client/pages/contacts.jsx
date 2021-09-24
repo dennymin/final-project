@@ -53,7 +53,7 @@ export default function Contacts(props) {
         return (
           <ListItem
             divider={user !== contacts[firstLetter][contacts[firstLetter].length - 1]}
-            key={user.firstName}
+            key={user.userId}
           >
             <Typography>
               <Link
