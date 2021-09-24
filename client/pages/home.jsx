@@ -2,6 +2,7 @@ import { Card, CardContent, Typography, makeStyles, TextField, Grid } from '@mat
 import React, { useEffect, useState } from 'react';
 import Header from '../components/header';
 import { sub, format } from 'date-fns';
+import Spinner from '../components/spinner';
 
 const useStyles = makeStyles(theme => {
   return {
@@ -24,6 +25,7 @@ const useStyles = makeStyles(theme => {
 export default function Home(props) {
   const classes = useStyles();
   const [serverData, pullServerData] = useState([]);
+  const [loaded, setLoaded] = useState(false);
 
   const dateToday = new Date();
   const defaultEndPicker = format(dateToday, 'yyyy-MM-dd');
@@ -46,10 +48,19 @@ export default function Home(props) {
     })
       .then(response => response.json())
       .then(data => {
+        setLoaded(true);
         !isCanceled && pullServerData(data);
       });
     return () => { isCanceled = true; };
   }, [startDate, endDate]);
+
+  if (!loaded) {
+    return (
+    <>
+      <Spinner/>
+    </>
+    );
+  }
 
   return (
     <>
@@ -66,15 +77,13 @@ export default function Home(props) {
           lg={10}
           xl={10}
         >
-          <Card
-          raised={true}>
+          <Card raised={true}>
           <CardContent>
-
             <form>
               <TextField
                 label='End Date'
                 name='endDate'
-                variant='outlined'
+                variant='standard'
                 margin='normal'
                 type='date'
                 InputLabelProps={{ shrink: true }}
@@ -89,7 +98,7 @@ export default function Home(props) {
               <TextField
                 label='Start Date'
                 name='startDate'
-                variant='outlined'
+                variant='standard'
                 margin='normal'
                 type='date'
                 InputLabelProps={{ shrink: true }}

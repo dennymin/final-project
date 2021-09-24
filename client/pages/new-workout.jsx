@@ -1,4 +1,4 @@
-import { makeStyles, TextField, Button, Select, InputLabel, FormControl, MenuItem, ListItemText, Checkbox, InputAdornment } from '@material-ui/core';
+import { makeStyles, TextField, Button, Select, InputLabel, FormControl, MenuItem, ListItemText, Checkbox, InputAdornment, Grid, Card, CardContent } from '@material-ui/core';
 import React, { useState } from 'react';
 import Header from '../components/header';
 
@@ -10,9 +10,6 @@ const useStyles = makeStyles({
   buttonColor: {
     marginTop: '20px',
     backgroundColor: '#C9D6DF'
-  },
-  inputColor: {
-    backgroundColor: '#ffffff'
   }
 });
 const differentMuscles = ['Chest', 'Back', 'Arms', 'Legs'];
@@ -82,109 +79,127 @@ export default function NewWorkoutForm(props) {
   };
 
   return (
-    <div>
+    <>
       <Header title='NEW WORKOUT'/>
-      <form
-        noValidate
-        autoComplete='off'
-        onSubmit={handleSubmit}
+      <Grid
+        container={true}
+        justifyContent='center'
       >
-        <TextField
-          label='Date'
-          className={classes.inputColor}
-          variant='filled'
-          margin='normal'
-          type='date'
-          placeholder=''
-          InputLabelProps={{ shrink: true }}
-          required
-          fullWidth
-          onChange={event => setDate(event.target.value)}
-          error={dateError}
-        />
-
-        <TextField
-          label='Length'
-          className={classes.inputColor}
-          variant='filled'
-          margin='normal'
-          required
-          InputLabelProps={{ shrink: true }}
-          InputProps={{
-            endAdornment: <InputAdornment position="end">Minutes</InputAdornment>
-          }}
-          fullWidth
-          onChange={event => {
-            setDuration(event.target.value);
-          }}
-          error={durationError}
-          color='primary'
-        />
-
-        <TextField
-          label='Calories Burned'
-          className={classes.inputColor}
-          variant='filled'
-          margin='normal'
-          required
-          InputLabelProps={{ shrink: true }}
-          fullWidth
-          onChange={event => setCaloriesBurned(event.target.value)}
-          error={caloriesBurnedError}
-        />
-
-        <FormControl
-          variant='filled'
-          className={classes.inputColor}
-          fullWidth
-          margin='normal'
-          required
-          error={muscleNameError}
+        <Grid
+          item
+          xs={12}
+          sm={10}
+          md={10}
+          lg={10}
+          xl={10}
         >
-          <InputLabel shrink id="muscle-groups-label">Muscle Groups</InputLabel>
-          <Select
-            labelId="muscle-groups-label"
-            id="muscle-groups-checkbox"
-            label='Muscle Groups'
-            displayEmpty
-            multiple
-            value={muscleName}
-            onChange={handleChange}
-            renderValue={selected => selected.join(' ')}
-          >
-            {differentMuscles.map(muscle => (
-              <MenuItem key={muscle} value={muscle}>
-                <Checkbox color='primary' checked={muscleName.indexOf(muscle) > -1} />
-                <ListItemText primary={muscle} />
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+          <Card raised={true}>
+            <CardContent>
+              <form
+                noValidate
+                autoComplete='off'
+                onSubmit={handleSubmit}
+              >
+                <TextField
+                  label='Date'
+                  className={classes.inputColor}
+                  variant='standard'
+                  margin='normal'
+                  type='date'
+                  placeholder=''
+                  InputLabelProps={{ shrink: true }}
+                  required
+                  fullWidth
+                  onChange={event => setDate(event.target.value)}
+                  error={dateError}
+                />
 
-        <TextField
-          label='Details'
-          className={classes.inputColor}
-          variant='filled'
-          margin='normal'
-          required
-          InputLabelProps={{ shrink: true }}
-          fullWidth
-          multiline
-          rows={8}
-          onChange={event => setDetails(event.target.value)}
-          error={detailsError}
-        />
+                <TextField
+                  label='Length'
+                  className={classes.inputColor}
+                  variant='standard'
+                  margin='normal'
+                  required
+                  InputLabelProps={{ shrink: true }}
+                  InputProps={{
+                    endAdornment: <InputAdornment position="end">Minutes</InputAdornment>
+                  }}
+                  fullWidth
+                  onChange={event => {
+                    setDuration(event.target.value);
+                  }}
+                  error={durationError}
+                  color='primary'
+                />
 
-        <div className={classes.justifyCenter}>
-          <Button
-            variant='contained'
-            type='submit'
-            className={classes.buttonColor}
-          >
-            Submit
-          </Button>
-        </div>
-      </form>
-    </div>
+                <TextField
+                  label='Calories Burned'
+                  className={classes.inputColor}
+                  variant='standard'
+                  margin='normal'
+                  required
+                  InputLabelProps={{ shrink: true }}
+                  fullWidth
+                  onChange={event => setCaloriesBurned(event.target.value)}
+                  error={caloriesBurnedError}
+                />
+
+                <FormControl
+                  variant='standard'
+                  className={classes.inputColor}
+                  fullWidth
+                  margin='normal'
+                  required
+                  error={muscleNameError}
+                >
+                  <InputLabel shrink id="muscle-groups-label">Muscle Groups</InputLabel>
+                  <Select
+                    labelId="muscle-groups-label"
+                    id="muscle-groups-checkbox"
+                    label='Muscle Groups'
+                    displayEmpty
+                    multiple
+                    value={muscleName}
+                    onChange={handleChange}
+                    renderValue={selected => selected.join(' ')}
+                  >
+                    {differentMuscles.map(muscle => (
+                      <MenuItem key={muscle} value={muscle}>
+                        <Checkbox color='primary' checked={muscleName.indexOf(muscle) > -1} />
+                        <ListItemText primary={muscle} />
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+
+                <TextField
+                  label='Details'
+                  className={classes.inputColor}
+                  variant='standard'
+                  margin='normal'
+                  required
+                  InputLabelProps={{ shrink: true }}
+                  fullWidth
+                  multiline
+                  rows={8}
+                  onChange={event => setDetails(event.target.value)}
+                  error={detailsError}
+                />
+
+                <div className={classes.justifyCenter}>
+                  <Button
+                    variant='contained'
+                    type='submit'
+                    className={classes.buttonColor}
+                  >
+                    Submit
+                  </Button>
+                </div>
+              </form>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+    </>
   );
 }

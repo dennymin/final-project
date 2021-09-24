@@ -2,6 +2,7 @@ import { Grid, Card, CardContent, CardActions, Collapse, Typography, makeStyles 
 import React, { useEffect, useState } from 'react';
 import { add, format } from 'date-fns';
 import Header from '../components/header';
+import Spinner from '../components/spinner';
 
 const useStyles = makeStyles(theme => {
   return {
@@ -44,14 +45,8 @@ const useStyles = makeStyles(theme => {
 
 export default function YourWorkouts(props) {
   const classes = useStyles();
-  const [serverData, pullServerData] = useState([{
-    userId: 0,
-    date: new Date(),
-    duration: 0,
-    caloriesBurned: 0,
-    details: '',
-    workoutId: 0
-  }]);
+  const [serverData, pullServerData] = useState([]);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     let isCanceled = false;
@@ -63,6 +58,7 @@ export default function YourWorkouts(props) {
     })
       .then(response => response.json())
       .then(data => {
+        setLoaded(true);
         !isCanceled && pullServerData(data);
       });
     return () => { isCanceled = true; };
@@ -177,10 +173,52 @@ export default function YourWorkouts(props) {
     );
   };
 
+  if (!loaded) {
+    return (
+      <>
+        <Spinner />
+      </>
+    );
+  }
+
+  const Content = props => {
+    if (serverData.length === 0) {
+      return (
+        <div className='center'>
+          <Grid
+            container
+            justifyContent='center'
+          >
+            <Grid
+              item
+              xs={12}
+              sm={10}
+              md={10}
+              lg={10}
+              xl={10}
+            >
+              <Card raised={true}>
+                <CardContent>
+                  <Typography variant='h5' align='center' gutterBottom>
+                    Nothing recorded yet!
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          </Grid>
+        </div>
+      );
+    } else {
+      return (
+        <WorkoutList entries={serverData} />
+      );
+    }
+  };
+
   return (
     <>
       <Header title='YOUR WORKOUTS' />
-      <WorkoutList entries={serverData} />
+      <Content />
     </>
   );
 }

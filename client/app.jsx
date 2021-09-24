@@ -146,7 +146,11 @@ export default class App extends React.Component {
             borderTopLeftRadius: 4,
             borderBottomRightRadius: 0,
             borderBottomLeftRadius: 0,
-            backgroundColor: '#e8e8e8'
+            transition: '0.2s',
+            backgroundColor: '#e8e8e8',
+            '&:hover': {
+              borderBottom: '3px solid black'
+            }
           },
           textContainer: {
             display: 'flex',
