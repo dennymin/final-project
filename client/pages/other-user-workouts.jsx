@@ -7,11 +7,6 @@ import Spinner from '../components/spinner';
 
 const useStyles = makeStyles(theme => {
   return {
-    centering: {
-      display: 'flex',
-      justifyContent: 'center',
-      flexWrap: 'wrap'
-    },
     dateSection: {
       fontStyle: 'italic',
       fontSize: '1.6rem'
@@ -39,15 +34,6 @@ const useStyles = makeStyles(theme => {
       marginBottom: 7,
       '&:hover': {
         cursor: 'pointer'
-      }
-    },
-    buttonColor: {
-      backgroundColor: '#C9D6DF'
-    },
-    categories: {
-      '&:hover': {
-        cursor: 'pointer',
-        fontStyle: 'italic'
       }
     },
     gutterBottom: {

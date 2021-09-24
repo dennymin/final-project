@@ -6,11 +6,6 @@ import Spinner from '../components/spinner';
 
 const useStyles = makeStyles(theme => {
   return {
-    centering: {
-      display: 'flex',
-      justifyContent: 'center',
-      flexWrap: 'wrap'
-    },
     dateSection: {
       fontStyle: 'italic',
       fontSize: '1.6rem'
