@@ -34,6 +34,10 @@ HTML, CSS, JavaScript, React.js, Material UI, Node.js, Express.js, postgresql, l
 ![Post a workout and a meal, and view your past workouts, meals, and fitness analysis](server/public/images/demonstration-gif-1.gif)
 ![Look up other people's workouts and meals](server/public/images/demonstration-gif-2.gif)
 
+## Requirements
+ - Node.js 10 or higher
+ - NPM 6 or higher
+
 ### Getting Started
 
 1. Clone the repository.
