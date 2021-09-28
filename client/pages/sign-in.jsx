@@ -14,8 +14,8 @@ const useStyles = makeStyles({
 
 export default function SignIn(props) {
   const classes = useStyles();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('demo');
+  const [password, setPassword] = useState('test');
   const [usernameError, setUsernameError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
 
@@ -87,6 +87,8 @@ export default function SignIn(props) {
                   InputLabelProps={{ shrink: true }}
                   onChange={event => setUsername(event.target.value)}
                   error={usernameError}
+                  defaultValue={'demo'}
+                  helperText={'Use the demo account to sign in and test out the features!'}
                 />
                 <TextField
                   label='Password'
@@ -98,6 +100,7 @@ export default function SignIn(props) {
                   InputLabelProps={{ shrink: true }}
                   onChange={event => setPassword(event.target.value)}
                   error={passwordError}
+                  defaultValue={'test'}
                 />
                 <Grid
                   container
