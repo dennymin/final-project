@@ -8,8 +8,7 @@ const useStyles = makeStyles({
     justifyContent: 'center'
   },
   buttonColor: {
-    marginTop: '20px',
-    backgroundColor: '#C9D6DF'
+    marginTop: '20px'
   }
 });
 const differentMuscles = ['Chest', 'Back', 'Arms', 'Legs'];
@@ -191,6 +190,7 @@ export default function NewWorkoutForm(props) {
                     variant='contained'
                     type='submit'
                     className={classes.buttonColor}
+                    color='primary'
                   >
                     Submit
                   </Button>

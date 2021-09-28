@@ -122,7 +122,7 @@ export default class App extends React.Component {
         },
         MuiAccordionDetails: {
           root: {
-            backgroundColor: '#e8e8e8',
+            backgroundColor: 'white',
             transition: '0.3s',
             '&:hover': {
               backgroundColor: '#C9D6DF',
@@ -146,10 +146,9 @@ export default class App extends React.Component {
             borderTopLeftRadius: 4,
             borderBottomRightRadius: 0,
             borderBottomLeftRadius: 0,
-            transition: '0.2s',
-            backgroundColor: '#e8e8e8',
+            transition: '0.1s',
             '&:hover': {
-              borderBottom: '3px solid black'
+              borderBottom: '2px solid black'
             }
           },
           textContainer: {
@@ -202,7 +201,7 @@ export default class App extends React.Component {
             border: '1px hidden',
             borderRadius: 10,
             paddingTop: 5,
-            backgroundColor: '#e8e8e8'
+            backgroundColor: 'white'
           }
         }
       }
