@@ -132,7 +132,7 @@ export default function Home(props) {
               className={classes.cardCategoryContent}
               paragraph={true}
             >
-              {serverData.workoutTime / serverData.workouts} Minutes
+              {serverData.averageWorkoutTime} Minutes
             </Typography>
 
             <Typography
@@ -144,7 +144,7 @@ export default function Home(props) {
               className={classes.cardCategoryContent}
               paragraph={true}
             >
-              {(serverData.caloriesBurned / serverData.workouts).toFixed(2)} Calories/Workout
+              {serverData.averageCaloriesBurned} Calories/Workout
             </Typography>
 
             <Typography
