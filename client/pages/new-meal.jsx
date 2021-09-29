@@ -13,9 +13,6 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'center',
     margin: '20px 0 30px 0'
-  },
-  buttonColor: {
-    backgroundColor: '#C9D6DF'
   }
 });
 
@@ -183,7 +180,7 @@ export default function NewMealForm(props) {
                   <Button
                     variant='contained'
                     type='submit'
-                    className={classes.buttonColor}
+                    color='primary'
                   >
                     Submit
                   </Button>

@@ -7,8 +7,7 @@ const useStyles = makeStyles({
     marginBottom: 20
   },
   buttonColor: {
-    marginTop: '20px',
-    backgroundColor: '#C9D6DF'
+    marginTop: '20px'
   }
 });
 
@@ -138,6 +137,7 @@ export default function Register(props) {
                       className={classes.buttonColor}
                       component='a'
                       href=''
+                      color='primary'
                     >
                       Sign-In
                     </Button>
@@ -148,6 +148,7 @@ export default function Register(props) {
                       variant='contained'
                       className={classes.buttonColor}
                       type='submit'
+                      color='primary'
                     >
                       Submit
                     </Button>

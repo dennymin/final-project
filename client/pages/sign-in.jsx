@@ -1,4 +1,4 @@
-import { Card, CardContent, Grid, TextField, Typography, Button, makeStyles } from '@material-ui/core';
+import { Card, CardContent, Grid, TextField, Typography, Button, makeStyles, InputAdornment } from '@material-ui/core';
 import React, { useState } from 'react';
 import Header from '../components/header';
 
@@ -7,17 +7,20 @@ const useStyles = makeStyles({
     marginBottom: 20
   },
   buttonColor: {
-    marginTop: '20px',
-    backgroundColor: '#C9D6DF'
+    marginTop: '20px'
+  },
+  demoText: {
+    fontSize: '50%'
   }
 });
 
 export default function SignIn(props) {
   const classes = useStyles();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('demo');
+  const [password, setPassword] = useState('test');
   const [usernameError, setUsernameError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
+  const [loginError, setLoginError] = useState('');
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -44,6 +47,9 @@ export default function SignIn(props) {
           window.location.hash = 'app/home';
         } else {
           window.location.hash = '';
+          setUsernameError(true);
+          setPasswordError(true);
+          setLoginError('Username or password incorrect');
         }
       })
     ;
@@ -87,6 +93,15 @@ export default function SignIn(props) {
                   InputLabelProps={{ shrink: true }}
                   onChange={event => setUsername(event.target.value)}
                   error={usernameError}
+                  defaultValue={'demo'} InputProps={{
+                    endAdornment:
+                      <InputAdornment
+                        className={classes.demoText}
+                        position="end"
+                      >
+                        Sign in as demo to test
+                      </InputAdornment>
+                  }}
                 />
                 <TextField
                   label='Password'
@@ -98,6 +113,8 @@ export default function SignIn(props) {
                   InputLabelProps={{ shrink: true }}
                   onChange={event => setPassword(event.target.value)}
                   error={passwordError}
+                  helperText={loginError}
+                  defaultValue={'test'}
                 />
                 <Grid
                   container
@@ -110,6 +127,7 @@ export default function SignIn(props) {
                       className={classes.buttonColor}
                       component='a'
                       href='#app/register'
+                      color='primary'
                     >
                       Register
                     </Button>
@@ -120,6 +138,7 @@ export default function SignIn(props) {
                       variant='contained'
                       className={classes.buttonColor}
                       type='submit'
+                      color='primary'
                     >
                       Sign In
                     </Button>

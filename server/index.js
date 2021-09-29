@@ -223,7 +223,9 @@ app.get('/api/your/fitness', (req, res, next) => {
       const stats = {
         workouts: result.rows.length,
         workoutTime: 0,
+        averageWorkoutTime: 0,
         caloriesBurned: 0,
+        averageCaloriesBurned: 0,
         Chest: 0,
         Back: 0,
         Arms: 0,
@@ -244,6 +246,16 @@ app.get('/api/your/fitness', (req, res, next) => {
         if (result.rows[i].muscles.includes('Legs')) {
           stats.Legs++;
         }
+      }
+      stats.averageWorkoutTime = stats.workoutTime / stats.workouts;
+      stats.averageCaloriesBurned = stats.caloriesBurned / stats.workouts;
+      if (Number.isNaN(stats.averageWorkoutTime)) {
+        stats.averageWorkoutTime = 0;
+      }
+      if (Number.isNaN(stats.averageCaloriesBurned)) {
+        stats.averageCaloriesBurned = 0;
+      } else {
+        stats.averageCaloriesBurned = (stats.averageCaloriesBurned).toFixed(2);
       }
       res.status(200).json(stats);
     }).catch(err => next(err));
